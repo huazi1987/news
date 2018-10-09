@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include 'common/common_css.html'/>
+</head>
+<body class="no-skin">
+<div class="main-content">
+	<div class="main-content-inner">
+		<div class="page-content">
+			<div class="row">
+				<div class="col-sm-2">
+             		<div class="form-group" >
+                    	<div class="form_top" style="line-height: 20px;">
+                     		<label for=""><@spring.message code="item.userId"/></label>
+                      	</div>
+	                	<div class="form_bottom" >
+	                 		<input id="s_userid" type="text" class="form-control" style="width: 100%;"/>
+	              		</div>
+         			</div>
+       			</div>
+       			<div class="col-sm-2">
+             		<div class="form-group" >
+                    	<div class="form_top" style="line-height: 20px;">
+                     		<label for=""><@spring.message code="item.nickName"/></label>
+                      	</div>
+	                	<div class="form_bottom" >
+	                 		<input id="s_nickname" type="text" class="form-control" style="width: 100%;"/>
+	              		</div>
+         			</div>
+       			</div>
+       			<div class="col-sm-2">
+             		<div class="form-group" >
+                    	<div class="form_top" style="line-height: 20px;">
+                     		<label for=""><@spring.message code="item.itemId"/></label>
+                      	</div>
+	                	<div class="form_bottom" >
+	                 		<input id="s_itemid" type="text" class="form-control" style="width: 100%;"/>
+	              		</div>
+         			</div>
+       			</div>
+       			<div class="col-sm-2">
+             		<div class="form-group" >
+                    	<div class="form_top" style="line-height: 20px;">
+                     		<label for=""><@spring.message code="topic"/></label>
+                      	</div>
+	                	<div class="form_bottom" >
+	                 		<input id="s_topic" type="text" class="form-control" style="width: 100%;"/>
+	              		</div>
+         			</div>
+       			</div>
+    			<div class="col-sm-2">
+             		<div class="form-group" >
+                    	<div class="form_top" style="line-height: 20px;">
+                     		<label for=""><@spring.message code="item.userType"/></label>
+                      	</div>
+	                	<div class="form_bottom" >
+	                 		<select id="s_userType" class="form-control" style="width: 100%;">
+	                     		<option value=""><@spring.message code="prompt.select.all"/></option>
+	                     		<option value="0"><@spring.message code="item.userType.0"/></option>
+	                 			<option value="1"><@spring.message code="item.userType.1"/></option>
+	                 			<option value="2"><@spring.message code="item.userType.2"/></option>
+	                 		</select>
+	              		</div>
+         			</div>
+       			</div>
+       			<div class="col-sm-2">
+             		<div class="form-group" >
+                    	<div class="form_top" style="line-height: 20px;">
+                     		<label for=""><@spring.message code="item.status"/></label>
+                      	</div>
+	                	<div class="form_bottom" >
+	                 		<select id="s_status" class="form-control" style="width: 100%;">
+	                     		<option value=""><@spring.message code="prompt.select.all"/></option>
+	                     		<option value="0">未推荐</option>
+	                     		<option value="1">初级推荐</option>
+	                     		<option value="2">中级推荐</option>
+	                 			<option value="3">高级推荐</option>
+	                 			<option value="9">超级推荐</option>
+	                 		</select>
+	              		</div>
+         			</div>
+       			</div>
+       			<div class="col-sm-2">
+             		<div class="form-group" >
+                    	<div class="form_top" style="line-height: 20px;">
+                     		<label for=""><@spring.message code="item.auditStatus"/></label>
+                      	</div>
+	                	<div class="form_bottom" >
+	                 		<select id="s_auditStatus" class="form-control" style="width: 100%;">
+	                     		<option value=""><@spring.message code="prompt.select.all"/></option>
+	                     		<option value="1"><@spring.message code="item.auditStatus.1"/></option>
+	                 			<option value="0"><@spring.message code="item.auditStatus.0"/></option>
+	                 		</select>
+	              		</div>
+         			</div>
+       			</div>
+       			<div class="col-sm-2">
+       				<div class="form-group">
+       					<div class="form_top" style="line-height: 15px;">
+                     		<label for=""><@spring.message code="item.tagIds"/></label>
+                      	</div>
+						<div class="form_bottom">
+	                		<select id="s_tagId" class="selectpicker" data-live-search="true">
+	                		</select>
+						</div>
+					</div>
+       			</div>
+       			<div class="col-sm-2">
+             		<div class="form-group" >
+                    	<div class="form_top" style="line-height: 15px;">
+                     		<label for=""><@spring.message code="item.categoryIds"/></label>
+                      	</div>
+	                	<div class="form_bottom" >
+	                 		<select id="s_categoryId" class="selectpicker" data-live-search="true">
+	                 		</select>
+	              		</div>
+         			</div>
+       			</div>
+       			<div class="col-sm-2">
+             		<div class="form-group" >
+                    	<div class="form_top" style="line-height: 20px;">
+                     		<label for=""><@spring.message code="item.recommend.topic"/></label>
+                      	</div>
+	                	<div class="form_bottom" >
+	                 		<select id="s_recommendToTopic" class="form-control" style="width: 100%;">
+	                     		<option value=""><@spring.message code="prompt.select.all"/></option>
+	                     		<option value="1"><@spring.message code="item.recommend.topic.1"/></option>
+	                 		</select>
+	              		</div>
+         			</div>
+       			</div>
+       			<div class="col-sm-2">
+             		<div class="form-group" >
+                    	<div class="form_top" style="line-height: 20px;">
+                     		<label for=""><@spring.message code="item.top.topics"/></label>
+                      	</div>
+	                	<div class="form_bottom" >
+	                 		<select id="s_isTop" class="form-control" style="width: 100%;">
+	                     		<option value=""><@spring.message code="prompt.select.all"/></option>
+	                     		<option value="1"><@spring.message code="item.top.topics.1"/></option>
+	                 		</select>
+	              		</div>
+         			</div>
+       			</div>
+       			<div class="col-sm-5">
+             		<div class="form-group" >
+                    	<div class="form_top" style="line-height: 20px;">
+                     		<label for=""><@spring.message code="item.createtime"/></label>
+                      	</div>
+	                	<div class="form_bottom" >
+	                		<input type="text" id="s_startTime" class="col-sm-5 form_datetime">
+	                		<span style="float: left;margin-left: 10px;margin-right: 10px;"> ~ </span>
+	                		<input type="text" id="s_endTime" class="col-sm-5 form_datetime">
+	              		</div>
+         			</div>
+       			</div>
+         		<div class="col-sm-6">
+         			<div class="input-group">
+               			<div class="form_top" style="line-height: 20px;">
+                      		<label for="">&nbsp;</label>
+               			</div>
+	               		<div class="form_bottom">
+							<button class="btn btn-sm btn-purple" id="itemSearch"><i class="ace-icon fa fa-search"></i><@spring.message code="button.search"/></button>
+							<button class="btn btn-sm btn-primary" id="itemRefresh"><i class="ace-icon fa fa-refresh"></i><@spring.message code="button.reset"/></button>
+							<button class="btn btn-sm btn-grey" id="itemExportExcel"><i class="ace-icon fa fa-file-excel-o"></i><@spring.message code="button.export.excel"/></button>
+							<button class="btn btn-sm btn-success" id="itemBatchOperat"><i class="ace-icon fa fa-wrench"></i><@spring.message code="button.batch.operat"/></button>
+	                 	</div>
+                	</div>
+         		</div>
+         		<div class="col-sm-6" id="s_userCountDiv" style="display: none">
+         			<div class="input-group">
+         				<ul class="list-unstyled spaced">
+         					<li><i class="ace-icon fa fa-bell-o bigger-110 purple"></i><@spring.message code="item.search.topic.userCount"/></li>
+         				</ul>
+                	</div>
+         		</div>
+				<div class="col-xs-12">
+					<table id="itemGrid"></table>
+					<div id="itemGridPager"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<#include 'common/common_js.html'/>
+<#include 'item/itemDiv.html'/>
+<script type="text/javascript" src="${rootPath}/resource/biz/item.js"></script>
+<script type="text/javascript">
+var tagList;
+var categoryList;
+$(document).ready(function() {
+	$.ajax({
+		url: contextPath + '/showtag/list',
+	    dataType: 'json',
+	    data: {category:0},
+	    async:false,
+        success: function (data) {
+        	if (data.tagList) {
+        		tagList = data.tagList;
+			    var tagsAllHtml = '<option value=""><@spring.message code="prompt.select.all"/></option>';
+			    var tagsHtml = '';
+                $.each(data.tagList, function (i, n) {
+                	tagsHtml += '<option value="'+n.tagId+'" >'+n.tagName+'</option>';
+                })
+                
+                $('#s_tagId').html(tagsAllHtml+tagsHtml);
+		    	$('#s_tagId').selectpicker('refresh');
+		    	
+		    	$('#itemBindTag_tags').html(tagsHtml);
+		    	$('#itemBindTag_tags').selectpicker('refresh');
+		    	
+		    	$('#itemBatchOperat_tagList').html(tagsHtml);
+		    	$('#itemBatchOperat_tagList').selectpicker('refresh');
+            }
+        }
+    })
+    
+    $.ajax({
+		url: contextPath + '/showcategory/list',
+	    dataType: 'json',
+	    async:false,
+        success: function (data) {
+        	if (data.categoryList) {
+        		categoryList = data.categoryList;
+			    var categoryAllHtml = '<option value=""><@spring.message code="prompt.select.all"/></option>'+
+			    					  '<option value="-1"><@spring.message code="item.categoryIds.-1"/></option>';
+			    var categoryHtml = '';
+                $.each(data.categoryList, function (i, n) {
+                	categoryHtml += '<option value="'+n.categoryId+'" >'+n.categoryName+'</option>';
+                })
+                
+                $('#s_categoryId').html(categoryAllHtml+categoryHtml);
+		    	$('#s_categoryId').selectpicker('refresh');
+		    	
+		    	$('#itemBindCategory_categorys').html(categoryHtml);
+		    	$('#itemBindCategory_categorys').selectpicker('refresh');
+            }
+        }
+    })
+	
+	$("#itemGrid").jqGrid({
+		url : contextPath + '/showitem/query',
+		datatype: "json",
+		colModel:[
+			{name:'operat',label:'<@spring.message code="grid.operat"/>',width:280,sortable:false,formatter:formatOperat},
+		    {name:'itemId',label:'<@spring.message code="item.itemId"/>',width:100,sortable:false},
+		    {name:'thumbFormat',label:'<@spring.message code="item.thumbnai.url"/>',width:100,sortable:false,formatter:formatThumbnailUrl},
+		    {name:'dynamicFormat',label:'<@spring.message code="item.dynamic.url"/>',width:100,sortable:false,formatter:formatDynamicWebpUrl},
+		    {name:'itemCategorys',label:'<@spring.message code="item.categoryIds"/>',width:120,sortable:false,formatter:formatItemCategory},
+		    {name:'userId',label:'<@spring.message code="item.userId"/>',width:80,sortable:false},
+		    {name:'nickName',label:'<@spring.message code="item.nickName"/>',width:120,sortable:false},
+		    {name:'auditStatus',label:'<@spring.message code="item.auditStatus"/>',width:100,formatter:formatAuditStatus},
+		    {name:'deleteFlag',label:'<@spring.message code="item.deleteFlag"/>',width:80,sortable:false,formatter:formatDeleteFlag},
+		    {name:'description',label:'<@spring.message code="item.description"/>',width:150,sortable:false},
+		    {name:'userTypeFormat',label:'<@spring.message code="item.userType"/>',width:80,sortable:false,formatter:formatItemUserType},
+		    {name:'createTime',index:'create_time',label:'<@spring.message code="item.createtime"/>',width:120,sorttype:"date"},
+		    {name:'updateTime',index:'update_time',label:'<@spring.message code="item.updateTime"/>',width:120,sorttype:"date"},
+		    {name:'operator',label:'<@spring.message code="item.operator"/>',width:100,sortable:false},
+		    {name:'statusFormat',label:'<@spring.message code="item.status"/>',width:80,sortable:false,formatter:formatItemStatus},
+		    {name:'playCount',index:'play_count',label:'<@spring.message code="item.playCount"/>',width:80},
+		    {name:'virtualPlayCount',label:'<@spring.message code="item.virtualPlayCount"/>',width:80,sortable:false},
+		    {name:'likedCount',index:'liked_count',label:'<@spring.message code="item.likedCount"/>',width:80},
+		    {name:'virtualLikeCount',index:'virtual_like_count',label:'<@spring.message code="item.virtualLikeCount"/>',width:80},
+		    {name:'commentedCount',index:'commented_count',label:'<@spring.message code="item.commentedCount"/>',width:80},
+		    {name:'itemTags',label:'<@spring.message code="item.tagIds"/>',width:120,sortable:false,formatter:formatItemTags},
+		    {name:'videoLdUrl',hidden:true},
+		    {name:'videoSdUrl',hidden:true},
+		    {name:'contentUrl',hidden:true},
+		    {name:'dynamicWebpUrl',hidden:true},
+		    {name:'thumbnailUrl',hidden:true},
+		    {name:'status',hidden:true},
+		    {name:'userType',hidden:true},
+		    {name:'topic',hidden:true},
+		    {name:'recommendTopicStatus',hidden:true},
+			{name:'isTopicHotTop',hidden:true},
+			{name:'sortKey',hidden:true},
+			{name:'tagIds',hidden:true},
+			{name:'categoryIds',hidden:true},
+			{name:'userId',hidden:true},
+			{name:'mediaHeight',hidden:true},
+			{name:'mediaWidth',hidden:true}
+		],
+		viewrecords : true,
+		sortname : 'create_time',
+	    sortorder : "desc",
+		pager : "#itemGridPager",
+		multiselect: true,
+		altRows: true,
+		rownumbers : true,
+		rowNum: 15,
+		autoScroll: true,
+		shrinkToFit:false,
+		toolbar:[true,"top"],
+		loadComplete : function() {
+			var table = this;
+			setTimeout(function(){
+				styleGridPager(table);
+				gridImageOnClick();
+			}, 0);
+		},
+	});
+	
+	styleGridResize("#itemGrid");
+	
+	$(".itemVideo").colorbox({iframe:true, innerWidth:640, innerHeight:390});
+});
+
+function formatOperat(cellValue, options, rowObject) {
+	var resultStr = '';
+	if(rowObject.videoLdUrl!=null && rowObject.videoLdUrl!=''){
+		resultStr += '<a href="javascript:addTabVideo({id:\'' + rowObject.itemId + '\',title: \'' + rowObject.itemId + '\',url: \'' + rowObject.videoLdUrl + '\'});" onclick="modifyAuditStatus('+options.rowId+')" class="btn btn-purple btn-xs" title="<@spring.message code="grid.operat.view"/>">查看</a>&nbsp;';
+	}else
+	if(rowObject.videoSdUrl!=null && rowObject.videoSdUrl!=''){
+		resultStr += '<a href="javascript:addTabVideo({id:\'' + rowObject.itemId + '\',title: \'' + rowObject.itemId + '\',url: \'' + rowObject.videoSdUrl + '\'});" onclick="modifyAuditStatus('+options.rowId+')" class="btn btn-purple btn-xs" title="<@spring.message code="grid.operat.view"/>">查看</a>&nbsp;';
+	}else{
+		resultStr += '<a href="javascript:addTabVideo({id:\'' + rowObject.itemId + '\',title: \'' + rowObject.itemId + '\',url: \'' + rowObject.contentUrl + '\'});" onclick="modifyAuditStatus('+options.rowId+')" class="btn btn-purple btn-xs" title="<@spring.message code="grid.operat.view"/>">查看</a>&nbsp;';
+	}
+	
+	resultStr += '<a href="'+rowObject.contentUrl+'" download="w3logo" class="btn btn-primary btn-xs" title="<@spring.message code="grid.operat.download.video"/>">下载</a>&nbsp;';
+	resultStr += '<a href="javascript:void(0)" class="btn btn-warning btn-xs" onclick="showTagModal('+options.rowId+')" title="<@spring.message code="button.bind"/><@spring.message code="item.tagIds"/>">标签</a>&nbsp;';
+	resultStr += '<a href="javascript:void(0)" class="btn btn-primary btn-xs" onclick="showItemEditModal('+options.rowId+')" title="<@spring.message code="grid.operat.edit"/>">编辑</a>&nbsp;';
+	resultStr += '<a href="javascript:void(0)" class="btn btn-yellow btn-xs" onclick="showCategoryModal('+options.rowId+')" title="<@spring.message code="button.bind"/><@spring.message code="item.categoryIds"/>">分类</a>&nbsp;';
+	resultStr += '<a href="javascript:void(0)" class="btn btn-primary btn-xs" onclick="showDynamicPicModal('+options.rowId+')" title="<@spring.message code="item.dynamic.pic"/>">动图</a>&nbsp;';
+	resultStr += '</br></br>'
+	resultStr += '<a href="javascript:void(0)" class="btn btn-success btn-xs" onclick="showRemoveTopicModal('+options.rowId+')" title="<@spring.message code="button.remove"/><@spring.message code="topic"/>">话题</a>&nbsp;';
+	if(rowObject.status==0){
+		resultStr += '<a href="javascript:void(0)" class="btn btn-yellow btn-xs" onclick="modifyStatus('+options.rowId+',1)" title="<@spring.message code="grid.operat.recommend"/>">初级</a>&nbsp;';
+		resultStr += '<a href="javascript:void(0)" class="btn btn-yellow btn-xs" onclick="modifyStatus('+options.rowId+',2)" title="<@spring.message code="grid.operat.recommend"/>">中级</a>&nbsp;';
+		resultStr += '<a href="javascript:void(0)" class="btn btn-yellow btn-xs" onclick="modifyStatus('+options.rowId+',3)" title="<@spring.message code="grid.operat.recommend"/>">高级</a>&nbsp;';
+		resultStr += '<a href="javascript:void(0)" class="btn btn-yellow btn-xs" onclick="modifyStatus('+options.rowId+',9)" title="<@spring.message code="grid.operat.recommend"/>">超级</a>&nbsp;';
+	}else{
+		resultStr += '<a href="javascript:void(0)" class="btn btn-xs" onclick="modifyStatus('+options.rowId+',0)" title="<@spring.message code="grid.operat.cancel.recommend"/>">取消推荐</a>&nbsp;';
+	}
+	if(rowObject.userType==2){
+		resultStr += '<a href="javascript:void(0)" class="btn btn-danger btn-xs" onclick="deleteItem('+options.rowId+')" title="<@spring.message code="grid.operat.delete"/>">删除</a>&nbsp;';
+	}
+	if(rowObject.topic!=null && rowObject.topic!=''){
+		if(rowObject.recommendTopicStatus==0){
+			resultStr += '<a href="javascript:void(0)" class="btn btn-xs" onclick="recommentTopicItem('+options.rowId+',1)" title="<@spring.message code="item.grid.recommend.topic"/>">推荐至话题</a>&nbsp;';
+		}
+		if(rowObject.recommendTopicStatus==1){
+			resultStr += '<a href="javascript:void(0)" class="btn btn-xs" onclick="recommentTopicItem('+options.rowId+',0)" title="<@spring.message code="item.grid.recommend.topic"/>">取消推荐至话题</a>&nbsp;';
+		}
+		if(rowObject.isTopicHotTop){
+			resultStr += '<a href="javascript:void(0)" class="btn btn-xs" title="<@spring.message code="item.grid.cancel.topic.top"/>">话题热门置顶</a>&nbsp;';
+		}else{
+			resultStr += '<a href="javascript:void(0)" class="btn btn-xs" title="<@spring.message code="item.grid.topic.top"/>">取消话题热门置顶</a>&nbsp;';
+		}
+	}
+	return resultStr;
+}
+
+function formatItemStatus(cellValue, options, rowObject) {
+	switch (rowObject.status) {
+		case 0:return '<@spring.message code="item.status.0"/>';
+		case -1:return '<font color="red"><@spring.message code="item.status.-1"/></font>';
+		case 1:return '初级推荐';
+		case 2:return '中级推荐';
+		case 3:return '高级推荐';
+		case 9:return '超级推荐';
+		default:return '';
+	}
+}
+
+function formatItemUserType(cellValue, options, rowObject) {
+	switch (rowObject.userType) {
+		case 0:return '<@spring.message code="item.userType.0"/>';
+		case 1:return '<@spring.message code="item.userType.1"/>';
+		case 2:return '<@spring.message code="item.userType.2"/>';
+		default:return '';
+	}
+}
+
+function formatAuditStatus(cellValue, options, rowObject) {
+	switch (rowObject.auditStatus) {
+		case 0:return '<@spring.message code="item.auditStatus.0"/>';
+		case 1:return '<@spring.message code="item.auditStatus.1"/>';
+	}
+}
+
+function formatDeleteFlag(cellValue, options, rowObject) {
+	switch (rowObject.deleteFlag) {
+		case 0:return '<font color="green"><@spring.message code="item.deleteFlag.0"/></font>';
+		case 1:return '<font color="red"><@spring.message code="item.deleteFlag.1"/></font>';
+	}
+}
+
+function initItemEditThumb(imgUrl) {
+	$("#itemEditThumb").fileinput({
+		theme : 'explorer-fa',
+		language : $.cookie('W_LANG') == 'zh_CN' ? 'zh' : '',
+		overwriteInitial : false,
+		showRemove : false,
+		initialPreviewAsData : true,
+		initialPreview : [ imgUrl ],
+		uploadUrl : contextPath + '/showitem/uploadVideoThumbnail',
+		allowedFileExtensions : [ 'jpg', 'png', 'jpeg' ],
+		allowedPreviewTypes : [ 'image' ],
+		maxFileSize : 1000,
+		maxFileCount : 1
+	});
+	
+	$(this).on('filepreupload',function(event, data, previewId, index,jqXHR) {
+	    var userId = $('#itemEdit_userId').val();
+	    if(undefined != userId && userId != ''){
+	        data.form.append("userId", userId);
+	    }
+		
+		data.form.append("key", $('#itemEdit_key').val());
+	});
+
+	$("#itemEditThumb").on('fileuploaded',function(event, data, previewId, index) {
+		if (data.response.status == "true") {
+			$('#itemEdit_thumbUrl').val(data.response.url)
+			var parent = $(this).parent().parent().parent().parent();
+			$(parent).find(".file-thumb-progress").remove();
+			$(parent).find(".file-caption-name").text(data.response.url);
+			$(parent).find(".file-caption").text(data.response.url);
+		}
+		if (data.response.status == "false") {
+			error(data.response.msg);
+			var parent = $(this).parent().parent().parent().parent();
+			$(parent).find(".file-thumb-progress").remove();
+		}
+	});
+
+	$("#itemEditThumb").on('change',function() {
+		var parent = $(this).parents(".file-input");
+		$(parent).find(".file-error-message").css("display", "block").html('<@spring.message code="prompt.filediv.message"/>');
+	});
+}
+
+$("#itemBatchOperat").on('click', function(e) {
+	var row = $('#itemGrid').getGridParam('selarrrow');
+	if(row==null || row==''){
+		error('<@spring.message code="item.batch.prompt"/>');
+		return;
+	}
+	$('#itemBatchOperat_batchStatus').selectpicker('val','');
+	$('#itemBatchOperat_tagList').selectpicker('val','');
+	$("#itemBatchOperatModal").modal('show');
+})
+
+function deleteItem(rowid) {
+	var rowData = $("#itemGrid").getRowData(rowid);
+	confirm('<@spring.message code="button.delete"/><@spring.message code="item"/>','<@spring.message code="prompt.confirm.delete"/>[<font color="red">'+rowData.itemId+'</font>]<@spring.message code="item"/>?',function(result) {
+		if(result){
+			$.post(contextPath+"/showitem/deleteItem",{itemId:rowData.itemId,createTime:rowData.sortKey,deleteFlag:1}, function (data) {
+	            result = eval('(' + data + ')')
+	            if (result.status == 'true') {
+	            	$("#itemGrid").trigger("reloadGrid");
+	            } else if (result.status == 'false') {
+	                error(result.msg);
+	            }
+	      });
+		}
+	})
+}
+</script>
+</body>
+</html> 

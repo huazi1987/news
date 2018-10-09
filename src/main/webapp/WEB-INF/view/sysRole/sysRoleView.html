@@ -1,0 +1,45 @@
+<div class="modal fade" id="sysRoleViewModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+				<h4 class="modal-title">查看角色信息</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" id="sysRoleViewfrm">
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right">主键ID:</label>
+						<div class="col-sm-9">
+							<input type="text" name="roleId" id="roleId" readonly="readonly" class="col-sm-7">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right">角色名称:</label>
+						<div class="col-sm-9">
+							<input type="text" name="roleName" id="roleName" readonly="readonly" class="col-sm-7">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right">角色状态(1启用，0禁用):</label>
+						<div class="col-sm-9">
+							<input type="text" name="status" id="status" readonly="readonly" class="col-sm-7">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right">创建日期:</label>
+						<div class="col-sm-9">
+							<input type="text" name="createTime" id="createTime" readonly="readonly" class="col-sm-7">
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-sm btn-success btn-left btnEditPrev" onclick="sysRoleViewPrev(this);"><i class='ace-icon fa fa-chevron-left'></i></button>
+				<button class="btn btn-sm btn-success btn-left btnEditNext" onclick="sysRoleViewNext(this);"><i class='ace-icon fa fa-chevron-right'></i></button>
+				<button class="btn btn-sm" onclick="sysRoleViewModalHide();"><i class='ace-icon glyphicon glyphicon-remove'></i>关闭</button>
+			</div>
+		</div>
+	</div>
+</div>

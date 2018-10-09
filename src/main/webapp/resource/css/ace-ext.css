@@ -1,0 +1,7 @@
+.input-group-left{width: 20%;float: left;margin-right: 2px;}
+.input-group-right{width: 20%;float: right;margin-right: 2px;}
+.btn-left{float:left;}
+/**调整列间距**/
+.form-group{margin-bottom: 5px}
+/**去掉textarea右下角拖动框**/
+textarea {resize : none;}

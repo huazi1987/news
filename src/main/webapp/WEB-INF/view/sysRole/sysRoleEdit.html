@@ -1,0 +1,47 @@
+<div class="modal fade" id="sysRoleEditModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+				<h4 class="modal-title">编辑角色信息</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" id="sysRoleEditfrm">
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right">主键ID:</label>
+						<div class="col-sm-9">
+							<input type="text" name="roleId" id="roleId" class="col-sm-7">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right">角色名称:</label>
+						<div class="col-sm-9">
+							<input type="text" name="roleName" id="roleName" class="col-sm-7">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right">角色状态(1启用，0禁用):</label>
+						<div class="col-sm-9">
+							<input type="text" name="status" id="status" class="col-sm-7">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right">创建日期:</label>
+						<div class="col-sm-9">
+							<input type="text" name="createTime" id="createTime" class="col-sm-7">
+						</div>
+					</div>
+					<input type="hidden" name="roleId"/>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-sm btn-success btn-left btnEditPrev" onclick="sysRoleEditPrev(this);"><i class='ace-icon fa fa-chevron-left'></i></button>
+				<button class="btn btn-sm btn-success btn-left btnEditNext" onclick="sysRoleEditNext(this);"><i class='ace-icon fa fa-chevron-right'></i></button>
+				<button class="btn btn-sm" onclick="sysRoleEditModalHide();"><i class='ace-icon glyphicon glyphicon-remove'></i>关闭</button>
+				<button class="btn btn-sm btn-primary" onclick="sysRoleEditfrmSave();"><i class='ace-icon fa fa-floppy-o'></i>保存</button>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,227 @@
+<div class="modal fade" id="itemBindTagModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document" style="width: 50%">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+				<h4 class="modal-title"><@spring.message code="button.bind"/><@spring.message code="item.tagIds"/></h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-2 control-label"><@spring.message code="item.tagIds"/>:</label>
+						<div class="col-sm-6">
+		                	<select id="itemBindTag_tags" class="selectpicker" multiple data-live-search="true"></select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-sm btn-left" onclick="itemBindTagModalHide()"><i class='ace-icon glyphicon glyphicon-remove'></i><@spring.message code="button.close"/></button>
+				<button class="btn btn-sm btn-primary" id="itemBindTagModalSave"><i class='ace-icon fa fa-floppy-o'></i><@spring.message code="button.save"/></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="itemBindCategoryModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document" style="width: 50%">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+				<h4 class="modal-title"><@spring.message code="button.bind"/><@spring.message code="item.categoryIds"/></h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-2 control-label"><@spring.message code="item.categoryIds"/>:</label>
+						<div class="col-sm-6">
+		                	<select id="itemBindCategory_categorys" class="selectpicker" multiple data-live-search="true"></select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-sm btn-left" onclick="itemBindCategoryModalHide()"><i class='ace-icon glyphicon glyphicon-remove'></i><@spring.message code="button.close"/></button>
+				<button class="btn btn-sm btn-primary" id="itemBindCategoryModalSave"><i class='ace-icon fa fa-floppy-o'></i><@spring.message code="button.save"/></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="itemDynamicPicModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document" style="width: 50%">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+				<h4 class="modal-title"><@spring.message code="item.dynamic.pic"/></h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-4 control-label"><@spring.message code="item.dynamic.type"/>:</label>
+						<div class="col-sm-6">
+							<div class="radio">
+								<label>
+									<input name="itemDynamicPic_operate" type="radio" class="ace" value="create"/>
+									<span class="lbl"><@spring.message code="item.dynamic.type.create"/></span>
+								</label>
+								<label>
+									<input name="itemDynamicPic_operate" type="radio" class="ace" value="reset"/>
+									<span class="lbl"><@spring.message code="item.dynamic.type.reset"/></span>
+								</label>
+								<label>
+									<input name="itemDynamicPic_operate" type="radio" class="ace" value="delete"/>
+									<span id="itemDynamicPic_operate" class="lbl"><@spring.message code="item.dynamic.type.delete"/></span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 control-label"><@spring.message code="item.dynamic.start"/>:</label>
+						<div class="col-sm-4">
+							<input type="text" id="itemDynamicPic_start" class="input-mini" value="1"/>
+						</div>
+						<div class="col-sm-4">
+							<font color="red"><@spring.message code="item.dynamic.start.desc"/></font>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-sm btn-left" onclick="itemDynamicPicModalHide()"><i class='ace-icon glyphicon glyphicon-remove'></i><@spring.message code="button.close"/></button>
+				<button class="btn btn-sm btn-primary" id="itemDynamicPicModalSave"><i class='ace-icon fa fa-floppy-o'></i><@spring.message code="button.save"/></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="itemRemoveTopicModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document" style="width: 50%">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+				<h4 class="modal-title"><@spring.message code="button.remove"/><@spring.message code="topic"/></h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-2 control-label"><@spring.message code="topic"/>:</label>
+						<div class="col-sm-6">
+							<div id="itemRemoveTopic_topicdiv"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-sm btn-left" onclick="itemRemoveTopicModalHide()"><i class='ace-icon glyphicon glyphicon-remove'></i><@spring.message code="button.close"/></button>
+				<button class="btn btn-sm btn-primary" id="itemRemoveTopicModalSave"><i class='ace-icon fa fa-floppy-o'></i><@spring.message code="button.save"/></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="itemEditModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document" style="width: 80%">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+				<h4 class="modal-title"><@spring.message code="button.edit"/><@spring.message code="item"/></h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" id="itemEditfrm" enctype="multipart/form-data">
+					<input type="hidden" id="itemEdit_userId"/>
+					<input type="hidden" id="itemEdit_key"/>
+					<input type="hidden" id="itemEdit_thumbUrl"/>
+					<div class="input-group col-md-12">
+                        <div class="form_label col-md-4">
+	                        <label for=""><@spring.message code="item.media.preview"/></label>
+	                    </div>
+	                    <div class="form-group">
+	                        <div id="itemEdit_videoDiv" style="width:100%;margin:0 auto;text-align: center;">
+	                        </div>
+	                    </div>
+                    </div>
+                    <div class="form-group">
+						<label class="col-sm-2 control-label"><@spring.message code="item.media.thumb"/>:</label>
+						<div class="col-sm-8">
+							<div id="itemEdit_imgDiv"></div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label"><@spring.message code="item.media.width"/>:</label>
+						<div class="col-sm-4">
+							<input id="itemEdit_mediaWidth" type="text"class="form-control"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label"><@spring.message code="item.media.height"/>:</label>
+						<div class="col-sm-4">
+							<input id="itemEdit_mediaHeight" type="text"class="form-control"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label"><@spring.message code="item.description"/>:</label>
+						<div class="col-sm-9">
+							<textarea id="itemEdit_description" class="col-sm-9"></textarea>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-sm btn-left" onclick="itemEditModalHide()"><i class='ace-icon glyphicon glyphicon-remove'></i><@spring.message code="button.close"/></button>
+				<button class="btn btn-sm btn-primary" id="itemEditModalSave"><i class='ace-icon fa fa-floppy-o'></i><@spring.message code="button.save"/></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="itemBatchOperatModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document" style="width: 50%">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+				<h4 class="modal-title"><@spring.message code="button.batch.operat"/></h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label for="position_modal" class="col-sm-3 control-label"><@spring.message code="button.batch.operat"/>:</label>
+                       	<div class="col-sm-6">
+                       		<select id="itemBatchOperat_batchStatus" class="selectpicker">
+                       			<option value='' selected="selected"><@spring.message code="prompt.select"/></option>
+                               	<option value='-1'><@spring.message code="item.batch.status.-1"/></option>
+                             	<option value='0'><@spring.message code="item.batch.status.0"/></option>
+                             	<option value='1'><@spring.message code="item.batch.status.1"/></option>
+                             	<option value='2'><@spring.message code="item.batch.status.2"/></option>
+                              	<option value='3'><@spring.message code="item.batch.status.3"/></option>
+                       		</select>
+                      	</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">标签列表:</label>
+						<div class="col-sm-6">
+							<select id="itemBatchOperat_tagList" class="selectpicker" multiple data-live-search="true">
+                       		</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-sm btn-left" onclick="itemBatchOperatModalHide()"><i class='ace-icon glyphicon glyphicon-remove'></i><@spring.message code="button.close"/></button>
+				<button class="btn btn-sm btn-primary" onclick="saveBatchOperat()"><i class='ace-icon fa fa-floppy-o'></i><@spring.message code="button.save"/></button>
+			</div>
+		</div>
+	</div>
+</div>

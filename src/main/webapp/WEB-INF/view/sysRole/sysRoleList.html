@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include 'common/common_css.html'/>
+</head>
+<body class="no-skin">
+<div class="main-content">
+	<div class="main-content-inner">
+		<div class="page-content">
+			<div class="row">
+				<div class="col-xs-12">
+					<button class="btn btn-sm btn-success" id="sysRoleAdd"><i class="ace-icon glyphicon glyphicon-plus"></i>新增</button>
+					<button class="btn btn-sm btn-primary" id="sysRoleEdit"><i class="ace-icon fa fa-pencil-square-o"></i>编辑</button>
+					<button class="btn btn-sm btn-danger" id="sysRoleDelete"><i class="ace-icon fa fa-trash-o"></i>删除</button>
+					<button class="btn btn-sm btn-grey" id="sysRoleView"><i class="ace-icon fa fa-search-plus"></i>查看</button>
+					<div class="input-group input-group-right">
+						<input type="text" class="form-control search-query" placeholder="请输入查询条件">
+						<span class="input-group-btn">
+							<button type="button" class="btn btn-sm btn-purple"><i class="ace-icon fa fa-search"></i>查询</button>
+						</span>
+					</div>
+				</div>
+				<div class="col-xs-12">
+					<table id="sysRoleGrid"></table>
+					<div id="sysRoleGridPager"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<#include 'sysRole/sysRoleAdd.html'/>
+<#include 'sysRole/sysRoleEdit.html'/>
+<#include 'sysRole/sysRoleView.html'/>
+<#include 'common/common_js.html'/>
+<script type="text/javascript" src="${rootPath}/resource/biz/sysRole.js"></script>
+</body>
+</html> 

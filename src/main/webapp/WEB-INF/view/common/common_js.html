@@ -1,0 +1,32 @@
+<script type="text/javascript" src="${rootPath}/resource/plugin/aceui/js/jquery.2.1.1.min.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/plugin/aceui/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/plugin/aceui/js/ace.min.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/plugin/aceui/js/ace-elements.min.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/plugin/aceui/js/ace-extra.min.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/plugin/aceui/js/bootbox.min.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/plugin/gritter/jquery.gritter.min.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/plugin/jqGrid/jquery.jqGrid.min.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/plugin/fuelux/fuelux.spinner.min.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/plugin/validation/jquery.validate.min.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/plugin/select/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/plugin/zTree/js/jquery.ztree.all.min.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/plugin/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/plugin/fileinput/js/fileinput.min.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/plugin/fileinput/themes/explorer-fa/theme.min.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/plugin/fileinput/themes/fa/theme.min.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/plugin/colorbox/js/jquery.colorbox-min.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/js/jquery.aceui.common.js"></script>
+<script type="text/javascript">
+var contextPath = "${rootPath}";
+var weshowCDN = "http://cdn.weshow.me";
+if($.cookie('W_LANG')=='en_US'){
+	document.write("<script src='${rootPath}/resource/plugin/jqGrid/i18n/grid.locale-en.js'><\/script>");
+}else{
+	document.write("<script src='${rootPath}/resource/plugin/jqGrid/i18n/grid.locale-cn.js'><\/script>");
+	document.write("<script src='${rootPath}/resource/plugin/validation/localization/messages_zh.min.js'><\/script>");
+	document.write("<script src='${rootPath}/resource/plugin/select/js/i18n/defaults-zh_CN.min.js'><\/script>");
+	document.write("<script src='${rootPath}/resource/plugin/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js'><\/script>");
+	document.write("<script src='${rootPath}/resource/plugin/fileinput/js/locales/zh.js'><\/script>");
+}
+</script>

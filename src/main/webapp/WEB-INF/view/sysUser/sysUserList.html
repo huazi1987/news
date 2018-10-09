@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include 'common/common_css.html'/>
+</head>
+<body class="no-skin">
+<div class="main-content">
+	<div class="main-content-inner">
+		<div class="page-content">
+			<div class="row">
+				<div class="col-xs-12">
+					<button class="btn btn-sm btn-success" id="sysUserAdd"><i class="ace-icon glyphicon glyphicon-plus"></i><@spring.message code="button.add"/></button>
+					<!-- 
+					<div class="input-group input-group-right">
+						<input type="text" class="form-control search-query">
+						<span class="input-group-btn">
+							<button type="button" class="btn btn-sm btn-purple"><i class="ace-icon fa fa-search"></i><@spring.message code="button.search"/></button>
+						</span>
+					</div>
+					 -->
+				</div>
+				<div class="col-xs-12">
+					<table id="sysUserGrid"></table>
+					<div id="sysUserGridPager"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<#include 'sysUser/sysUserDiv.html'/>
+<#include 'common/common_js.html'/>
+<script type="text/javascript" src="${rootPath}/resource/biz/sysUser.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	
+	$("#sysUserGrid").jqGrid({
+		url : contextPath + '/sysUser/list',
+		datatype: "json",
+		colModel:[
+			{name:'operat',label:'<@spring.message code="grid.operat"/>',width:50,sortable:false,formatter:formatOperat},
+		 	{name:'userName',label:'<@spring.message code="sys.user.username"/>',width:80,sortable:false},
+		  	{name:'userLogin',label:'<@spring.message code="sys.user.account"/>',width:80,sortable:false},
+		   	{name:'email',label:'<@spring.message code="sys.user.email"/>',width:150,sortable:false},
+		   	{name:'rank',index:'rank',label:'<@spring.message code="sys.user.rank"/>',width:50},
+		   	{name:'createTime',index:'create_time',label:'<@spring.message code="sys.user.createtime"/>',width:80, sorttype:"date"},
+		   	{name:'userId',hidden:true}
+		],
+		viewrecords : true,
+		sortname : 'create_time',
+	    sortorder : "desc",
+		pager : "#sysUserGridPager",
+		altRows: true,
+		rownumbers : true,
+		rowNum: 15,
+		autoScroll: true,
+		toolbar:[true,"top"],
+		loadComplete : function() {
+			var table = this;
+			setTimeout(function(){
+				styleGridPager(table);
+			}, 0);
+		}
+	});
+	styleGridResize("#sysUserGrid");
+	
+	$.ajax({
+		url: contextPath + '/sysRole/select',
+	    dataType: 'json',
+        success: function (data) {
+        	if(data){
+			    var roleHtml = '';
+                $.each(data, function (i, n) {
+                	roleHtml += '<option value="'+n.roleId+'" >'+n.roleName+'</option>';
+                })
+                $('#userDiv_roles').html(roleHtml);
+		    	$('#userDiv_roles').selectpicker('refresh');
+        	}
+        }
+    })
+})
+
+function formatOperat(cellValue, options, rowObject) {
+	var resultStr = '';
+	resultStr += '<a href="javascript:void(0)" class="btn btn-primary btn-xs" onclick="sysUserEdit('+options.rowId+')" title="<@spring.message code="grid.operat.edit"/>"><i class="fa fa-edit"></i></a>&nbsp;';
+	resultStr += '<a href="javascript:void(0)" class="btn btn-danger btn-xs" onclick="sysUserDelete('+options.rowId+')" title="<@spring.message code="grid.operat.delete"/>"><i class="fa fa-trash-o"></i></a>&nbsp;';
+	return resultStr;
+}
+
+function showModal(type, rowid) {
+	var userId = '';
+	if (type == 'add') {
+		$('#sysUserTitle').html('<@spring.message code="button.add"/>');
+		$('#sysUserfrm')[0].reset();
+		$('#sysUserfrm').validate().resetForm();
+		$('.form-group').removeClass('has-error');
+		$('#userDiv_roles').selectpicker('val','');
+	} else if (type == 'edit') {
+		$('#sysUserTitle').html('<@spring.message code="button.edit"/>');
+		var rowData = $("#sysUserGrid").getRowData(rowid);
+		loadForm('#sysUserfrm', rowData);
+		userId = rowData.userId;
+		$.ajax({
+			url: contextPath + '/sysRole/userRole',
+		    data: {userId:userId},
+		    async:false,
+	        success: function (data) {
+	        	$('#userDiv_roles').selectpicker('val',data.split(","));
+	        }
+	    })
+	}
+	$("input[name='userId']").val(userId);
+	$("#sysUserModal").modal('show');
+}
+
+function sysUserDelete(rowid) {
+	var rowData = $("#sysUserGrid").getRowData(rowid);
+	confirm('<@spring.message code="button.delete"/><@spring.message code="sys.user"/>','<@spring.message code="prompt.confirm.delete"/>[<font color="red">'+rowData.userName+'</font>]<@spring.message code="sys.user"/>?',function(result) {
+		if(result){
+			$.post(contextPath + '/sysUser/delete', {userId : rowData.userId}, function(result) {
+				$("#sysUserGrid").trigger("reloadGrid");
+			}, 'json');
+		}
+	})
+}
+</script>
+</body>
+</html> 

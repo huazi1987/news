@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<#include 'common/common_css.html'/>
+</head>
+<body class="no-skin">
+	<#include 'common/top.html'/>
+	<div class="main-container" id="main-container">
+		<script type="text/javascript">
+			try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+		</script>
+		<div id="sidebar" class="sidebar responsive menu-min">
+			<script type="text/javascript">
+				try{ace.settings.check('sidebar' , 'fixed')}catch(e){}<!--fixed-->
+			</script>
+			<!-- 
+			<div class="sidebar-shortcuts" id="sidebar-shortcuts">
+				<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+					<button class="btn btn-success">
+						<i class="ace-icon fa fa-signal"></i>
+					</button>
+					<button class="btn btn-info">
+						<i class="ace-icon fa fa-pencil"></i>
+					</button>
+					<button class="btn btn-warning">
+						<i class="ace-icon fa fa-users"></i>
+					</button>
+					<button class="btn btn-danger">
+						<i class="ace-icon fa fa-cogs"></i>
+					</button>
+				</div>
+				<div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+					<span class="btn btn-success"></span>
+					<span class="btn btn-info"></span>
+					<span class="btn btn-warning"></span>
+					<span class="btn btn-danger"></span>
+				</div>
+			</div>
+			 -->
+			<ul class="nav nav-list" id="menu">
+				<li class="active">
+					<a href="index.html">
+						<i class="menu-icon fa fa-tachometer"></i>
+						<span class="menu-text"><@spring.message code="top.desktop"/></span>
+					</a>
+					<b class="arrow"></b>
+				</li>
+			</ul>
+			<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+				<i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+			</div>
+			<script type="text/javascript">
+				try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+			</script>
+		</div>
+		<div class="main-content">
+			<div class="page-content">
+				<#include 'common/settings.html'/>
+            	<div class="row">
+                	<div class="col-xs-12" style="padding-left:5px;">
+                    	<ul class="nav nav-tabs" role="tablist">
+                    		<!-- 
+                        	<li class="active"><a href="#Index" role="tab" data-toggle="tab"><@spring.message code="top.desktop"/></a></li>
+                       		 -->
+                       </ul>
+                       <div class="tab-content" style="height: auto">
+                       		<div role="tabpanel" class="tab-pane active" id="Index"></div>
+                       </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<!-- <#include 'common/footer.html'/> -->
+	</div>
+	<#include 'common/common_js.html'/>
+</body>
+<script type="text/javascript">
+$(function () {
+    $('#menu').sidebarMenu({url: "${rootPath}/sysMenu/menuTreeList", param: {treeId:0}});
+});
+</script>
+</html>

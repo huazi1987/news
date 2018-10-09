@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<#include 'common/common_css.html'/>
+</head>
+<body class="login-layout">
+	<div class="login-container" style="margin-top: 150px;">
+		<div id="login-box" class="login-box visible widget-box no-border">
+			<div class="widget-main">
+				<h4 class="header blue lighter bigger">
+					<i class="ace-icon fa fa-coffee green"></i>Welcome WeShow CMS
+				</h4>
+				<div class="space-6"></div>
+				<form id="loginform">
+					<fieldset>
+						<label class="block clearfix">
+							<span class="block input-icon input-icon-right">
+								<input type="text" class="form-control" placeholder='<@spring.message code="login.username"/>' id="userLogin" name="userLogin" />
+								<i class="ace-icon fa fa-user"></i>
+							</span>
+						</label>
+						<label class="block clearfix">
+							<span class="block input-icon input-icon-right">
+								<input type="password" class="form-control" placeholder='<@spring.message code="login.password"/>' id="password" name="password" />
+								<i class="ace-icon fa fa-lock"></i>
+							</span>
+						</label>
+						<!-- 
+						<label class="block clearfix">
+							<span class="block input-icon input-icon-right">
+							</span>
+						</label>
+						 -->
+												
+						<div class="space"></div>
+												
+						<div class="clearfix">
+							<label class="inline">
+								<!-- 
+								<input type="checkbox" class="ace" name="isAuto" value="1" checked="checked"/>
+								<span class="lbl">自动登录</span>
+								 -->
+								 <select id="chkLang">
+								 	<option value="zh_CN">简体中文</option>
+								 	<option value="en_US">English</option>
+								 </select>
+							</label>
+							<button type="button" class="width-35 pull-right btn btn-sm btn-primary" onclick="submitForm()">
+								<i class="ace-icon fa fa-key"></i>
+								<span class="bigger-110"><@spring.message code="button.login"/></span>
+							</button>
+						</div>
+						<div class="space-4"></div>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+	</div>
+<#include 'common/common_js.html'/>
+<script>
+$(document).ready(function(){
+	verifyForm();
+	if($.cookie('W_LANG')!=null){
+		$("#chkLang").val($.cookie('W_LANG'));
+	}
+	if($("chkLang").val()!=''){
+		$("#chkLang").change(function(){
+			var p1=$(this).children('option:selected').val();
+			changeLang(p1);
+		})
+	}
+})
+
+function verifyForm(){
+	var user = $('#userLogin');
+	var pass = $('#password');
+	user.focus();
+	user.keydown(function(e){
+		if(e.keyCode==13){
+		   if(user.val().length>0){
+			   pass.focus()
+		   }else{
+			   user.focus();
+		   }
+		}
+	});
+	pass.keydown(function(e){
+		if(e.keyCode==13){
+			if(user.val().length>0 && pass.val().length>0){
+				submitForm();
+			}else{
+				pass.focus();
+			}
+		}
+	})
+}
+function submitForm() {
+	if($('#userLogin').val().length>0 && $('#password').val().length>0){
+		$.post("${rootPath}/login",$("#loginform").serialize(),function(result){
+			var result = eval('(' + result + ')');
+			if (result.resultCode == 0) {
+				error(result.resultMsg);
+			} else {
+				window.parent.location.href = '${rootPath}/'
+			}
+		 });
+	}else{
+		verifyForm();
+	}
+}
+</script>
+</body>
+</html>

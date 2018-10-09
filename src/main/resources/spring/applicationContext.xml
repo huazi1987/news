@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+                           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                           http://www.springframework.org/schema/data/jpa  http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+                           http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+                           http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+	<context:property-placeholder properties-ref="appProperties" ignore-unresolvable="true" />
+	<util:properties id="appProperties" location="classpath:spring/application.properties"/>
+	
+	<bean id="ds_local" class="com.mchange.v2.c3p0.ComboPooledDataSource"    
+    	destroy-method="close" abstract="false" lazy-init="default" autowire="default">    
+	    <property name="driverClass" value="${jdbc.driver}" />
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="initialPoolSize" value="${jdbc.initialPoolSize}" />
+		<property name="minPoolSize" value="${jdbc.minPoolSize}" />
+		<property name="maxPoolSize" value="${jdbc.maxPoolSize}" />
+		<property name="acquireIncrement" value="${jdbc.acquireIncrement}" />
+		<property name="maxIdleTime" value="${jdbc.maxIdleTime}" />
+		<property name="preferredTestQuery" value="select CURRENT_DATE" />
+	</bean>
+
+  	
+	<bean id="dataSource" class="com.news.common.datasource.DynamicDataSource">
+		<property name="targetDataSources">      
+		    <map key-type="java.lang.String">
+		        <entry value-ref="ds_local" key="ds_local"/>
+		    </map>      
+		</property>    
+		<property name="defaultTargetDataSource" ref="ds_local"/>      
+	</bean>
+	
+	<import resource="classpath:spring/applicationContext-mybatis.xml"/>
+	<import resource="classpath:spring/applicationContext-freemarker.xml"/>
+	<import resource="classpath:spring/applicationContext-other.xml"/>
+	<!-- <import resource="classpath:spring/applicationContext-quartz.xml"/> -->
+</beans>

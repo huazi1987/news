@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.ushareit.news.cms.sys.menu.mapper.SysMenuMapper">
+
+	<insert id="insert" parameterType="SysMenu" flushCache="true">
+		INSERT INTO sys_menu(<include refid="sysMenuColumns"/>)
+		VALUES(#{menuId},#{menuName},#{menuEnName},#{menuUrl},#{menuPath},#{menuImg},#{menuPid},#{menuType},#{level},#{rank},#{status},#{createTime})
+	</insert>
+	
+	<update id="update" parameterType="SysMenu" flushCache="true">
+		UPDATE sys_menu
+		<set>
+			<if test="menuName!=null">
+				menu_name=#{menuName},
+			</if>
+			<if test="menuName!=null">
+				menu_en_name=#{menuName},
+			</if>
+			<if test="menuUrl!=null">
+				menu_url=#{menuUrl},
+			</if>
+			<if test="menuPath!=null">
+				menu_path=#{menuPath},
+			</if>
+			<if test="menuImg!=null">
+				menu_img=#{menuImg},
+			</if>
+			<if test="menuPid!=null">
+				menu_pid=#{menuPid},
+			</if>
+			<if test="level!=null">
+				level=#{level},
+			</if>
+			<if test="rank!=null">
+				rank=#{rank},
+			</if>
+			<if test="status!=null">
+				status=#{status},
+			</if>
+		</set>
+		WHERE menu_id=#{menuId}
+	</update>
+	
+	<delete id="delete" parameterType="String" flushCache="true">
+		DELETE FROM sys_menu WHERE menu_id = #{value} OR menu_path LIKE '%,${value},%'
+	</delete>
+
+	<select id="findById" resultMap="SysMenuMap">
+		SELECT <include refid="sysMenuColumns"/> FROM sys_menu WHERE menu_id=#{menuId}
+	</select>
+	
+	<select id="findAll" parameterType="Map" resultMap="SysMenuMap">
+		SELECT <include refid="sysMenuColumns"/> FROM sys_menu WHERE 1=1
+		<if test="sysMenu.menuName!=null">
+			AND menu_name=#{sysMenu.menuName}
+		</if>
+		<if test="sysMenu.menuUrl!=null">
+			AND menu_url=#{sysMenu.menuUrl}
+		</if>
+		<if test="sysMenu.menuPath!=null">
+			AND menu_path=#{sysMenu.menuPath}
+		</if>
+		<if test="sysMenu.menuImg!=null">
+			AND menu_img=#{sysMenu.menuImg}
+		</if>
+		<if test="sysMenu.menuPid!=null">
+			AND menu_pid=#{sysMenu.menuPid}
+		</if>
+		<if test="sysMenu.menuType!=null">
+			AND menu_type=#{sysMenu.menuType}
+		</if>
+		<if test="sysMenu.level!=null">
+			AND level=#{sysMenu.level}
+		</if>
+		<if test="sysMenu.rank!=null">
+			AND rank=#{sysMenu.rank}
+		</if>
+		<if test="sysMenu.status!=null">
+			AND status=#{sysMenu.status}
+		</if>
+			
+		<if test="startRow!=null and pageSize!=null">
+			LIMIT #{startRow},#{pageSize}
+		</if>
+	</select>
+	
+	<select id="findAllCount" parameterType="SysMenu" resultType="int">
+		SELECT COUNT(1) FROM sys_menu WHERE 1=1
+		<if test="menuName!=null">
+			AND menu_name=#{menuName}
+		</if>
+		<if test="menuUrl!=null">
+			AND menu_url=#{menuUrl}
+		</if>
+		<if test="menuPath!=null">
+			AND menu_path=#{menuPath}
+		</if>
+		<if test="menuImg!=null">
+			AND menu_img=#{menuImg}
+		</if>
+		<if test="menuPid!=null">
+			AND menu_pid=#{menuPid}
+		</if>
+		<if test="menuType!=null">
+			AND menu_type=#{menuType}
+		</if>
+		<if test="level!=null">
+			AND level=#{level}
+		</if>
+		<if test="rank!=null">
+			AND rank=#{rank}
+		</if>
+		<if test="status!=null">
+			AND status=#{status}
+		</if>
+	</select>
+	
+	<select id="findSysMenuAll" resultMap="SysMenuMap">
+		SELECT <include refid="sysMenuColumns"/> FROM sys_menu ORDER BY menu_pid,rank
+	</select>
+	
+	<select id="findSysMenuByMenuPid" resultMap="SysMenuMap">
+		SELECT <include refid="sysMenuColumns"/> FROM sys_menu WHERE menu_pid=#{value} ORDER BY rank
+	</select>
+	
+	<select id="findChildAll" resultMap="SysMenuMap">
+		SELECT <include refid="sysMenuColumns"/> FROM sys_menu WHERE menu_pid = #{value} OR menu_path LIKE '%${value},%' ORDER BY menu_path,rank
+	</select>
+	
+	<select id="findTreeList" resultMap="TreeResultMap">
+		SELECT <include refid="sysMenuColumns"/> FROM sys_menu WHERE status=1 AND (menu_pid = #{value} OR menu_path LIKE '%${value},%') ORDER BY menu_pid,rank 
+	</select>
+	
+	<insert id="batchSaveRoleMenu" parameterType="list" flushCache="true">
+		INSERT INTO sys_role_menu(id,role,menu_id) VALUES 
+	  	<foreach collection="list" item="item" index="index" separator=",">
+	  		(#{item.id},#{item.roleId},#{item.menuId})
+	  	</foreach>
+	</insert>
+	
+	<delete id="deleteRoleMenu" parameterType="String" flushCache="true">
+		DELETE FROM sys_role_menu WHERE role_id=#{roleId}
+	</delete>
+	
+	<select id="findMenuByRoleId" resultMap="TreeResultMap">
+		SELECT m.menu_id,m.menu_name,m.menu_en_name,m.menu_pid,m.menu_url FROM sys_menu m LEFT JOIN sys_role_menu rm ON m.menu_id=rm.menu_id WHERE rm.role_id = #{value}
+	</select>
+	
+	<select id="findRoleMenuByUserId" resultMap="TreeResultMap">
+		SELECT 
+			m.menu_id,
+			m.menu_name,
+			m.menu_en_name,
+			m.menu_url,
+			m.menu_pid
+		FROM sys_role_user ru LEFT JOIN sys_role_menu rm ON ru.role_id=rm.role_id LEFT JOIN sys_menu m ON m.menu_id=rm.menu_id 
+		WHERE m.`status` = 1 AND ru.user_id = #{userId} AND m.menu_pid=#{menuPid}
+		GROUP BY m.menu_id
+		ORDER BY m.rank
+	</select>
+	
+	<select id="findRoleMenuChildByUserId" resultMap="TreeResultMap">
+		SELECT 
+			m.menu_id,
+			m.menu_name,
+			m.menu_en_name,
+			m.menu_url,
+			m.menu_pid,
+			m.menu_img
+		FROM sys_role_user ru LEFT JOIN sys_role_menu rm ON ru.role_id=rm.role_id LEFT JOIN sys_menu m ON m.menu_id=rm.menu_id 
+		WHERE m.`status` = 1 AND ru.user_id = #{userId} AND (m.menu_pid = #{menuPid} OR m.menu_path LIKE '%${menuPid},%')
+		GROUP BY m.menu_id
+		ORDER BY menu_pid,rank;
+	</select>
+	
+	<select id="findSysMenuByPid" resultMap="TreeResultMap">
+		SELECT <include refid="sysMenuColumns"/> FROM sys_menu WHERE menu_pid = #{value} OR menu_path LIKE '%${value},%' ORDER BY menu_path,rank
+	</select>
+	
+	<resultMap type="TreeNode" id="TreeResultMap">
+		<result column="menu_id" property="id"/>
+		<result column="menu_name" property="text"/>
+		<result column="menu_en_name" property="enText"/>
+		<result column="menu_pid" property="pid"/>
+		<result column="menu_url" property="url"/>
+		<result column="menu_img" property="iconCls"/>
+	</resultMap>
+	
+	<resultMap type="SysMenu" id="SysMenuMap">
+		<result column="menu_id" property="menuId"/>
+		<result column="menu_name" property="menuName"/>
+		<result column="menu_en_name" property="menuEnName"/>
+		<result column="menu_url" property="menuUrl"/>
+		<result column="menu_path" property="menuPath"/>
+		<result column="menu_img" property="menuImg"/>
+		<result column="menu_pid" property="menuPid"/>
+		<result column="menu_type" property="menuType"/>
+		<result column="level" property="level"/>
+		<result column="rank" property="rank"/>
+		<result column="status" property="status"/>
+		<result column="create_time" property="createTime"/>
+	</resultMap>
+	
+	<sql id="sysMenuColumns">menu_id,menu_name,menu_en_name,menu_url,menu_path,menu_img,menu_pid,menu_type,level,rank,status,create_time</sql>
+</mapper>

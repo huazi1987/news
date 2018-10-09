@@ -1,0 +1,57 @@
+<div class="modal fade" id="sysUserModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document" style="width: 80%">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+				<h4 class="modal-title"><span id="sysUserTitle"></span><@spring.message code="sys.user"/></h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" id="sysUserfrm">
+					<input type="hidden" name="userId"/>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right"><@spring.message code="sys.user.username"/>:</label>
+						<div class="col-sm-9">
+							<input type="text" name="userName" id="userName" class="col-sm-7">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right"><@spring.message code="sys.user.account"/>:</label>
+						<div class="col-sm-9">
+							<input type="text" name="userLogin" id="userLogin" class="col-sm-7">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right"><@spring.message code="sys.user.password"/>:</label>
+						<div class="col-sm-9">
+							<input type="password" name="password" id="password" class="col-sm-7">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right"><@spring.message code="sys.user.email"/>:</label>
+						<div class="col-sm-9">
+							<input type="text" name="email" id="email" class="col-sm-7">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right"><@spring.message code="sys.user.userrole"/>:</label>
+						<div class="col-sm-9">
+		                	<select id="userDiv_roles" name="roleIds" class="selectpicker" multiple></select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right"><@spring.message code="sys.user.rank"/>:</label>
+						<div class="col-sm-9">
+							<input type="text" name="rank" id="rank" value="1" class="col-sm-7">
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-sm btn-left" onclick="sysUserModalHide()"><i class='ace-icon glyphicon glyphicon-remove'></i><@spring.message code="button.close"/></button>
+				<button class="btn btn-sm btn-primary" onclick="sysUserSave()"><i class='ace-icon fa fa-floppy-o'></i><@spring.message code="button.save"/></button>
+			</div>
+		</div>
+	</div>
+</div>

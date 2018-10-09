@@ -1,0 +1,14 @@
+#fm{margin:0;padding:10px 30px;}
+/**.ftitle{font-size:14px;font-weight:bold;padding:5px 0;margin-bottom:10px;border-bottom:1px solid #ccc;}
+**/
+.fitem{margin-bottom:5px;}
+.fitem label{display:inline-block;width:80px;}
+.textbox{height:20px;margin:0;padding:0 2px;box-sizing:content-box;background-image: none;
+background-repeat: no-repeat;background-color:white;background-position:initial;}
+/**去掉A标签样式**/
+/** .a_cancel_default{text-decoration: none;color: #444}**/
+.ico16{width: 16px;height: 16px;float: left;}
+/**去掉textarea右下角拖动框**/
+textarea {resize : none;}
+/**内容自动换行**/
+.ui-jqgrid tr.jqgrow td { white-space: normal !important; height:auto; }
