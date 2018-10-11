@@ -3,10 +3,10 @@
 	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	id="WebApp_ID" version="3.0">
-	<display-name>SnapShowWork</display-name>
+	<display-name>news</display-name>
 	<filter>
 		<filter-name>rootPath</filter-name>
-		<filter-class>com.ushareit.news.common.filter.CharsetFilter</filter-class>
+		<filter-class>com.news.common.filter.CharsetFilter</filter-class>
 		<async-supported>true</async-supported>
 	</filter>
 	<filter-mapping>
@@ -15,7 +15,7 @@
 	</filter-mapping>
 	<filter>
 		<filter-name>sessionFilter</filter-name>
-		<filter-class>com.ushareit.news.common.filter.SessionFilter</filter-class>
+		<filter-class>com.news.common.filter.SessionFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>sessionFilter</filter-name>

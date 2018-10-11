@@ -23,7 +23,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"/>
-		<property name="typeAliasesPackage" value="com.news.cms" />
+		<property name="typeAliasesPackage" value="com.news.model" />
 		<property name="typeAliases"><!-- 额外的别名注册 -->
 			<array>
 				<value>com.news.common.json.model.TreeNode</value>
@@ -33,11 +33,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" autowire="byName">
 		<constructor-arg index="0" ref="sqlSessionFactory"></constructor-arg>
-		<constructor-arg index="1" value="BATCH"></constructor-arg>
+		<!--<constructor-arg index="1" value="BATCH"></constructor-arg>-->
 	</bean>
 	
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.ushareit.news.cms" />
+        <property name="basePackage" value="com.news.mapper" />
     </bean>
 
     <!-- 通用事务配置 -->
@@ -58,7 +58,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	</tx:advice>
 	
 	<aop:config>
-		<aop:pointcut id="serviceOperation" expression="execution(* com.news.cms.*.service.*.*(..))" />
+		<aop:pointcut id="serviceOperation" expression="(execution(* com.news.service.*.insert*(..)) or execution(* com.news.service.*.update*(..)))" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation" />
 	</aop:config>
 </beans>

@@ -348,7 +348,7 @@ public class EncryptUtil {
 //        lUseTime = System.currentTimeMillis() - lStart;
 //        System.out.println("解密耗时：" + lUseTime + "毫秒");
 //        //文件MD5
-//        File file = new File("F:\\sync_qiniu\\driver_antvr_32.dll");
+//        NFile file = new NFile("F:\\sync_qiniu\\driver_antvr_32.dll");
 //        String DeString = EncryptUtil.encodeMD5(file);
 //        System.out.println("该文件的MD5值是：" + DeString.toLowerCase());
 //        System.out.println(StringUtil.GenerateIdentifier());

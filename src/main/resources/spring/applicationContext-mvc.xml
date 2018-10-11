@@ -28,7 +28,7 @@
 	    <!-- 使用bean定义一个Interceptor，直接定义在mvc:interceptors根下面的Interceptor将拦截所有的请求 -->  
 	    <mvc:interceptor>
 	    	<mvc:mapping path="/*/*"/>
-	    	<mvc:exclude-mapping path="/rest/*"/>  
+			<mvc:exclude-mapping path="/api/*"/>
 	        <bean class="com.news.common.interceptor.UserLoginInterceptor"/>
 	    </mvc:interceptor>
 	    <mvc:interceptor>

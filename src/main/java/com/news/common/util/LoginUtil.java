@@ -1,8 +1,9 @@
 package com.news.common.util;
 
+import com.news.model.SysUser;
+
 import javax.servlet.http.HttpSession;
 
-import com.news.cms.sys.user.model.SysUser;
 
 public class LoginUtil {
 	

@@ -40,9 +40,9 @@ public class DBExt {
 //			ds.setJdbcUrl("jdbc:mysql://35.154.207.19:3306/weshow_cms?useUnicode=true&characterEncoding=UTF-8");
 //			ds.setUser("cms_user");
 //			ds.setPassword("a5rs3@1d3bn3");
-			ds.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/weshow_cms?useUnicode=true&characterEncoding=UTF-8");
+			ds.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/news?useUnicode=true&characterEncoding=UTF-8");
 			ds.setUser("root");
-			ds.setPassword("pass");
+			ds.setPassword("111111");
 			ds.setAcquireRetryAttempts(1);			//只尝试一次,默认会尝试30次
 			ds.setMaxIdleTime(0);					//30秒内未使用则连接被丢弃。若为0则永不丢弃
 			ds.setInitialPoolSize(1);				//每次初始化一个连接

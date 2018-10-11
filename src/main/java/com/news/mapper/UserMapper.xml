@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.news.mapper.UserMapper">
+
+	<insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO user(login_name, password
+		<if test="nickname!=null and nickname!=''">
+			,nickname
+		</if>
+		)
+		VALUES(#{loginName},#{password}
+		 <if test="nickname!=null and nickname!=''">
+		    ,#{nickname}
+	     </if>
+		)
+	</insert>
+	
+	<update id="update" parameterType="User">
+		UPDATE user
+		<set>
+			update_time = now()
+			<if test="nickname!=null and nickname!=''">
+				,nickname=#{nickname}
+			</if>
+			<if test="password!=null and password!=''">
+				,password=#{password}
+			</if>
+			<if test="address!=null">
+				,address=#{address}
+			</if>
+			<if test="phone!=null">
+				,phone=#{phone}
+			</if>
+
+		</set>
+		WHERE id=#{id}
+	</update>
+
+
+	<select id="findById" resultMap="UserMap">
+		SELECT * FROM user WHERE id=#{id} limit 1
+	</select>
+
+	
+	<select id="findUserByLoginNameAndPWD" resultMap="UserMap" parameterType="Map">
+		SELECT id,nickname,address,phone,create_time FROM user WHERE login_name=#{loginName} and password=#{password} limit 1
+	</select>
+
+	<select id="findUserByLoginName" resultMap="UserMap" parameterType="String">
+		SELECT * FROM user WHERE login_name=#{loginName} limit 1
+	</select>
+
+	
+	<resultMap type="User" id="UserMap">
+		<result column="id" property="id"/>
+		<result column="nickname" property="nickname"/>
+		<result column="address" property="address"/>
+		<result column="phone" property="phone"/>
+		<result column="create_time" property="createTime"/>
+		<result column="login_name" property="loginName"/>
+	</resultMap>
+	
+</mapper>

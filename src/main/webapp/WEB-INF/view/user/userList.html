@@ -63,7 +63,7 @@
 							<button class="btn btn-sm btn-purple" id="userSearch"><i class="ace-icon fa fa-search"></i><@spring.message code="button.search"/></button>
 							<button class="btn btn-sm btn-primary" id="userRefresh"><i class="ace-icon fa fa-refresh"></i><@spring.message code="button.reset"/></button>
 							<!-- 
-							<button class="btn btn-sm btn-grey" id="userExportExcel"><i class="ace-icon fa fa-file-excel-o"></i><@spring.message code="button.export.excel"/></button>
+							<button class="btn btn-sm btn-grey" id="userExportExcel"><i class="ace-icon fa fa-NFile-excel-o"></i><@spring.message code="button.export.excel"/></button>
 							 -->
 							<button class="btn btn-sm btn-success" id="userAdd"><i class="ace-icon glyphicon glyphicon-plus"></i><@spring.message code="button.add"/></button>
 	                 	</div>
@@ -184,21 +184,21 @@ function showModal(type, rowid) {
 	
 	$("#user_avatarUrl").val(avatarUrl);
 	$("#user_coverUrl").val(coverUrl);
-	$('#avatarUrlDiv').html('<input id="avatarImage" name="avatarImage" type="file" class="file avatarUrl"/>');
-	$('#coverUrlDiv').html('<input id="coverImage" name="coverImage" type="file" class="file coverUrl"/>');
+	$('#avatarUrlDiv').html('<input id="avatarImage" name="avatarImage" type="NFile" class="NFile avatarUrl"/>');
+	$('#coverUrlDiv').html('<input id="coverImage" name="coverImage" type="NFile" class="NFile coverUrl"/>');
 		
 	initUserImage(avatarUrl,coverUrl);
 		
-	$('#avatarUrlDiv').find(".file-caption-name").text(avatarUrl);
-	$('#avatarUrlDiv').find(".file-caption").text(avatarUrl);
-	$('#coverUrlDiv').find(".file-caption-name").text(coverUrl);
-	$('#coverUrlDiv').find(".file-caption").text(coverUrl);
+	$('#avatarUrlDiv').find(".NFile-caption-name").text(avatarUrl);
+	$('#avatarUrlDiv').find(".NFile-caption").text(avatarUrl);
+	$('#coverUrlDiv').find(".NFile-caption-name").text(coverUrl);
+	$('#coverUrlDiv').find(".NFile-caption").text(coverUrl);
 	
 	$("#userModal").modal('show');
 }
 
 function initUserImage(avatarUrl,coverUrl) {
-	$.each($("input[type=file]"),function() {
+	$.each($("input[type=NFile]"),function() {
 		var imgUrl = avatarUrl;
 		if($(this).attr("class").indexOf("coverUrl")>0){
             imgUrl = coverUrl;

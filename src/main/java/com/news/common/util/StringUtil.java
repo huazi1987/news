@@ -281,13 +281,7 @@ public class StringUtil {
 		}
 		return str.toString();
 	}
-	
-	public static String getDetailNo(){
-        SnowflakeIdWorker idWorker = new SnowflakeIdWorker(0, 0);
-        String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        String seconds = new SimpleDateFormat("HHmmss").format(new Date());
-        return date+seconds+idWorker.nextId();
-    }
+
 	
 	/**
 	 * 实体类转换为Map<String,String>

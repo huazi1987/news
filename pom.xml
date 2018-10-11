@@ -306,6 +306,7 @@
 				<jdbc.maxPoolSize>20</jdbc.maxPoolSize>
 				<jdbc.acquireIncrement>5</jdbc.acquireIncrement>
 				<jdbc.maxIdleTime>20</jdbc.maxIdleTime>
+				<jdbc.initialPoolSize>10</jdbc.initialPoolSize>
 
 			</properties>
 		</profile>

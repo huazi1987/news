@@ -2,11 +2,11 @@
 <#--
  * spring.ftl
  *
- * This file consists of a collection of FreeMarker macros aimed at easing
+ * This NFile consists of a collection of FreeMarker macros aimed at easing
  * some of the common requirements of web applications - in particular
  * handling of forms.
  *
- * Spring's FreeMarker support will automatically make this file and therefore
+ * Spring's FreeMarker support will automatically make this NFile and therefore
  * all macros within it available to any application using Spring's
  * FreeMarkerConfigurer.
  *
@@ -322,7 +322,7 @@
  * @param separator the html tag or other character list that should be used to
  *    separate each option. Typically '<br>'.
  * @param classOrStyle either the name of a CSS class element (which is defined in
- *    the template or an external CSS file) or an inline style. If the value passed in here
+ *    the template or an external CSS NFile) or an inline style. If the value passed in here
  *    contains a colon (:) then a 'style=' attribute will be used, else a 'class=' attribute
  *    will be used.
 -->

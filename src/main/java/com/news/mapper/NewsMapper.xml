@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.news.mapper.NewsMapper">
+
+	<insert id="insert" parameterType="News" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO news(title,content,thumbnail_url)
+		VALUES(#{title},#{content},#{thumbnailUri}
+		)
+	</insert>
+	
+	<update id="update" parameterType="Video">
+		UPDATE news
+		<set>
+			update_time = now()
+			<if test="title!=null and title!=''">
+				,title=#{title}
+			</if>
+			<if test="content!=null and content!=''">
+				,content=#{content}
+			</if>
+			<if test="thumbnailUri!=null and thumbnailUri!=''">
+				,thumbnail_uri=#{thumbnailUri}
+			</if>
+
+		</set>
+		WHERE id=#{id}
+	</update>
+
+
+	<select id="findById" resultMap="NewsMap">
+		SELECT * FROM news WHERE id=#{id}
+	</select>
+	
+	<select id="findNewsList" resultMap="NewsMap" parameterType="Map">
+		SELECT id, title, thumbnail_url FROM news WHERE 1=1
+		<if test="page!=null and page!=''">
+			limit #{page.start}, #{page.pageSize}
+		</if>
+	</select>
+
+	<select id="findNewsCount" resultType="int" parameterType="Map">
+		SELECT count(id) FROM video WHERE 1=1
+	</select>
+
+	<resultMap type="news" id="NewsMap">
+		<result column="id" property="id"/>
+		<result column="title" property="title"/>
+		<result column="content" property="content"/>
+		<result column="create_time" property="createTime"/>
+		<result column="thumbnail_url" property="thumbnailUrl"/>
+	</resultMap>
+	
+</mapper>

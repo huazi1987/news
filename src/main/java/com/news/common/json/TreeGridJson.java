@@ -1,9 +1,10 @@
 package com.news.common.json;
 
+import com.news.model.SysMenu;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ushareit.news.cms.sys.menu.model.SysMenu;
 
 public class TreeGridJson {
 	

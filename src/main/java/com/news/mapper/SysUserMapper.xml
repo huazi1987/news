@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.news.mapper.SysUserMapper">
+
+	<insert id="insert" parameterType="SysUser" flushCache="true">
+		INSERT INTO sys_user(<include refid="sysUserColumns"/>)
+		VALUES(#{userId},#{userName},#{userLogin},#{password},#{salt},#{email},#{rank},#{status},#{createTime})
+	</insert>
+	
+	<update id="update" parameterType="SysUser" flushCache="true">
+		UPDATE sys_user
+		<set>
+			<if test="userName!=null and userName!=''">
+				user_name=#{userName},
+			</if>
+			<if test="password!=null and password!=''">
+				password=#{password},
+			</if>
+			<if test="userLogin!=null">
+				user_login=#{userLogin},
+			</if>
+			<if test="salt!=null">
+				salt=#{salt},
+			</if>
+			<if test="email!=null">
+				email=#{email},
+			</if>
+			<if test="rank!=null">
+				rank=#{rank},
+			</if>
+			<if test="status!=null">
+				status=#{status},
+			</if>
+		</set>
+		WHERE user_id=#{userId}
+	</update>
+	
+	<delete id="delete" parameterType="String" flushCache="true">
+		DELETE FROM sys_user WHERE user_id=#{userId}
+	</delete>
+
+	<select id="findById" resultMap="SysUserMap">
+		SELECT <include refid="sysUserColumns"/> FROM sys_user WHERE user_id=#{userId}
+	</select>
+	
+	<select id="findAll" parameterType="Map" resultMap="SysUserMap">
+		SELECT <include refid="sysUserColumns"/> FROM sys_user WHERE 1=1
+		<if test="sysUser.userName!=null">
+			AND user_name=#{sysUser.userName}
+		</if>
+		<if test="sysUser.userLogin!=null">
+			AND user_login=#{sysUser.userLogin}
+		</if>
+		<if test="sysUser.password!=null">
+			AND password=#{sysUser.password}
+		</if>
+		<if test="sysUser.email!=null">
+			AND email=#{sysUser.email}
+		</if>
+		<if test="sysUser.rank!=null">
+			AND rank=#{sysUser.rank}
+		</if>
+		<if test="sysUser.status!=null">
+			AND status=#{sysUser.status}
+		</if>
+		<if test="sysUser.createTime!=null">
+			AND create_time=#{sysUser.createTime}
+		</if>
+		
+		ORDER BY rank,create_time
+			
+		<if test="startRow!=null and pageSize!=null">
+			LIMIT #{startRow},#{pageSize}
+		</if>
+	</select>
+	
+	<select id="findAllCount" parameterType="SysUser" resultType="int">
+		SELECT COUNT(1) FROM sys_user WHERE 1=1
+		<if test="userName!=null">
+			AND user_name=#{userName}
+		</if>
+		<if test="userLogin!=null">
+			AND user_login=#{userLogin}
+		</if>
+		<if test="password!=null">
+			AND password=#{password}
+		</if>
+		<if test="email!=null">
+			AND email=#{email}
+		</if>
+		<if test="rank!=null">
+			AND rank=#{rank}
+		</if>
+		<if test="status!=null">
+			AND status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND create_time=#{createTime}
+		</if>
+	</select>
+	
+	<select id="findByUserLogin" resultMap="SysUserMap">
+		SELECT <include refid="sysUserColumns"/> FROM sys_user WHERE user_login=#{value}
+	</select>
+	
+	<select id="findOptUserByRoleId" resultMap="SysUserMap">
+		SELECT <include refid="roleUserColumn"/>
+		FROM sys_user u 
+     	WHERE (SELECT COUNT(1) as num FROM sys_role_user r WHERE r.user_id = u.user_id AND r.role_id = #{value}) = 0 
+     	ORDER BY u.rank DESC,u.create_time DESC
+	</select>
+	
+	<select id="findRoleUserByRoleId" resultMap="SysUserMap">
+		SELECT <include refid="roleUserColumn"/> 
+		FROM sys_role_user r LEFT JOIN sys_user u ON r.user_id=u.user_id 
+		WHERE r.role_id=#{roleId}
+		ORDER BY u.rank DESC,u.create_time DESC  
+		<if test="startRow!=null and pageSize!=null">
+			LIMIT #{startRow},#{pageSize} 
+		</if>
+	</select>
+	
+	<select id="findRoleUserCountByRoleId" resultType="int">
+		SELECT COUNT(1) FROM sys_role_user r LEFT JOIN sys_user u ON r.user_id=u.user_id WHERE r.role_id=#{value}
+	</select>
+	
+	<resultMap type="SysUser" id="SysUserMap">
+		<result column="user_id" property="userId"/>
+		<result column="user_name" property="userName"/>
+		<result column="user_login" property="userLogin"/>
+		<result column="password" property="password"/>
+		<result column="salt" property="salt"/>
+		<result column="email" property="email"/>
+		<result column="rank" property="rank"/>
+		<result column="status" property="status"/>
+		<result column="create_time" property="createTime"/>
+	</resultMap>
+	
+	<sql id="sysUserColumns">user_id,user_name,user_login,password,salt,email,rank,status,create_time</sql>
+
+	<sql id="roleUserColumn">u.user_id,u.user_name,u.user_login,u.`status`,u.create_time</sql>
+</mapper>

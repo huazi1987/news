@@ -11,12 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 public class TreeNode implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	/**
-	 * @Description:
-	 * @author 王慧智
-	 * @date 2014-4-30
-	*/
-	
+
 	private String id; 
     private String pid; 
     private String text;

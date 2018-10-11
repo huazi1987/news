@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.news.mapper.VersionMapper">
+
+	<insert id="insert" parameterType="Version" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO version(version, os_type)
+		VALUES(#{version},#{osType})
+	</insert>
+	
+	<update id="update" parameterType="Version">
+		UPDATE version
+		<set>
+			version=#{version}
+		</set>
+		WHERE id=#{id}
+	</update>
+
+
+	<select id="findById" resultMap="VersionMap">
+		SELECT * FROM user WHERE id=#{id} limit 1
+	</select>
+
+	
+	<select id="findVersionByOSType" resultMap="VersionMap" parameterType="String">
+		SELECT * FROM version WHERE os_type=#{osType}
+	</select>
+
+	
+	<resultMap type="Version" id="VersionMap">
+		<result column="id" property="id"/>
+		<result column="version" property="version"/>
+		<result column="os_type" property="osType"/>
+		<result column="create_time" property="createTime"/>
+	</resultMap>
+	
+</mapper>

@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.news.mapper.FileMapper">
+
+	<insert id="insert" parameterType="NFile" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO file(fiel_name,path)
+		VALUES(#{filename},#{path})
+	</insert>
+	
+	<update id="update" parameterType="Video">
+		UPDATE file
+		<set>
+			update_time = now()
+			<if test="filename!=null and filename!=''">
+				,file_name=#{filename}
+			</if>
+			<if test="path!=null and path!=''">
+				,path=#{path}
+			</if>
+		</set>
+		WHERE id=#{id}
+	</update>
+
+	<select id="findFileList" resultMap="FileMap" parameterType="Map">
+		SELECT * FROM file WHERE 1=1
+		<if test="page!=null and page!=''">
+			limit #{page.start}, #{page.pageSize}
+		</if>
+	</select>
+
+	<select id="findFileCount" resultType="int" parameterType="Map">
+		SELECT count(id) FROM file WHERE 1=1
+	</select>
+
+	<select id="findById" resultMap="FileMap">
+		SELECT * FROM file WHERE id=#{id}
+	</select>
+
+	<resultMap type="NFile" id="FileMap">
+		<result column="id" property="id"/>
+		<result column="file_name" property="filename"/>
+		<result column="path" property="path"/>
+		<result column="size" property="size"/>
+		<result column="download_count" property="downloadCount"/>
+		<result column="create_time" property="createTime"/>
+	</resultMap>
+	
+</mapper>

@@ -6,11 +6,11 @@ import java.util.List;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 
-import com.news.cms.sys.menu.service.SysMenuService;
 import com.news.common.json.model.TreeNode;
 import com.news.common.taglib.base.BaseTaglib;
 import com.news.common.util.CommonStatic;
 import com.news.common.util.LoginUtil;
+import com.news.service.SysMenuService;
 
 public class NavList extends BaseTaglib {
 	
