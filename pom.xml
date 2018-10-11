@@ -310,6 +310,29 @@
 
 			</properties>
 		</profile>
+
+		<profile>
+			<id>prod</id>
+			<properties>
+				<site.name>ROOT</site.name>
+				<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+				<spring.version>4.1.6.RELEASE</spring.version>
+				<aws.version>1.11.179</aws.version>
+				<java.version>1.8</java.version>
+				<log.level>INFO</log.level>
+
+				<jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+				<jdbc.url>jdbc:mysql://127.0.0.1:3306/news?useUnicode=true&amp;amp;characterEncoding=UTF-8</jdbc.url>
+				<jdbc.username>root</jdbc.username>
+				<jdbc.password>news123#W</jdbc.password>
+				<jdbc.minPoolSize>10</jdbc.minPoolSize>
+				<jdbc.maxPoolSize>20</jdbc.maxPoolSize>
+				<jdbc.acquireIncrement>5</jdbc.acquireIncrement>
+				<jdbc.maxIdleTime>20</jdbc.maxIdleTime>
+				<jdbc.initialPoolSize>10</jdbc.initialPoolSize>
+
+			</properties>
+		</profile>
 		
 	</profiles>
 </project>
