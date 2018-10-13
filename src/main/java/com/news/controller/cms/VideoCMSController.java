@@ -41,6 +41,7 @@ public class VideoCMSController extends BaseController{
 
 	@RequestMapping(value = "/toList", method = RequestMethod.GET)
 	public String toList(HttpServletRequest request) {
+		System.out.println("===================");
 		return "/WEB-INF/view/video/videoList.html";
 	}
 	

@@ -8,44 +8,16 @@
 	<div class="main-content-inner">
 		<div class="page-content">
 			<div class="row">
-
-       			<div class="col-sm-2">
-             		<div class="form-group" >
-                    	<div class="form_top" style="line-height: 20px;">
-                     		<label for=""><@spring.message code="video.id"/></label>
-                      	</div>
-	                	<div class="form_bottom" >
-	                 		<input id="s_itemid" type="text" class="form-control" style="width: 100%;"/>
-	              		</div>
-         			</div>
-       			</div>
-
-       			<div class="col-sm-5">
-             		<div class="form-group" >
-                    	<div class="form_top" style="line-height: 20px;">
-                     		<label for=""><@spring.message code="item.createTime"/></label>
-                      	</div>
-	                	<div class="form_bottom" >
-	                		<input type="text" id="s_startTime" class="col-sm-5 form_datetime">
-	                		<span style="float: left;margin-left: 10px;margin-right: 10px;"> ~ </span>
-	                		<input type="text" id="s_endTime" class="col-sm-5 form_datetime">
-	              		</div>
-         			</div>
-       			</div>
-         		<div class="col-sm-6">
-         			<div class="input-group">
-               			<div class="form_top" style="line-height: 20px;">
-                      		<label for="">&nbsp;</label>
-               			</div>
-	               		<div class="form_bottom">
-							<button class="btn btn-sm btn-purple" id="itemSearch"><i class="ace-icon fa fa-search"></i><@spring.message code="button.search"/></button>
-							<button class="btn btn-sm btn-primary" id="itemRefresh"><i class="ace-icon fa fa-refresh"></i><@spring.message code="button.reset"/></button>
-							<button class="btn btn-sm btn-grey" id="itemExportExcel"><i class="ace-icon fa fa-NFile-excel-o"></i><@spring.message code="button.export.excel"/></button>
-							<button class="btn btn-sm btn-success" id="itemBatchOperat"><i class="ace-icon fa fa-wrench"></i><@spring.message code="button.batch.operat"/></button>
-	                 	</div>
-                	</div>
-         		</div>
-
+				<div class="col-sm-6">
+					<div class="input-group">
+						<div class="form_top" style="line-height: 20px;">
+							<label for="">&nbsp;</label>
+						</div>
+						<div class="form_bottom">
+							<button class="btn btn-sm btn-success" id="videoAdd"><i class="ace-icon glyphicon glyphicon-plus"></i><@spring.message code="button.add"/></button>
+						</div>
+					</div>
+				</div>
 				<div class="col-xs-12">
 					<table id="itemGrid"></table>
 					<div id="itemGridPager"></div>
@@ -64,7 +36,7 @@ $(document).ready(function() {
 		url : contextPath + '/cms/video/query',
 		datatype: "json",
 		colModel:[
-		    {name:'itemId',label:'<@spring.message code="video.id"/>',width:100,sortable:false},
+		    {name:'id',label:'<@spring.message code="video.id"/>',width:100,sortable:false},
 		    {name:'thumbFormat',label:'<@spring.message code="video.thumbnailUrl"/>',width:100,sortable:false,formatter:formatThumbnailUrl},
 		    {name:'createTime',index:'create_time',label:'<@spring.message code="item.createTime"/>',width:120,sorttype:"date"},
 		    {name:'contentUrl',hidden:true},
@@ -165,7 +137,7 @@ function deleteItem(rowid) {
 	var rowData = $("#itemGrid").getRowData(rowid);
 	confirm('<@spring.message code="button.delete"/><@spring.message code="item"/>','<@spring.message code="prompt.confirm.delete"/>[<font color="red">'+rowData.itemId+'</font>]<@spring.message code="item"/>?',function(result) {
 		if(result){
-			$.post(contextPath+"/cms/video/deleteItem",{itemId:rowData.itemId,createTime:rowData.sortKey,deleteFlag:1}, function (data) {
+			$.post(contextPath+"/cms/video/delete",{itemId:rowData.itemId,createTime:rowData.sortKey,deleteFlag:1}, function (data) {
 	            result = eval('(' + data + ')')
 	            if (result.status == 'true') {
 	            	$("#itemGrid").trigger("reloadGrid");

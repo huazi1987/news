@@ -110,15 +110,7 @@ public class SysMenuController extends BaseController {
 		return jacksonMapper.writeValueAsString(JSONResult.Success("操作成功"));
 	}
 	
-	/**
-	 * 删除当前菜单及子菜单
-	 * @Description: 
-	 * @author 王慧智
-	 * @date 2014-6-5
-	 * @param request
-	 * @param id
-	 * @return
-	 */
+
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	@ResponseBody
 	public String delete(HttpServletRequest request,String id){
