@@ -1,12 +1,19 @@
 package com.news.service;
 
 import com.news.common.base.BaseService;
+import com.news.common.page.PageRecord;
+import com.news.common.page.Pagination;
 import com.news.mapper.VersionMapper;
 import com.news.model.Version;
+import com.news.model.Video;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -15,6 +22,24 @@ public class VersionService extends BaseService {
 	@Autowired
 	private VersionMapper versionMapper;
 
+
+
+	public Page<Version> queryVersionList(Pagination pagination){
+
+		Map<String, Object> page = new HashMap<>(2);
+		page.put("start", pagination.getStart());
+		page.put("pageSize", pagination.getPageSize());
+
+		Map<String, Object> params = new HashMap<>();
+		params.put("page", page);
+
+		int count = versionMapper.findVideoCount(params);
+
+		List<Version> list = versionMapper.findVideoList(params);
+		PageRecord<Version> result = new PageRecord<>(list,pagination,count);
+
+		return result;
+	}
 
 	@Transactional
 	public int insert(Version version){

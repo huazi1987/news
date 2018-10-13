@@ -12,9 +12,8 @@ public class User extends BaseModel<User> {
 	private int id;
 	private String loginName;
 	private String nickname;
-	private String password;
 	private String address;
-	private int phone;
+	private String phone;
 	private Date createTime;
 
 	public int getId() {
@@ -41,14 +40,6 @@ public class User extends BaseModel<User> {
 		this.nickname = nickname;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public String getAddress() {
 		return address;
 	}
@@ -57,11 +48,11 @@ public class User extends BaseModel<User> {
 		this.address = address;
 	}
 
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 

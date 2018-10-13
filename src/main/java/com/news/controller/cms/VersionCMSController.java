@@ -4,10 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.news.common.base.BaseController;
 import com.news.common.json.DataGridTool;
 import com.news.common.page.Pagination;
-import com.news.common.util.StringUtil;
-import com.news.model.Video;
-import com.news.service.FileService;
-import com.news.service.VideoService;
+import com.news.model.Version;
+import com.news.service.VersionService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,77 +20,52 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Controller
-@RequestMapping(value = "/cms/video")
-public class VideoCMSController extends BaseController{
+@RequestMapping(value = "/cms/version")
+public class VersionCMSController extends BaseController{
 
 	@Autowired
-	private VideoService videoService;
-
-	@Autowired
-	private FileService showFileService;
-
-	private final static String DOWNLOAD_EXCEL_FILE_PATH = "/tmp/";
-
+	private VersionService versionService;
 
 	@RequestMapping(value = "/toList", method = RequestMethod.GET)
 	public String toList(HttpServletRequest request) {
-		return "/WEB-INF/view/video/videoList.html";
+		return "/WEB-INF/view/version/versionList.html";
 	}
 	
 	@RequestMapping(value = "/query", method = RequestMethod.GET)
 	@ResponseBody
-	public String query(HttpServletRequest request, int page,String sidx,String sord) throws Exception{
-		Map<String, String> orderBy = new HashMap<>();
-		if(!StringUtil.isEmpty(sidx) && !StringUtil.isEmpty(sord)) {
-			orderBy.put(sidx, sord);
-		}
+	public String query(HttpServletRequest request) throws Exception{
 
-		List<String> filterItem = null;
 
-		Page<Video> result = videoService.queryVideoList(new Pagination(page, rows));
+		Page<Version> result = versionService.queryVersionList(new Pagination(1, rows));
 		String jsonList = jacksonMapper.writeValueAsString(result.getContent());
 		return DataGridTool.formatJGridPage(result.getTotalPages(),result.getTotalElements(),jsonList);
 	}
 
 
-
+	/**
+	 * 逻辑删除内容
+	 * @Description: 
+	 * @param request
+	 * @param itemId
+	 * @param createTime
+	 * @param deleteFlag
+	 * @return
+	 */
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	@ResponseBody
-	public String delete(HttpServletRequest request,String id) {
+	public String deleteItem(HttpServletRequest request,String itemId,String createTime, String deleteFlag) {
 		JSONObject result = new JSONObject();
 		try {
-			if (StringUtils.isEmpty(id)){
+			if (StringUtils.isEmpty(itemId) || StringUtils.isEmpty(createTime) || StringUtils.isEmpty(deleteFlag)){
 				String resultMsg = messageSource.getMessage("error.missing.required", null, getLocale(request));
 				result.put("status", "false");
 				result.put("msg",resultMsg);
 				return result.toJSONString();
 			}
-
-			videoService.delete(id);
-
-			result.put("status", "true");
-			return result.toJSONString();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		result.put("status", "false");
-		result.put("msg","系统错误");
-		return result.toJSONString();
-	}
-
-
-	@RequestMapping(value = "/modify", method = RequestMethod.POST)
-	@ResponseBody
-	public String modify(HttpServletRequest request,Video video) {
-		JSONObject result = new JSONObject();
-		try {
-
-			videoService.update(video);
+			
+//			showItemService.deleteItem(itemId, createTime, deleteFlag);
 
 			result.put("status", "true");
 			return result.toJSONString();
@@ -120,28 +93,6 @@ public class VideoCMSController extends BaseController{
 			json.put("status", "false");
 			return json.toJSONString();
 		}
-		try {
-			BufferedInputStream bis = new BufferedInputStream(file.getInputStream());
-			BufferedImage image = ImageIO.read(bis);
-
-			json.put("imageWidth", image.getWidth(null));
-			json.put("imageHeight", image.getHeight(null));
-//			json.put("url", showFileService.uploadVideoThumbnail(file, userId, key));
-			json.put("status", "true");
-		} catch (Exception e) {
-			json.put("status", "false");
-			e.printStackTrace();
-		}
-
-		return json.toJSONString();
-	}
-
-	@RequestMapping(value = "/uploadVideo", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
-	public @ResponseBody String uploadVideo(HttpServletRequest request) {
-		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-		MultipartFile file = multipartRequest.getFile("itemVideo");
-		JSONObject json = new JSONObject();
-
 		try {
 			BufferedInputStream bis = new BufferedInputStream(file.getInputStream());
 			BufferedImage image = ImageIO.read(bis);

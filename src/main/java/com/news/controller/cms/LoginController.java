@@ -67,35 +67,15 @@ public class LoginController extends BaseController{
 		String resultMsg = messageSource.getMessage("error.user.password", null, getLocale(request));
 		try {
 			if(StringUtil.isNotEmpty(userLogin) && StringUtil.isNotEmpty(password)){
-				if("admin".equals(userLogin)) {
-					SysUser sysUser = sysUserService.findByUserLogin(userLogin);
-					if(!sysUser.getPassword().equals(EncryptUtil.encodeMD5(password+sysUser.getSalt())))
-					{
-						return jacksonMapper.writeValueAsString(JSONResult.Failure(resultMsg));
-					}
-					
-					//将指定用户信息存入session
-					saveSession(sysUser);
-					log.info(String.format("帐号:%s,登录成功,IP:%s", userLogin,request.getRemoteHost()));
-					return jacksonMapper.writeValueAsString(JSONResult.Success());
+				SysUser sysUser = sysUserService.findByUserLogin(userLogin);
+				if(!sysUser.getPassword().equals(EncryptUtil.encodeMD5(password+sysUser.getSalt())))
+				{
+					return jacksonMapper.writeValueAsString(JSONResult.Failure(resultMsg));
 				}
 
-				
-				SysUser sysUser = sysUserService.findByUserLogin(userLogin);
-				
-				if(StringUtil.isEmpty(sysUser)){
-					sysUser = new SysUser();
-					sysUser.setUserLogin(userLogin);
-					sysUser.setUserName(userLogin);
-					sysUser.setRank(1);
-					sysUser.setStatus(CommonStatic.TRUE);
-//					sysUser.setCreateTime(DateUtil.getDateTime());
-					sysUserService.insert(sysUser);
-				}
-				
 				//将指定用户信息存入session
 				saveSession(sysUser);
-				
+				log.info(String.format("帐号:%s,登录成功,IP:%s", userLogin,request.getRemoteHost()));
 				return jacksonMapper.writeValueAsString(JSONResult.Success());
 			}
 		} catch (Exception e) {
@@ -137,4 +117,5 @@ public class LoginController extends BaseController{
 		sessionUser.setUserName(sysUser.getUserName());
 		LoginUtil.setCurrentUser(sessionUser);
 	}
+
 }

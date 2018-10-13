@@ -3,15 +3,21 @@
 <mapper namespace="com.news.mapper.UserMapper">
 
 	<insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO user(login_name, password
+		INSERT INTO user(login_name
 		<if test="nickname!=null and nickname!=''">
 			,nickname
 		</if>
+        <if test="phone!=null and phone!=''">
+            ,phone
+        </if>
 		)
-		VALUES(#{loginName},#{password}
+		VALUES(#{loginName}
 		 <if test="nickname!=null and nickname!=''">
 		    ,#{nickname}
 	     </if>
+        <if test="phone!=null and phone!=''">
+            ,#{phone}
+        </if>
 		)
 	</insert>
 	
@@ -21,9 +27,6 @@
 			update_time = now()
 			<if test="nickname!=null and nickname!=''">
 				,nickname=#{nickname}
-			</if>
-			<if test="password!=null and password!=''">
-				,password=#{password}
 			</if>
 			<if test="address!=null">
 				,address=#{address}
@@ -41,7 +44,7 @@
 		SELECT * FROM user WHERE id=#{id} limit 1
 	</select>
 
-	
+
 	<select id="findUserByLoginNameAndPWD" resultMap="UserMap" parameterType="Map">
 		SELECT id,nickname,address,phone,create_time FROM user WHERE login_name=#{loginName} and password=#{password} limit 1
 	</select>
@@ -49,6 +52,10 @@
 	<select id="findUserByLoginName" resultMap="UserMap" parameterType="String">
 		SELECT * FROM user WHERE login_name=#{loginName} limit 1
 	</select>
+
+    <select id="findUserByPhone" resultMap="UserMap" parameterType="String">
+        SELECT * FROM user WHERE phone=#{phone} limit 1
+    </select>
 
 	
 	<resultMap type="User" id="UserMap">

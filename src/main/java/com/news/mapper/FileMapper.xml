@@ -36,6 +36,10 @@
 		SELECT * FROM file WHERE id=#{id}
 	</select>
 
+	<delete id="delete" parameterType="String">
+		DELETE from file where id=#{id}
+	</delete>
+
 	<resultMap type="NFile" id="FileMap">
 		<result column="id" property="id"/>
 		<result column="file_name" property="filename"/>

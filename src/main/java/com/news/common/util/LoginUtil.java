@@ -19,6 +19,11 @@ public class LoginUtil {
 		sessions.set(session);
 	}
 
+	public static void setSession(HttpSession session, int time){
+		session.setMaxInactiveInterval(time);
+		sessions.set(session);
+	}
+
 	/**
 	 * 清空ThreadLocal中的session
 	 */

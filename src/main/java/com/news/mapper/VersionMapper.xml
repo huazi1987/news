@@ -25,6 +25,16 @@
 		SELECT * FROM version WHERE os_type=#{osType}
 	</select>
 
+	<select id="findVersionList" resultMap="VersionMap" parameterType="Map">
+		SELECT * FROM version WHERE 1=1
+		<if test="page!=null and page!=''">
+			limit #{page.start}, #{page.pageSize}
+		</if>
+	</select>
+
+	<select id="findVersionCount" resultType="int" parameterType="Map">
+		SELECT count(id) FROM version WHERE 1=1
+	</select>
 	
 	<resultMap type="Version" id="VersionMap">
 		<result column="id" property="id"/>

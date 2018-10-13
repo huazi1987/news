@@ -56,4 +56,14 @@ public class VideoService extends BaseService {
             return -1;
         }
     }
+
+    public int delete(String id){
+        try {
+            return videoMapper.delete(id);
+        }catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
 }

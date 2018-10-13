@@ -107,11 +107,15 @@
 		SELECT count(id) FROM video WHERE 1=1
 	</select>
 
-	
+    <delete id="delete" parameterType="String">
+        DELETE from video where id=#{id}
+    </delete>
+
+
 	<resultMap type="Video" id="VideoMap">
 		<result column="id" property="id"/>
 		<result column="title" property="title"/>
-		<result column="description" property="description"/>
+		<result column="description" property="desc"/>
 		<result column="size" property="size"/>
 		<result column="create_time" property="createTime"/>
 		<result column="height" property="height"/>

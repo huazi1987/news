@@ -62,4 +62,14 @@ public class UserService extends BaseService {
 		}
 
 	}
+
+	public User findUserByPhone(String phone){
+		try {
+			return userMapper.findUserByPhone(phone);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
+	}
 }

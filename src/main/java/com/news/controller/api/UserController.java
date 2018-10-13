@@ -1,6 +1,7 @@
 package com.news.controller.api;
 
 import com.alibaba.fastjson.JSONObject;
+import com.news.common.sms.SDKTestSendTemplateSMS;
 import com.news.common.util.EncryptUtil;
 import com.news.common.util.StringUtil;
 import com.news.model.User;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
+import java.util.Random;
 
 @Controller
 @RequestMapping(value = "/api/user")
@@ -55,7 +58,6 @@ public class UserController {
 			if(!StringUtil.isEmpty(nickname)){
 				user.setNickname(nickname);
 			}
-			user.setPassword(EncryptUtil.encodeMD5(password));
 
 			int ret = userService.insert(user);
 			if (ret <= 0){
@@ -131,7 +133,7 @@ public class UserController {
 				user.setAddress(address);
 			}
 			if (!StringUtil.isEmpty(phone)){
-				user.setPhone(Integer.parseInt(phone));
+				user.setPhone(phone);
 			}
 			int ret = userService.update(user);
 			if (ret <= 0){
@@ -147,4 +149,97 @@ public class UserController {
 		}
 		return result.toJSONString();
 	}
+
+	@RequestMapping(value = "/send-code", method = RequestMethod.POST)
+	@ResponseBody
+	public String sendCode(HttpServletRequest request, @RequestBody Map<String, String> params) {
+		JSONObject result = new JSONObject();
+		result.put("status", false);
+		String phone = params.get("phone");
+		try {
+			if (StringUtil.isEmpty(phone)){
+				result.put("status", false);
+				result.put("msg","手机号不能为空");
+				return  result.toJSONString();
+			}
+
+			SDKTestSendTemplateSMS sdkTestSendTemplateSMS = new SDKTestSendTemplateSMS();
+			int code = getRandomCode();
+			boolean isSuccess = sdkTestSendTemplateSMS.sendSMS(phone, code);
+			if (isSuccess){
+				result.put("status", true);
+				result.put("msg","发送成功");
+				HttpSession session = request.getSession();
+				session.setAttribute("code_"+phone, String.valueOf(code));
+				session.setMaxInactiveInterval(300);
+				System.out.println("send code session id:"+session.getId());
+
+			}else {
+				result.put("status", false);
+				result.put("msg","发送失败，请重新发送");
+			}
+
+			return result.toJSONString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.put("msg","系统错误");
+		}
+		return result.toJSONString();
+	}
+
+	@RequestMapping(value = "/login-by-code", method = RequestMethod.POST)
+	@ResponseBody
+	public String loginBySMS(HttpServletRequest request, @RequestBody Map<String, String> params) {
+		JSONObject result = new JSONObject();
+		result.put("status", false);
+		String phone = params.get("phone");
+		String code = params.get("code");
+		try {
+			if (StringUtil.isEmpty(phone)){
+				result.put("status", false);
+				result.put("msg","手机不能为空");
+				return  result.toJSONString();
+			}
+			if (StringUtil.isEmpty(code)){
+				result.put("status", false);
+				result.put("msg","验证码不能为空");
+				return  result.toJSONString();
+			}
+			HttpSession session = request.getSession();
+			String key = "code_"+phone;
+			String codeCache = (String) session.getAttribute(key);
+			System.out.println("codeCache:"+codeCache);
+			if (!code.equals(codeCache)){
+				result.put("status", false);
+				result.put("msg","验证码错误");
+				return  result.toJSONString();
+			}
+
+			User user = userService.findUserByLoginName(phone);
+			if (null == user){
+				user = new User();
+				user.setLoginName(phone);
+				user.setPhone(phone);
+
+				userService.insert(user);
+			}
+
+			session.removeAttribute(key);
+			result.put("status", true);
+			result.put("msg","登陆成功");
+			result.put("data", user);
+			return result.toJSONString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.put("msg","系统错误");
+		}
+		return result.toJSONString();
+	}
+
+	private int getRandomCode(){
+		Random random =new Random();
+		return random.nextInt(99999)+111111;
+	}
+
+
 }

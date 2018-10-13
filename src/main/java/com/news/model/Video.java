@@ -11,7 +11,7 @@ public class Video extends BaseModel<Video> {
 	
 	private int id;
 	private String title;
-	private String description;
+	private String desc;
 	private int height;
 	private int width;
 	private int duration;
@@ -45,12 +45,12 @@ public class Video extends BaseModel<Video> {
 		this.title = title;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getDesc() {
+		return desc;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDesc(String desc) {
+		this.desc = desc;
 	}
 
 	public int getHeight() {
