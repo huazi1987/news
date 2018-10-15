@@ -30,43 +30,32 @@ public class VersionCMSController extends BaseController{
 
 	@RequestMapping(value = "/toList", method = RequestMethod.GET)
 	public String toList(HttpServletRequest request) {
-		return "/WEB-INF/view/version/versionList.html";
+		return "version/versionList";
 	}
 	
 	@RequestMapping(value = "/query", method = RequestMethod.GET)
 	@ResponseBody
 	public String query(HttpServletRequest request) throws Exception{
-
-
 		Page<Version> result = versionService.queryVersionList(new Pagination(1, rows));
 		String jsonList = jacksonMapper.writeValueAsString(result.getContent());
 		return DataGridTool.formatJGridPage(result.getTotalPages(),result.getTotalElements(),jsonList);
 	}
 
 
-	/**
-	 * 逻辑删除内容
-	 * @Description: 
-	 * @param request
-	 * @param itemId
-	 * @param createTime
-	 * @param deleteFlag
-	 * @return
-	 */
+
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	@ResponseBody
-	public String deleteItem(HttpServletRequest request,String itemId,String createTime, String deleteFlag) {
+	public String delete(HttpServletRequest request,String id) {
 		JSONObject result = new JSONObject();
 		try {
-			if (StringUtils.isEmpty(itemId) || StringUtils.isEmpty(createTime) || StringUtils.isEmpty(deleteFlag)){
+			if (StringUtils.isEmpty(id) ){
 				String resultMsg = messageSource.getMessage("error.missing.required", null, getLocale(request));
 				result.put("status", "false");
 				result.put("msg",resultMsg);
 				return result.toJSONString();
 			}
-			
-//			showItemService.deleteItem(itemId, createTime, deleteFlag);
 
+			versionService.delete(id);
 			result.put("status", "true");
 			return result.toJSONString();
 		} catch (Exception ex) {
@@ -77,36 +66,59 @@ public class VersionCMSController extends BaseController{
 		return result.toJSONString();
 	}
 
-	@RequestMapping(value = "/uploadVideoThumbnail", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
-	public @ResponseBody String uploadVideoThumbnail(HttpServletRequest request, String userId, String key) {
-		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-		MultipartFile file = multipartRequest.getFile("itemVideoThumb");
-		JSONObject json = new JSONObject();
 
-		if (StringUtils.isEmpty(userId)) {
-			json.put("msg", "未选择用户");
-			json.put("status", "false");
-			return json.toJSONString();
-		}
-		if (StringUtils.isEmpty(key)) {
-			json.put("msg", "请先上传视频");
-			json.put("status", "false");
-			return json.toJSONString();
-		}
+	@RequestMapping(value = "/modify", method = RequestMethod.POST)
+	@ResponseBody
+	public String modify(HttpServletRequest request,String id, String version) {
+		JSONObject result = new JSONObject();
 		try {
-			BufferedInputStream bis = new BufferedInputStream(file.getInputStream());
-			BufferedImage image = ImageIO.read(bis);
+			if (StringUtils.isEmpty(id) || StringUtils.isEmpty(version) ){
+				String resultMsg = messageSource.getMessage("error.missing.required", null, getLocale(request));
+				result.put("status", "false");
+				result.put("msg",resultMsg);
+				return result.toJSONString();
+			}
 
-			json.put("imageWidth", image.getWidth(null));
-			json.put("imageHeight", image.getHeight(null));
-//			json.put("url", showFileService.uploadVideoThumbnail(file, userId, key));
-			json.put("status", "true");
-		} catch (Exception e) {
-			json.put("status", "false");
-			e.printStackTrace();
+			Version v = new Version();
+			v.setId(Integer.parseInt(id));
+			v.setVersion(Long.parseLong(version));
+
+			versionService.update(v);
+			result.put("status", "true");
+			return result.toJSONString();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
+		result.put("status", "false");
+		result.put("msg","系统错误");
+		return result.toJSONString();
+	}
 
-		return json.toJSONString();
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	@ResponseBody
+	public String add(HttpServletRequest request,String osType, String version) {
+		JSONObject result = new JSONObject();
+		try {
+			if (StringUtils.isEmpty(osType) || StringUtils.isEmpty(version) ){
+				String resultMsg = messageSource.getMessage("error.missing.required", null, getLocale(request));
+				result.put("status", "false");
+				result.put("msg",resultMsg);
+				return result.toJSONString();
+			}
+
+			Version v = new Version();
+			v.setOsType(osType);
+			v.setVersion(Long.parseLong(version));
+
+			versionService.insert(v);
+			result.put("status", "true");
+			return result.toJSONString();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		result.put("status", "false");
+		result.put("msg","系统错误");
+		return result.toJSONString();
 	}
 
 

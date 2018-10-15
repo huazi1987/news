@@ -3,8 +3,8 @@
 <mapper namespace="com.news.mapper.FileMapper">
 
 	<insert id="insert" parameterType="NFile" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO file(fiel_name,path)
-		VALUES(#{filename},#{path})
+		INSERT INTO file(file_name,path,size)
+		VALUES(#{filename},#{path},#{size})
 	</insert>
 	
 	<update id="update" parameterType="Video">
@@ -16,6 +16,9 @@
 			</if>
 			<if test="path!=null and path!=''">
 				,path=#{path}
+			</if>
+			<if test="size!=null and size!=''">
+				,size=#{size}
 			</if>
 		</set>
 		WHERE id=#{id}

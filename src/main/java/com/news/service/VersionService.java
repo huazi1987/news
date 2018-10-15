@@ -5,11 +5,9 @@ import com.news.common.page.PageRecord;
 import com.news.common.page.Pagination;
 import com.news.mapper.VersionMapper;
 import com.news.model.Version;
-import com.news.model.Video;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,23 +23,28 @@ public class VersionService extends BaseService {
 
 
 	public Page<Version> queryVersionList(Pagination pagination){
+		PageRecord<Version> result = null;
+		try{
+			Map<String, Object> page = new HashMap<>(2);
+			page.put("start", pagination.getStart());
+			page.put("pageSize", pagination.getPageSize());
 
-		Map<String, Object> page = new HashMap<>(2);
-		page.put("start", pagination.getStart());
-		page.put("pageSize", pagination.getPageSize());
+			Map<String, Object> params = new HashMap<>();
+			params.put("page", page);
 
-		Map<String, Object> params = new HashMap<>();
-		params.put("page", page);
+			int count = versionMapper.findVersionCount(params);
 
-		int count = versionMapper.findVideoCount(params);
+			List<Version> list = versionMapper.findVersionList(params);
+			result = new PageRecord<>(list,pagination,count);
 
-		List<Version> list = versionMapper.findVideoList(params);
-		PageRecord<Version> result = new PageRecord<>(list,pagination,count);
 
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 		return result;
+
 	}
 
-	@Transactional
 	public int insert(Version version){
 		try {
 			return versionMapper.insert(version);
@@ -51,10 +54,18 @@ public class VersionService extends BaseService {
 		}
 	}
 
-	@Transactional
 	public int update(Version version){
 		try {
 			return versionMapper.update(version);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
+
+	public int delete(String id){
+		try {
+			return versionMapper.delete(id);
 		}catch (Exception e) {
 			e.printStackTrace();
 			return -1;

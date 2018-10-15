@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include 'common/common_css.html'/>
+</head>
+<body class="no-skin">
+<div class="main-content">
+	<div class="main-content-inner">
+		<div class="page-content">
+			<div class="row">
+         		<div class="col-sm-6">
+         			<div class="input-group">
+               			<div class="form_top" style="line-height: 20px;">
+                      		<label for="">&nbsp;</label>
+               			</div>
+	               		<div class="form_bottom">
+
+							<button class="btn btn-sm btn-success" id="addVersion"><i class="ace-icon glyphicon glyphicon-plus"></i><@spring.message code="button.add"/></button>
+	                 	</div>
+                	</div>
+         		</div>
+				<div class="col-xs-12">
+					<table id="versionGrid"></table>
+					<div id="versionGridPager"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<#include 'common/common_js.html'/>
+<#include 'version/versionDiv.html'/>
+<script type="text/javascript" src="${rootPath}/resource/biz/common.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/biz/version.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#versionGrid").jqGrid({
+		url : contextPath + '/cms/version/query',
+		datatype: "json",
+		colModel:[
+            {name:'osType',label:'手机系统',width:50,sortable:false},
+		    {name:'version',label:'版本号',width:100,sortable:false},
+		    {name:'createTime',label:'创建时间',width:100, formatter:formatCreateTime},
+		    {name:'id',hidden:true},
+            {name:'operat',label:'操作',width:200,formatter:formatOperat}
+        ],
+		viewrecords : true,
+		sortname : 'createTime',
+	    sortorder : "desc",
+		pager : "#versionGridPager",
+		altRows: true,
+		rownumbers : true,
+		rowNum: 15,
+		autoScroll: true,
+		toolbar:[true,"top"],
+		loadComplete : function() {
+			var table = this;
+			setTimeout(function(){
+				styleGridPager(table);
+			}, 0);
+		},
+	});
+	
+	styleGridResize("#versionGrid");
+})
+
+function formatOperat(cellValue, options, rowObject) {
+    var resultStr = '';
+
+    resultStr += '<a href="javascript:void(0)" class="btn btn-primary btn-xs" onclick="editVersion(' + options.rowId + ')" title="<@spring.message code="grid.operat.edit"/>">编辑</a>&nbsp;';
+    resultStr += '<a href="javascript:void(0)" class="btn btn-danger btn-xs" onclick="deleteVersion(' + options.rowId + ')" title="<@spring.message code="grid.operat.delete"/>">删除</a>&nbsp;';
+
+    return resultStr;
+}
+
+function formatCreateTime(cellValue, options, rowObject){
+    var crtTime = new Date(rowObject.createTime);
+    return dateFtt("yyyy-MM-dd hh:mm:ss",crtTime);
+}
+
+
+function showModal(type, rowid) {
+	$('#versionfrm')[0].reset();
+	$('#versionfrm').validate().resetForm();
+	$('.form-group').removeClass('has-error');
+	if (type == 'add') {
+		$('#versionTitle').html('<@spring.message code="button.add"/>');
+		$("#version_id").val('');
+	} else if (type == 'edit') {
+		$('#versionTitle').html('<@spring.message code="button.edit"/>');
+		var rowData = $("#versionGrid").getRowData(rowid);
+
+		$("#version_id").val(rowData.id);
+        $("#version_num").val(rowData.version);
+		$("#version_osType").val(rowData.osType);
+	}
+
+	$("#versionModal").modal('show');
+}
+
+</script>
+</body>
+</html> 

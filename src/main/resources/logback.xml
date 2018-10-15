@@ -6,13 +6,13 @@
 	<property name="LOG_FILE" value="/tmp/logs/"/>​
 
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<NFile>${LOG_FILE}</NFile>
+		<file>${LOG_FILE}</file>
 		<encoder>
 			<pattern>[%X{logSessionId}] [%date] [%-5p] [%thread] [%logger{10}] [%NFile:%line] %msg%n</pattern>
 			<charset>UTF-8</charset>
 		</encoder>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>news-%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>logs-%d{yyyy-MM-dd}.log</fileNamePattern>
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
 	</appender>

@@ -6,7 +6,7 @@ import com.news.common.json.DataGridTool;
 import com.news.common.page.Pagination;
 import com.news.common.util.StringUtil;
 import com.news.model.Video;
-import com.news.service.FileService;
+import com.news.service.FileUploadService;
 import com.news.service.VideoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
-import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -34,15 +30,15 @@ public class VideoCMSController extends BaseController{
 	private VideoService videoService;
 
 	@Autowired
-	private FileService showFileService;
+	private FileUploadService fileUploadService;
 
-	private final static String DOWNLOAD_EXCEL_FILE_PATH = "/tmp/";
+
+	private static final String TMP_VIDEO_PATH = "/tmp/";
 
 
 	@RequestMapping(value = "/toList", method = RequestMethod.GET)
 	public String toList(HttpServletRequest request) {
-		System.out.println("===================");
-		return "/WEB-INF/view/video/videoList.html";
+		return "video/videoList";
 	}
 	
 	@RequestMapping(value = "/query", method = RequestMethod.GET)
@@ -53,9 +49,8 @@ public class VideoCMSController extends BaseController{
 			orderBy.put(sidx, sord);
 		}
 
-		List<String> filterItem = null;
-
 		Page<Video> result = videoService.queryVideoList(new Pagination(page, rows));
+
 		String jsonList = jacksonMapper.writeValueAsString(result.getContent());
 		return DataGridTool.formatJGridPage(result.getTotalPages(),result.getTotalElements(),jsonList);
 	}
@@ -89,10 +84,14 @@ public class VideoCMSController extends BaseController{
 
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
 	@ResponseBody
-	public String modify(HttpServletRequest request,Video video) {
+	public String modify(HttpServletRequest request,String id, String title, String description, String thumbnailUrl) {
 		JSONObject result = new JSONObject();
 		try {
-
+			Video video = new Video();
+			video.setId(Integer.parseInt(id));
+			video.setDesc(description);
+			video.setTitle(title);
+			video.setThumbnailUrl(thumbnailUrl);
 			videoService.update(video);
 
 			result.put("status", "true");
@@ -105,29 +104,44 @@ public class VideoCMSController extends BaseController{
 		return result.toJSONString();
 	}
 
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	@ResponseBody
+	public String add(HttpServletRequest request, String title, String description, String thumbnailUrl,
+					  String contentUrl, int height, int width, int duration, int size) {
+		JSONObject result = new JSONObject();
+		try {
+			Video video = new Video();
+			video.setDesc(description);
+			video.setTitle(title);
+			video.setThumbnailUrl(thumbnailUrl);
+			video.setContentUrl(contentUrl);
+			video.setHeight(height);
+			video.setWidth(width);
+			video.setDuration(duration);
+			video.setSize(size);
+			videoService.insert(video);
+
+			result.put("status", "true");
+			return result.toJSONString();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		result.put("status", "false");
+		result.put("msg","系统错误");
+		return result.toJSONString();
+	}
+
 	@RequestMapping(value = "/uploadVideoThumbnail", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
-	public @ResponseBody String uploadVideoThumbnail(HttpServletRequest request, String userId, String key) {
+	public @ResponseBody String uploadVideoThumbnail(HttpServletRequest request) {
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		MultipartFile file = multipartRequest.getFile("itemVideoThumb");
 		JSONObject json = new JSONObject();
 
-		if (StringUtils.isEmpty(userId)) {
-			json.put("msg", "未选择用户");
-			json.put("status", "false");
-			return json.toJSONString();
-		}
-		if (StringUtils.isEmpty(key)) {
-			json.put("msg", "请先上传视频");
-			json.put("status", "false");
-			return json.toJSONString();
-		}
 		try {
-			BufferedInputStream bis = new BufferedInputStream(file.getInputStream());
-			BufferedImage image = ImageIO.read(bis);
 
-			json.put("imageWidth", image.getWidth(null));
-			json.put("imageHeight", image.getHeight(null));
-//			json.put("url", showFileService.uploadVideoThumbnail(file, userId, key));
+			String url = fileUploadService.uploadImage(file);
+			System.out.println(url);
+			json.put("url", url);
 			json.put("status", "true");
 		} catch (Exception e) {
 			json.put("status", "false");
@@ -144,12 +158,17 @@ public class VideoCMSController extends BaseController{
 		JSONObject json = new JSONObject();
 
 		try {
-			BufferedInputStream bis = new BufferedInputStream(file.getInputStream());
-			BufferedImage image = ImageIO.read(bis);
-
-			json.put("imageWidth", image.getWidth(null));
-			json.put("imageHeight", image.getHeight(null));
-//			json.put("url", showFileService.uploadVideoThumbnail(file, userId, key));
+//			String tmpFilePath = TMP_VIDEO_PATH+file.getOriginalFilename();
+//			File tmpFile= new File(tmpFilePath);
+//			file.transferTo(tmpFile);
+//			File localFile = new File(tmpFilePath);
+//			Encoder encoder = new Encoder();
+//			MultimediaInfo multimediaInfo = encoder.getInfo(localFile);
+			json.put("url", fileUploadService.uploadVideo(file));
+			json.put("size", file.getSize());
+			json.put("height", 0);
+			json.put("width", 0);
+			json.put("duration", 0);
 			json.put("status", "true");
 		} catch (Exception e) {
 			json.put("status", "false");

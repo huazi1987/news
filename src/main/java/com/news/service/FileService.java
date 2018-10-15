@@ -58,6 +58,15 @@ public class FileService extends BaseService {
         }
     }
 
+    public int delete(String id){
+        try {
+            return fileMapper.delete(id);
+        }catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
     public NFile getFileById(String id){
         return fileMapper.findById(id);
     }

@@ -37,9 +37,6 @@ public class DBExt {
 		try{
 			ds = new ComboPooledDataSource();  
 			ds.setDriverClass("com.mysql.jdbc.Driver");
-//			ds.setJdbcUrl("jdbc:mysql://35.154.207.19:3306/weshow_cms?useUnicode=true&characterEncoding=UTF-8");
-//			ds.setUser("cms_user");
-//			ds.setPassword("a5rs3@1d3bn3");
 			ds.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/news?useUnicode=true&characterEncoding=UTF-8");
 			ds.setUser("root");
 			ds.setPassword("111111");

@@ -12,8 +12,8 @@ public interface VersionMapper extends BaseMapper<Version> {
 	
 	Version findVersionByOSType(String osType);
 
-	List<Version> findVideoList(Map<String, Object> params);
+	List<Version> findVersionList(Map<String, Object> params);
 
-	int findVideoCount(Map<String, Object> params);
+	int findVersionCount(Map<String, Object> params);
 
 }

@@ -4,7 +4,7 @@
 <#include 'common/common_css.html'/>
 </head>
 <body class="no-skin">
-<div class="main-content">
+<div class="main-content" style="height: 1000px">
 	<div class="main-content-inner">
 		<div class="page-content">
 			<div class="row">
@@ -14,40 +14,44 @@
 							<label for="">&nbsp;</label>
 						</div>
 						<div class="form_bottom">
-							<button class="btn btn-sm btn-success" id="videoAdd"><i class="ace-icon glyphicon glyphicon-plus"></i><@spring.message code="button.add"/></button>
+							<button class="btn btn-sm btn-success" id="addVideo"><i class="ace-icon glyphicon glyphicon-plus"></i><@spring.message code="button.add"/></button>
 						</div>
 					</div>
 				</div>
 				<div class="col-xs-12">
-					<table id="itemGrid"></table>
-					<div id="itemGridPager"></div>
+					<table id="videoGrid"></table>
+					<div id="videoGridPager"></div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 <#include 'common/common_js.html'/>
-<#include 'item/itemDiv.html'/>
-<script type="text/javascript" src="${rootPath}/resource/biz/item.js"></script>
+<#include 'video/videoDiv.html'/>
+<script type="text/javascript" src="${rootPath}/resource/biz/common.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/biz/video.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-
-	$("#itemGrid").jqGrid({
+	$("#videoGrid").jqGrid({
 		url : contextPath + '/cms/video/query',
 		datatype: "json",
 		colModel:[
-		    {name:'id',label:'<@spring.message code="video.id"/>',width:100,sortable:false},
-		    {name:'thumbFormat',label:'<@spring.message code="video.thumbnailUrl"/>',width:100,sortable:false,formatter:formatThumbnailUrl},
-		    {name:'createTime',index:'create_time',label:'<@spring.message code="item.createTime"/>',width:120,sorttype:"date"},
-		    {name:'contentUrl',hidden:true},
+		    {name:'thumbFormat',label:'封面',width:120,sortable:false,formatter:formatThumbnailUrl},
+            {name:'videoFormat',label:'视频',width:200, height:100,sortable:false,formatter:formatContentUrl},
+            {name:'createTime',label:'创建时间',width:140,formatter:formatCreateTime},
+            {name:'title',label:'标题',width:120},
+            {name:'desc',label:'描述',width:120},
+            {name:'contentUrl',hidden:true},
 		    {name:'thumbnailUrl',hidden:true},
 			{name:'mediaHeight',hidden:true},
-			{name:'mediaWidth',hidden:true}
+			{name:'mediaWidth',hidden:true},
+            {name:'id',hidden:true},
+            {name:'operat',label:'操作',width:120,sortable:false,formatter:formatOperat}
 		],
 		viewrecords : true,
-		sortname : 'create_time',
+		sortname : 'createTime',
 	    sortorder : "desc",
-		pager : "#itemGridPager",
+		pager : "#videoGridPager",
 		multiselect: true,
 		altRows: true,
 		rownumbers : true,
@@ -64,83 +68,48 @@ $(document).ready(function() {
 		},
 	});
 	
-	styleGridResize("#itemGrid");
+	styleGridResize("#videoGrid");
 	
-	$(".itemVideo").colorbox({iframe:true, innerWidth:640, innerHeight:390});
+	$(".itemVideo").colorbox({iframe:true, innerWidth:640, innerHeight:1000});
 });
 
 function formatOperat(cellValue, options, rowObject) {
 	var resultStr = '';
 	
-	resultStr += '<a href="javascript:void(0)" class="btn btn-primary btn-xs" onclick="showItemEditModal('+options.rowId+')" title="<@spring.message code="grid.operat.edit"/>">编辑</a>&nbsp;';
-	resultStr += '<a href="javascript:void(0)" class="btn btn-danger btn-xs" onclick="deleteItem('+options.rowId+')" title="<@spring.message code="grid.operat.delete"/>">删除</a>&nbsp;';
-
+	resultStr += '<a href="javascript:void(0)" class="btn btn-primary btn-xs" onclick="editVideo('+options.rowId+')" title="<@spring.message code="grid.operat.edit"/>">编辑</a>&nbsp;';
+	resultStr += '<a href="javascript:void(0)" class="btn btn-danger btn-xs" onclick="deleteVideo('+options.rowId+')" title="<@spring.message code="grid.operat.delete"/>">删除</a>&nbsp;';
 
 	return resultStr;
 }
 
-
-function formatDeleteFlag(cellValue, options, rowObject) {
-	switch (rowObject.deleteFlag) {
-		case 0:return '<font color="green"><@spring.message code="item.deleteFlag.0"/></font>';
-		case 1:return '<font color="red"><@spring.message code="item.deleteFlag.1"/></font>';
-	}
+function formatThumbnailUrl(cellValue, options, rowObject) {
+    if(rowObject.thumbnailUrl!=undefined && rowObject.thumbnailUrl!=''){
+        return '<div class="ace-thumbnails"><a href="'+rowObject.thumbnailUrl+'" data-rel="colorbox"><img width="100" height="100" src="'+rowObject.thumbnailUrl+'"/></a></div>'
+    }
+    return '';
 }
 
-function initItemEditThumb(imgUrl) {
-	$("#itemEditThumb").fileinput({
-		theme : 'explorer-fa',
-		language : $.cookie('W_LANG') == 'zh_CN' ? 'zh' : '',
-		overwriteInitial : false,
-		showRemove : false,
-		initialPreviewAsData : true,
-		initialPreview : [ imgUrl ],
-		uploadUrl : contextPath + '/cms/video/uploadVideoThumbnail',
-		allowedFileExtensions : [ 'jpg', 'png', 'jpeg' ],
-		allowedPreviewTypes : [ 'image' ],
-		maxFileSize : 1000,
-		maxFileCount : 1
-	});
-	
-	$(this).on('filepreupload',function(event, data, previewId, index,jqXHR) {
-	    var userId = $('#itemEdit_userId').val();
-	    if(undefined != userId && userId != ''){
-	        data.form.append("userId", userId);
-	    }
-		
-		data.form.append("key", $('#itemEdit_key').val());
-	});
+function formatContentUrl(cellValue, options, rowObject) {
+    if(rowObject.contentUrl!=undefined && rowObject.contentUrl!=''){
+        return '<div class="ace-thumbnails"><video width="200" height="200" src="'+rowObject.contentUrl+'" controls="controls">您的浏览器不支持 video 标签。</video></div>'
+    }
+    return '';
+}
 
-	$("#itemEditThumb").on('fileuploaded',function(event, data, previewId, index) {
-		if (data.response.status == "true") {
-			$('#itemEdit_thumbUrl').val(data.response.url)
-			var parent = $(this).parent().parent().parent().parent();
-			$(parent).find(".NFile-thumb-progress").remove();
-			$(parent).find(".NFile-caption-name").text(data.response.url);
-			$(parent).find(".NFile-caption").text(data.response.url);
-		}
-		if (data.response.status == "false") {
-			error(data.response.msg);
-			var parent = $(this).parent().parent().parent().parent();
-			$(parent).find(".NFile-thumb-progress").remove();
-		}
-	});
-
-	$("#itemEditThumb").on('change',function() {
-		var parent = $(this).parents(".NFile-input");
-		$(parent).find(".NFile-error-message").css("display", "block").html('<@spring.message code="prompt.filediv.message"/>');
-	});
+function formatCreateTime(cellValue, options, rowObject){
+    var crtTime = new Date(rowObject.createTime);
+    return dateFtt("yyyy-MM-dd hh:mm:ss",crtTime);
 }
 
 
-function deleteItem(rowid) {
-	var rowData = $("#itemGrid").getRowData(rowid);
+function deleteVideo(rowid) {
+	var rowData = $("#videoGrid").getRowData(rowid);
 	confirm('<@spring.message code="button.delete"/><@spring.message code="item"/>','<@spring.message code="prompt.confirm.delete"/>[<font color="red">'+rowData.itemId+'</font>]<@spring.message code="item"/>?',function(result) {
 		if(result){
-			$.post(contextPath+"/cms/video/delete",{itemId:rowData.itemId,createTime:rowData.sortKey,deleteFlag:1}, function (data) {
+			$.post(contextPath+"/cms/video/delete",{id:rowData.id}, function (data) {
 	            result = eval('(' + data + ')')
 	            if (result.status == 'true') {
-	            	$("#itemGrid").trigger("reloadGrid");
+	            	$("#videoGrid").trigger("reloadGrid");
 	            } else if (result.status == 'false') {
 	                error(result.msg);
 	            }

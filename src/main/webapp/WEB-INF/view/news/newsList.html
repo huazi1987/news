@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include 'common/common_css.html'/>
+</head>
+<body class="no-skin">
+<div class="main-content">
+	<div class="main-content-inner">
+		<div class="page-content">
+			<div class="row">
+         		<div class="col-sm-6">
+         			<div class="input-group">
+               			<div class="form_top" style="line-height: 20px;">
+                      		<label for="">&nbsp;</label>
+               			</div>
+	               		<div class="form_bottom">
+							<button class="btn btn-sm btn-success" id="addNews"><i class="ace-icon glyphicon glyphicon-plus"></i><@spring.message code="button.add"/></button>
+	                 	</div>
+                	</div>
+         		</div>
+				<div class="col-xs-12">
+					<table id="newsGrid"></table>
+					<div id="newsGridPager"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<#include 'common/common_js.html'/>
+<#include 'news/newsDiv.html'/>
+<script type="text/javascript" src="${rootPath}/resource/biz/common.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/biz/news.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#newsGrid").jqGrid({
+		url : contextPath + '/cms/news/query',
+		datatype: "json",
+		colModel:[
+			{name:'title',label:'标题',width:50,sortable:false},
+		    {name:'content',label:'内容',width:100,sortable:false},
+            {name:'thumbFormat',label:'封面',width:120,sortable:false,formatter:formatThumbnailUrl},
+		    {name:'createTime',label:'创建时间',width:100,sorttype:"date", formatter:formatCreateTime},
+		    {name:'id',hidden:true},
+            {name:'thumbnailUrl',hidden:true},
+            {name:'operat',label:'<@spring.message code="grid.operat"/>',width:80,sortable:false,formatter:formatOperat},
+
+        ],
+		viewrecords : true,
+		sortname : 'createTime',
+	    sortorder : "desc",
+		pager : "#newsGridPager",
+		altRows: true,
+		rownumbers : true,
+		rowNum: 15,
+		autoScroll: true,
+		toolbar:[true,"top"],
+		loadComplete : function() {
+			var table = this;
+			setTimeout(function(){
+				styleGridPager(table);
+			}, 0);
+		},
+	});
+	
+	styleGridResize("#newsGrid");
+})
+
+function formatOperat(cellValue, options, rowObject) {
+    var resultStr = '';
+
+    resultStr += '<a href="javascript:void(0)" class="btn btn-primary btn-xs" onclick="editNews('+options.rowId+')" title="<@spring.message code="grid.operat.edit"/>">编辑</a>&nbsp;';
+    resultStr += '<a href="javascript:void(0)" class="btn btn-danger btn-xs" onclick="deleteNews('+options.rowId+')" title="<@spring.message code="grid.operat.delete"/>">删除</a>&nbsp;';
+
+    return resultStr;
+}
+
+
+function formatThumbnailUrl(cellValue, options, rowObject) {
+    if(rowObject.thumbnailUrl!=undefined && rowObject.thumbnailUrl!=''){
+        return '<div class="ace-thumbnails"><a href="'+rowObject.thumbnailUrl+'" data-rel="colorbox"><img width="100" height="100" src="'+rowObject.thumbnailUrl+'"/></a></div>'
+    }
+    return '';
+}
+
+function formatCreateTime(cellValue, options, rowObject){
+    var crtTime = new Date(rowObject.createTime);
+    return dateFtt("yyyy-MM-dd hh:mm:ss",crtTime);
+}
+
+
+function showModal(type, rowid) {
+	var thumbnailUrl = '';
+	$('#newsfrm')[0].reset();
+	$('#newsfrm').validate().resetForm();
+	$('.form-group').removeClass('has-error');
+	if (type == 'add') {
+		$('#newsTitle').html('<@spring.message code="button.add"/>');
+		$("#news_id").val('');
+        $("#news_title").val('');
+        $("#news_content").text('');
+
+	} else if (type == 'edit') {
+		$('#newsTitle').html('<@spring.message code="button.edit"/>');
+		var rowData = $("#newsGrid").getRowData(rowid);
+		thumbnailUrl = rowData.thumbnailUrl;
+
+		$("#news_id").val(rowData.id);
+		$("#news_title").val(rowData.title);
+		$("#news_content").text(rowData.content);
+	}
+	
+	$("#news_thumbnailUrl").val(thumbnailUrl);
+	$('#newsThumbnail').html('<input id="newsThumbnailUrl" name="newsImage" type="file" class="file newThumbnailUrl"/>');
+
+    initNewsImage(thumbnailUrl);
+
+	$('#newsThumbnail').find(".file-caption").text(thumbnailUrl);
+
+	$("#newsModal").modal('show');
+}
+
+function initNewsImage(imgUrl) {
+    $("#newsThumbnailUrl").fileinput({
+        theme : 'explorer-fa',
+        language : $.cookie('W_LANG') == 'zh_CN' ? 'zh' : '',
+        overwriteInitial : false,
+        showRemove : false,
+        initialPreviewAsData : true,
+        initialPreview : [ imgUrl ],
+        uploadUrl : contextPath + '/cms/news/uploadImage',
+        allowedFileExtensions : [ 'jpg', 'png', 'jpeg'],
+        maxFileSize : 1000,
+        maxFileCount : 1
+    });
+
+    $(this).on('filepreupload',function(event, data, previewId, index,jqXHR) {
+        // data.form.append("key", $('#itemEdit_key').val());
+    });
+
+    $("#newsThumbnailUrl").on('fileuploaded',function(event, data, previewId, index) {
+        if (data.response.status == "true") {
+            $('#news_thumbnailUrl').val(data.response.url)
+            var parent = $(this).parent().parent().parent().parent();
+            $(parent).find(".file-thumb-progress").remove();
+            $(parent).find(".file-caption-name").text(data.response.url);
+            $(parent).find(".file-caption").text(data.response.url);
+        }
+        if (data.response.status == "false") {
+            error(data.response.msg);
+            var parent = $(this).parent().parent().parent().parent();
+            $(parent).find(".file-thumb-progress").remove();
+        }
+    });
+
+    $("#newsThumbnailUrl").on('change',function() {
+        var parent = $(this).parents(".file-input");
+        $(parent).find(".file-error-message").css("display", "block").html('请点击“上传“按钮，上传图片！\n' +
+            '由于上传到国外服务器，时间过长请耐心等待！\n' +
+            '进度条消失后在继续操作，谢谢合作！');
+    });
+}
+</script>
+</body>
+</html> 

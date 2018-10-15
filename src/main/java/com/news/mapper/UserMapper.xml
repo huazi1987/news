@@ -57,7 +57,21 @@
         SELECT * FROM user WHERE phone=#{phone} limit 1
     </select>
 
-	
+
+
+    <select id="findUserList" resultMap="UserMap" parameterType="Map">
+        SELECT * FROM user WHERE 1=1
+        order by create_time desc
+        <if test="page!=null and page!=''">
+            limit #{page.start}, #{page.pageSize}
+        </if>
+    </select>
+
+
+    <select id="findUserCount" resultType="int" parameterType="Map">
+        SELECT count(id) FROM version
+    </select>
+
 	<resultMap type="User" id="UserMap">
 		<result column="id" property="id"/>
 		<result column="nickname" property="nickname"/>

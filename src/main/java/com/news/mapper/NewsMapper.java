@@ -12,5 +12,7 @@ public interface NewsMapper extends BaseMapper<News> {
 	
 	List<News> findNewsList(Map<String, Object> params);
 
+	List<News> findNewsList2(Map<String, Object> params);
+
 	int findNewsCount(Map<String, Object> params);
 }

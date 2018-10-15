@@ -1,67 +1,67 @@
 package com.news.service;
 
-import com.news.common.page.PageRecord;
-import com.news.common.page.Pagination;
-import com.news.model.Video;
+import com.aliyun.oss.OSSClient;
+import com.google.common.base.Joiner;
+import com.news.common.util.AliYunUtil;
+import com.news.common.util.Hex64;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Date;
 
 @Service
 public class FileUploadService {
+
+	@Value("#{appProperties['news.oss.endpoint']}")
+	private String endpoint;
 	
-	private static final String DOMAIN = "http://cdn.news.me/";
+	private static final String DOMAIN = "https://communication-emperor.oss-cn-beijing.aliyuncs.com/";
 
-	@Value("#{appProperties['snapshow.s3.path.prefix']}")
-	private String prefix;
+	private static final String BUCKET_NAME = "communication-emperor";
 
-	@Value("#{appProperties['snapshow.south.s3.path.prefix']}")
-	private String southPrefix;
+	private final static String IMAGE_PATH = "image/";
 
-	/**
-	 * 上传用户的头像和背景图
-	 * @Description: 
-	 * @param file
-	 * @param userId
-	 * @param fileType
-	 * @return
-	 * @throws Exception
-	 */
-	public String uploadVideo(MultipartFile file, String userId,String fileType) throws Exception {
-//		String key = createImageKey(file);
-////		String filename = prefix + "avatar/" + userId + "/" + key;
-////		if(!StringUtils.isEmpty(fileType)){
-////			filename = prefix + "cover/" + userId + "/" + key;
-////		}
-////		return DOMAIN + UploadFileToS3.uploadFile(file.getInputStream(), filename, file.getSize());
-		return "";
+	private final static String VIDEO_PATH = "video/";
+
+	private final static String FILE_PATH = "file/";
+
+	public String uploadVideo(MultipartFile file) throws Exception {
+		String key = VIDEO_PATH+createKey(file);
+		OSSClient ossClient = AliYunUtil.getOSSClient(endpoint);
+		ossClient.putObject(BUCKET_NAME, key, file.getInputStream());
+		return DOMAIN+key;
 	}
 
 
 
-	/**
-	 * 上传视频封面
-	 * 
-	 * @param file
-	 * @param isPress
-	 * @param userId
-	 * @return
-	 * @throws Exception
-	 */
-	public String uploadVideoThumbnail(MultipartFile uploadFile,String userId, String key)
-			throws Exception {
-//		long timestamp = new Date().getTime();
-//		String filename = key.substring(0, 19) + timestamp + "." + getSuffixOfFile(uploadFile).toLowerCase();
-//		return UploadFileToS3.uploadFile(uploadFile.getInputStream(), prefix + "image/" + userId + "/" + filename, uploadFile.getSize());
-//	}
-		return "";
+	public String uploadImage(MultipartFile file) throws Exception {
+		String key = IMAGE_PATH+createKey(file);
+		OSSClient ossClient = AliYunUtil.getOSSClient(endpoint);
+		ossClient.putObject(BUCKET_NAME, key, file.getInputStream());
+		return DOMAIN+key;
 
 	}
 
+	public String uploadFile(MultipartFile file) throws Exception {
+		String key = FILE_PATH+createKey(file);
+		OSSClient ossClient = AliYunUtil.getOSSClient(endpoint);
+		ossClient.putObject(BUCKET_NAME, key, file.getInputStream());
+		return DOMAIN+key;
+	}
+
+
+	private String getSuffixOfFile(MultipartFile file) {
+		return file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
+	}
+
+
+	private String createKey(MultipartFile file) {
+		return Joiner.on(".").join(initFileName(), getSuffixOfFile(file));
+	}
+
+	private String initFileName() {
+		return Hex64.parse64Encode(Long.valueOf(String.valueOf(new Date().getTime()) + Math.round(Math.random() * 99)));
+	}
 
 }

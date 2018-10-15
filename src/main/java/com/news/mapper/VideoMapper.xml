@@ -7,7 +7,7 @@
 		<if test="title!=null and title!=''">
 			,title
 		</if>
-		<if test="description!=null and description!=''">
+		<if test="desc!=null and desc!=''">
 			,description
 		</if>
 		<if test="width!=null and width!=''">
@@ -22,19 +22,19 @@
 		<if test="duration!=null and duration!=''">
 			,duration
 		</if>
-		<if test="contentUri!=null and contentUri!=''">
-			,content_uri
+		<if test="contentUrl!=null and contentUrl!=''">
+			,content_url
 		</if>
-		<if test="thumbnailUri!=null and thumbnailUri!=''">
-			,thumbnail_uri
+		<if test="thumbnailUrl!=null and thumbnailUrl!=''">
+			,thumbnail_url
 		</if>
 		)
 		VALUES(now()
 		<if test="title!=null and title!=''">
 			,#{title}
 		</if>
-		<if test="description!=null and description!=''">
-			,#{description}
+		<if test="desc!=null and desc!=''">
+			,#{desc}
 		</if>
 		<if test="width!=null and width!=''">
 			,#{width}
@@ -48,11 +48,11 @@
 		<if test="duration!=null and duration!=''">
 			,#{duration}
 		</if>
-		<if test="contentUri!=null and contentUri!=''">
-			,#{contentUri}
+		<if test="contentUrl!=null and contentUrl!=''">
+			,#{contentUrl}
 		</if>
-		<if test="thumbnailUri!=null and thumbnailUri!=''">
-			,#{thumbnailUri}
+		<if test="thumbnailUrl!=null and thumbnailUrl!=''">
+			,#{thumbnailUrl}
 		</if>
 		)
 	</insert>
@@ -64,8 +64,8 @@
 			<if test="title!=null and title!=''">
 				,title=#{title}
 			</if>
-			<if test="description!=null and description!=''">
-				,description=#{description}
+			<if test="desc!=null and desc!=''">
+				,description=#{desc}
 			</if>
 			<if test="width!=null and width!=''">
 				,width=#{width}
@@ -79,11 +79,11 @@
 			<if test="duration!=null and duration!=''">
 				,duration=#{duration}
 			</if>
-			<if test="contentUri!=null and contentUri!=''">
-				,content_uri=#{contentUri}
+			<if test="contentUrl!=null and contentUrl!=''">
+				,content_url=#{contentUrl}
 			</if>
-			<if test="thumbnailUri!=null and thumbnailUri!=''">
-				,thumbnail_uri=#{thumbnailUri}
+			<if test="thumbnailUrl!=null and thumbnailUrl!=''">
+				,thumbnail_url=#{thumbnailUrl}
 			</if>
 
 		</set>
@@ -98,6 +98,7 @@
 	
 	<select id="findVideoList" resultMap="VideoMap" parameterType="Map">
 		SELECT * FROM video WHERE 1=1
+        order by create_time desc
 		<if test="page!=null and page!=''">
 			limit #{page.start}, #{page.pageSize}
 		</if>

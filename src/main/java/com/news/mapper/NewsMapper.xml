@@ -4,7 +4,7 @@
 
 	<insert id="insert" parameterType="News" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO news(title,content,thumbnail_url)
-		VALUES(#{title},#{content},#{thumbnailUri}
+		VALUES(#{title},#{content},#{thumbnailUrl}
 		)
 	</insert>
 	
@@ -18,8 +18,8 @@
 			<if test="content!=null and content!=''">
 				,content=#{content}
 			</if>
-			<if test="thumbnailUri!=null and thumbnailUri!=''">
-				,thumbnail_uri=#{thumbnailUri}
+			<if test="thumbnailUrl!=null and thumbnailUrl!=''">
+				,thumbnail_url=#{thumbnailUrl}
 			</if>
 
 		</set>
@@ -32,7 +32,14 @@
 	</select>
 	
 	<select id="findNewsList" resultMap="NewsMap" parameterType="Map">
-		SELECT id, title, thumbnail_url FROM news WHERE 1=1
+		SELECT id, title, thumbnail_url, create_time FROM news WHERE 1=1
+		<if test="page!=null and page!=''">
+			limit #{page.start}, #{page.pageSize}
+		</if>
+	</select>
+
+	<select id="findNewsList2" resultMap="NewsMap" parameterType="Map">
+		SELECT * FROM news WHERE 1=1
 		<if test="page!=null and page!=''">
 			limit #{page.start}, #{page.pageSize}
 		</if>

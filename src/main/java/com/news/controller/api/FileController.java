@@ -50,13 +50,14 @@ public class FileController {
 			NFile NFile = fileService.getFileById(id);
 			if (null != NFile){
 				String path = NFile.getPath();
-				String filename = NFile.getFilename();
-				String fileName = URLEncoder.encode(filename, "UTF-8");
+
+				String suffix = path.substring(path.lastIndexOf(".") + 1);
 
 				File file = new File(path);
+				String fileName = URLEncoder.encode(file.getName(), "UTF-8");
 
 				response.reset();
-				response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+				response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName+"."+suffix + "\"");
 				response.addHeader("Content-Length", "" + file.length());
 				response.setContentType("application/octet-stream;charset=UTF-8");
 

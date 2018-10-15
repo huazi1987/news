@@ -1,56 +1,56 @@
-<div class="modal fade" id="itemEditModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="videoModal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document" style="width: 80%">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">×</span>
 				</button>
-				<h4 class="modal-title"><@spring.message code="button.edit"/><@spring.message code="item"/></h4>
+				<h4 class="modal-title">上传视频内容</h4>
 			</div>
 			<div class="modal-body">
-				<form class="form-horizontal" id="itemEditfrm" enctype="multipart/form-data">
-					<input type="hidden" id="itemEdit_key"/>
-					<input type="hidden" id="itemEdit_thumbUrl"/>
-					<div class="input-group col-md-12">
-                        <div class="form_label col-md-4">
-	                        <label for=""><@spring.message code="item.media.preview"/></label>
-	                    </div>
-	                    <div class="form-group">
-	                        <div id="itemEdit_videoDiv" style="width:100%;margin:0 auto;text-align: center;">
-	                        </div>
-	                    </div>
-                    </div>
-                    <div class="form-group">
-						<label class="col-sm-2 control-label"><@spring.message code="item.media.thumb"/>:</label>
+				<form class="form-horizontal" id="videofrm" enctype="multipart/form-data">
+					<input type="hidden" id="video_id" name="id"/>
+					<input type="hidden" id="video_thumbnailUrl" name="thumbnailUrl"/>
+					<input type="hidden" id="video_contentUrl" name="contentUrl"/>
+					<input type="hidden" id="video_width" name="width"/>
+					<input type="hidden" id="video_height" name="height"/>
+					<input type="hidden" id="video_size" name="size"/>
+					<input type="hidden" id="video_duration" name="duration"/>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">视频:</label>
 						<div class="col-sm-8">
-							<div id="itemEdit_imgDiv"></div>
+							<div id="videoContent"></div>
 						</div>
 					</div>
+
 					<div class="form-group">
-						<label class="col-sm-2 control-label"><@spring.message code="item.media.width"/>:</label>
-						<div class="col-sm-4">
-							<input id="itemEdit_mediaWidth" type="text"class="form-control"/>
+						<label class="col-sm-2 control-label">封面图:</label>
+						<div class="col-sm-8">
+							<div id="videoThumbnail"></div>
 						</div>
 					</div>
+
 					<div class="form-group">
-						<label class="col-sm-2 control-label"><@spring.message code="item.media.height"/>:</label>
-						<div class="col-sm-4">
-							<input id="itemEdit_mediaHeight" type="text"class="form-control"/>
+						<label class="col-sm-2 control-label">标题:</label>
+						<div class="col-sm-6">
+							<input type="text" id="video_title" name="title" class="col-sm-9">
 						</div>
 					</div>
+
+
 					<div class="form-group">
-						<label class="col-sm-2 control-label"><@spring.message code="item.description"/>:</label>
-						<div class="col-sm-9">
-							<textarea id="itemEdit_description" class="col-sm-9"></textarea>
+						<label class="col-sm-2 control-label">描述:</label>
+						<div class="col-sm-6">
+							<input type="text" id="video_description" name="description" class="col-sm-9">
 						</div>
 					</div>
+
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-sm btn-left" onclick="itemEditModalHide()"><i class='ace-icon glyphicon glyphicon-remove'></i><@spring.message code="button.close"/></button>
-				<button class="btn btn-sm btn-primary" id="itemEditModalSave"><i class='ace-icon fa fa-floppy-o'></i><@spring.message code="button.save"/></button>
+				<button class="btn btn-sm btn-left" onclick="videModalHide()"><i class='ace-icon glyphicon glyphicon-remove'></i><@spring.message code="button.close"/></button>
+				<button class="btn btn-sm btn-primary" onclick="saveVideo()"><i class='ace-icon fa fa-floppy-o'></i><@spring.message code="button.save"/></button>
 			</div>
 		</div>
 	</div>
 </div>
-

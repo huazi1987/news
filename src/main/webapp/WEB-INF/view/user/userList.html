@@ -8,67 +8,6 @@
 	<div class="main-content-inner">
 		<div class="page-content">
 			<div class="row">
-				<div class="col-sm-2">
-             		<div class="form-group" >
-                    	<div class="form_top" style="line-height: 20px;">
-                     		<label for=""><@spring.message code="user.userId"/></label>
-                      	</div>
-	                	<div class="form_bottom" >
-	                 		<input id="s_userid" type="text" class="form-control" style="width: 100%;"/>
-	              		</div>
-         			</div>
-       			</div>
-       			<div class="col-sm-2">
-             		<div class="form-group" >
-                    	<div class="form_top" style="line-height: 20px;">
-                     		<label for=""><@spring.message code="user.nickName"/></label>
-                      	</div>
-	                	<div class="form_bottom" >
-	                 		<input id="s_nickname" type="text" class="form-control" style="width: 100%;"/>
-	              		</div>
-         			</div>
-       			</div>
-       			<div class="col-sm-2">
-             		<div class="form-group">
-                    	<div class="form_top" style="line-height: 20px;">
-                     		<label for=""><@spring.message code="user.email"/></label>
-                      	</div>
-	                	<div class="form_bottom" >
-	                 		<input id="s_email" type="text" class="form-control" style="width: 100%;"/>
-	              		</div>
-         			</div>
-       			</div>
-    			<div class="col-sm-2">
-             		<div class="form-group" >
-                    	<div class="form_top" style="line-height: 20px;">
-                     		<label for=""><@spring.message code="user.userType"/></label>
-                      	</div>
-	                	<div class="form_bottom">
-	                 		<select id="s_userType" class="form-control" style="width: 100%;">
-	                     		<option value=""><@spring.message code="prompt.select.all"/></option>
-	                     		<option value="0"><@spring.message code="user.userType.0"/></option>
-	                 			<option value="1"><@spring.message code="user.userType.1"/></option>
-	                 			<option value="2"><@spring.message code="user.userType.2"/></option>
-	                 			<option value="99"><@spring.message code="user.userType.99"/></option>
-	                 		</select>
-	              		</div>
-         			</div>
-       			</div>
-         		<div class="col-sm-6">
-         			<div class="input-group">
-               			<div class="form_top" style="line-height: 20px;">
-                      		<label for="">&nbsp;</label>
-               			</div>
-	               		<div class="form_bottom">
-							<button class="btn btn-sm btn-purple" id="userSearch"><i class="ace-icon fa fa-search"></i><@spring.message code="button.search"/></button>
-							<button class="btn btn-sm btn-primary" id="userRefresh"><i class="ace-icon fa fa-refresh"></i><@spring.message code="button.reset"/></button>
-							<!-- 
-							<button class="btn btn-sm btn-grey" id="userExportExcel"><i class="ace-icon fa fa-NFile-excel-o"></i><@spring.message code="button.export.excel"/></button>
-							 -->
-							<button class="btn btn-sm btn-success" id="userAdd"><i class="ace-icon glyphicon glyphicon-plus"></i><@spring.message code="button.add"/></button>
-	                 	</div>
-                	</div>
-         		</div>
 				<div class="col-xs-12">
 					<table id="userGrid"></table>
 					<div id="userGridPager"></div>
@@ -78,37 +17,24 @@
 	</div>
 </div>
 <#include 'common/common_js.html'/>
-<#include 'user/userDiv.html'/>
-<script type="text/javascript" src="${rootPath}/resource/biz/user.js"></script>
+<!--<#include 'user/userDiv.html'/>-->
+<script type="text/javascript" src="${rootPath}/resource/biz/common.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#userGrid").jqGrid({
-		url : contextPath + '/showuser/query',
+		url : contextPath + '/cms/user/query',
 		datatype: "json",
 		colModel:[
-			{name:'operat',label:'<@spring.message code="grid.operat"/>',width:80,sortable:false,formatter:formatOperat},
-		    {name:'userId',label:'<@spring.message code="user.userId"/>',width:50,sortable:false},
-		    {name:'nickName',label:'<@spring.message code="user.nickName"/>',width:100,sortable:false},
-		    {name:'email',label:'<@spring.message code="user.email"/>',width:120,sortable:false},
-		    {name:'userTypeFormat',label:'<@spring.message code="user.userType"/>',width:50,sortable:false,formatter:formatUserType},
-		    {name:'itemCount',index:'item_count',label:'<@spring.message code="user.publish"/>',width:50},
-		    {name:'likeCount',index:'like_count',label:'<@spring.message code="user.likes"/>',width:50},
-		    {name:'commentCount',index:'comment_count',label:'<@spring.message code="user.comment"/>',width:50},
-		    {name:'fansCount',index:'fans_count',label:'<@spring.message code="user.fans"/>',width:50},
-		    {name:'tagIds',label:'<@spring.message code="user.tags"/>',width:100,sortable:false},
-		    {name:'statusFormat',label:'<@spring.message code="user.status"/>',width:50,sortable:false,formatter:formatUserStatus},
-		    {name:'createTime',index:'create_time',label:'<@spring.message code="user.createTime"/>',width:100,sorttype:"date"},
-		    {name:'status',hidden:true},
-		    {name:'userType',hidden:true},
-		    {name:'avatarUrl',hidden:true},
-		    {name:'coverUrl',hidden:true},
-		    {name:'gender',hidden:true},
-		    {name:'introduction',hidden:true},
-		    {name:'country',hidden:true}
-		    
+			// {name:'operat',label:'<@spring.message code="grid.operat"/>',width:80,sortable:false,formatter:formatOperat},
+		    {name:'loginName',label:'登录账号',width:50,sortable:false},
+		    {name:'nickname',label:'昵称',width:100,sortable:false},
+		    {name:'address',label:'联系地址',width:120,sortable:false},
+		    {name:'phone',label:'手机号',width:50,sortable:false},
+		    {name:'createTime',index:'createTime',label:'创建时间',width:100,formatter:formatCreateTime},
+		    {name:'id',hidden:true}
 		],
 		viewrecords : true,
-		sortname : 'create_time',
+		sortname : 'createTime',
 	    sortorder : "desc",
 		pager : "#userGridPager",
 		altRows: true,
@@ -127,97 +53,11 @@ $(document).ready(function() {
 	styleGridResize("#userGrid");
 })
 
-function formatOperat(cellValue, options, rowObject) {
-	var resultStr = '';
-	resultStr += '<a href="javascript:void(0)" class="btn btn-primary btn-xs" onclick="javascript:userEdit('+ options.rowId	+ ')" title="<@spring.message code="grid.operat.edit"/>"><i class="glyphicon glyphicon-edit"></i></a>&nbsp;';
-	if(rowObject.status==0){
-		resultStr += '<a href="javascript:void(0)" class="btn btn-warning btn-xs" onclick="javascript:userStatus('+ options.rowId +',0)" title="<@spring.message code="button.enabled"/>"><i class="glyphicon glyphicon-star"></i></a>&nbsp;';
-	}else{
-		resultStr += '<a href="javascript:void(0)" class="btn btn-xs" onclick="javascript:userStatus('+ options.rowId +',1)" title="<@spring.message code="button.disabled"/>"><i class="glyphicon glyphicon-star"></i></a>&nbsp;';
-	}
-	if(rowObject.userType==1|| rowObject.userType==2){
-		resultStr += '<a href="javascript:void(0)" class="btn btn-pink btn-xs" onclick="javascript:showUploadVideo('+ options.rowId	+ ')" title="上传视频"><i class="fa fa-video-camera"></i></a>&nbsp;';
-	}
-	return resultStr;
+function formatCreateTime(cellValue, options, rowObject){
+    var crtTime = new Date(rowObject.createTime);
+    return dateFtt("yyyy-MM-dd hh:mm:ss",crtTime);
 }
 
-function formatUserStatus(cellValue, options, rowObject) {
-	switch (rowObject.status) {
-		case 0:return '正常';
-		default:return rowObject.status;
-	}
-}
-
-function formatUserType(cellValue, options, rowObject) {
-	switch (rowObject.userType) {
-		case 0:return '<@spring.message code="user.userType.0"/>';
-		case 1:return '<@spring.message code="user.userType.1"/>';
-		case 2:return '<@spring.message code="user.userType.2"/>';
-		default:return rowObject.userType;
-	}
-}
-
-function showModal(type, rowid) {
-	var avatarUrl = '';
-	var coverUrl = '';
-	$('#userfrm')[0].reset();
-	$('#userfrm').validate().resetForm();
-	$('.form-group').removeClass('has-error');
-	if (type == 'add') {
-		$('#userTitle').html('<@spring.message code="button.add"/>');
-		$("#user_userId").val('');
-	} else if (type == 'edit') {
-		$('#userTitle').html('<@spring.message code="button.edit"/>');
-		var rowData = $("#userGrid").getRowData(rowid);
-		avatarUrl = rowData.avatarUrl;
-		coverUrl = rowData.coverUrl;
-		
-		$("#user_userId").val(rowData.userId);
-		$("#user_avatarUrl").val(avatarUrl);
-		$("#user_coverUrl").val(coverUrl);
-		$("#user_nickName").val(rowData.nickName);
-		$("#user_email").val(rowData.email);
-		$("#user_gender").val(rowData.gender);
-		$("#user_country").val(rowData.country);
-		$("#user_introduction").val(rowData.introduction);
-	}
-	
-	$("#user_avatarUrl").val(avatarUrl);
-	$("#user_coverUrl").val(coverUrl);
-	$('#avatarUrlDiv').html('<input id="avatarImage" name="avatarImage" type="NFile" class="NFile avatarUrl"/>');
-	$('#coverUrlDiv').html('<input id="coverImage" name="coverImage" type="NFile" class="NFile coverUrl"/>');
-		
-	initUserImage(avatarUrl,coverUrl);
-		
-	$('#avatarUrlDiv').find(".NFile-caption-name").text(avatarUrl);
-	$('#avatarUrlDiv').find(".NFile-caption").text(avatarUrl);
-	$('#coverUrlDiv').find(".NFile-caption-name").text(coverUrl);
-	$('#coverUrlDiv').find(".NFile-caption").text(coverUrl);
-	
-	$("#userModal").modal('show');
-}
-
-function initUserImage(avatarUrl,coverUrl) {
-	$.each($("input[type=NFile]"),function() {
-		var imgUrl = avatarUrl;
-		if($(this).attr("class").indexOf("coverUrl")>0){
-            imgUrl = coverUrl;
-		}
-		$(this).fileinput({
-			theme : 'explorer-fa',
-			language : $.cookie('W_LANG') == 'zh_CN' ? 'zh' : '',
-			overwriteInitial : false,
-			showRemove : false,
-			showUpload : false,
-			initialPreviewAsData : true,
-			initialPreview : [ imgUrl ],
-			allowedFileExtensions : [ 'jpg', 'png', 'jpeg' ],
-			allowedPreviewTypes : [ 'image' ],
-			maxFileSize : 5000,
-			maxFileCount : 1
-		})
-	});
-}
 </script>
 </body>
 </html> 

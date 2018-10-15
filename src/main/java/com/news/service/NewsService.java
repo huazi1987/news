@@ -38,6 +38,22 @@ public class NewsService extends BaseService {
         return result;
     }
 
+    public Page<News> queryNewsList2(Pagination pagination){
+
+        Map<String, Object> page = new HashMap<>(2);
+        page.put("start", pagination.getStart());
+        page.put("pageSize", pagination.getPageSize());
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("page", page);
+
+        int count = newsMapper.findNewsCount(params);
+
+        List<News> list = newsMapper.findNewsList2(params);
+        PageRecord<News> result = new PageRecord<>(list,pagination,count);
+
+        return result;
+    }
 
     public int insert(News news){
         try {
@@ -52,6 +68,15 @@ public class NewsService extends BaseService {
     public int update(News news){
         try {
             return newsMapper.update(news);
+        }catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    public int delete(String id){
+        try {
+            return newsMapper.delete(id);
         }catch (Exception e){
             e.printStackTrace();
             return -1;

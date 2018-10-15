@@ -17,7 +17,7 @@
 
 
 	<select id="findById" resultMap="VersionMap">
-		SELECT * FROM user WHERE id=#{id} limit 1
+		SELECT * FROM version WHERE id=#{id} limit 1
 	</select>
 
 	
@@ -26,14 +26,11 @@
 	</select>
 
 	<select id="findVersionList" resultMap="VersionMap" parameterType="Map">
-		SELECT * FROM version WHERE 1=1
-		<if test="page!=null and page!=''">
-			limit #{page.start}, #{page.pageSize}
-		</if>
+		SELECT * FROM version
 	</select>
 
 	<select id="findVersionCount" resultType="int" parameterType="Map">
-		SELECT count(id) FROM version WHERE 1=1
+		SELECT count(id) FROM version
 	</select>
 	
 	<resultMap type="Version" id="VersionMap">

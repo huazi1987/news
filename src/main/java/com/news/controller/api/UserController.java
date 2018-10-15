@@ -194,6 +194,7 @@ public class UserController {
 		result.put("status", false);
 		String phone = params.get("phone");
 		String code = params.get("code");
+		String address = params.get("address");
 		try {
 			if (StringUtil.isEmpty(phone)){
 				result.put("status", false);
@@ -205,6 +206,11 @@ public class UserController {
 				result.put("msg","验证码不能为空");
 				return  result.toJSONString();
 			}
+            if (StringUtil.isEmpty(address)){
+                result.put("status", false);
+                result.put("msg","地址不能为空");
+                return  result.toJSONString();
+            }
 			HttpSession session = request.getSession();
 			String key = "code_"+phone;
 			String codeCache = (String) session.getAttribute(key);
@@ -220,7 +226,7 @@ public class UserController {
 				user = new User();
 				user.setLoginName(phone);
 				user.setPhone(phone);
-
+				user.setAddress(address);
 				userService.insert(user);
 			}
 

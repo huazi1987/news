@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include 'common/common_css.html'/>
+</head>
+<body class="no-skin">
+<div class="main-content">
+	<div class="main-content-inner">
+		<div class="page-content">
+			<div class="row">
+         		<div class="col-sm-6">
+         			<div class="input-group">
+               			<div class="form_top" style="line-height: 20px;">
+                      		<label for="">&nbsp;</label>
+               			</div>
+	               		<div class="form_bottom">
+							<button class="btn btn-sm btn-success" id="addFile"><i class="ace-icon glyphicon glyphicon-plus"></i><@spring.message code="button.add"/></button>
+	                 	</div>
+                	</div>
+         		</div>
+				<div class="col-xs-12">
+					<table id="fileGrid"></table>
+					<div id="fileGridPager"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<#include 'common/common_js.html'/>
+<#include 'file/fileDiv.html'/>
+<script type="text/javascript" src="${rootPath}/resource/biz/common.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/biz/file.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#fileGrid").jqGrid({
+		url : contextPath + '/cms/file/query',
+		datatype: "json",
+		colModel:[
+		    {name:'filename',label:'文件名',width:100,sortable:false},
+		    {name:'path',label:'文件地址',width:260,sortable:false},
+		    {name:'size',label:'文件大小',width:50},
+		    // {name:'downloadCount',label:'下载次数',width:50},
+		    {name:'createTime',label:'创建时间',width:100, formatter:formatCreateTime},
+		    {name:'id',hidden:true},
+            {name:'operat',label:'<@spring.message code="grid.operat"/>',width:150,sortable:false,formatter:formatOperat},
+        ],
+		viewrecords : true,
+		sortname : 'createTime',
+	    sortorder : "desc",
+		pager : "#fileGridPager",
+		altRows: true,
+		rownumbers : true,
+		rowNum: 15,
+		autoScroll: true,
+		toolbar:[true,"top"],
+		loadComplete : function() {
+			var table = this;
+			setTimeout(function(){
+				styleGridPager(table);
+			}, 0);
+		},
+	});
+	
+	styleGridResize("#fileGrid");
+})
+
+function formatOperat(cellValue, options, rowObject) {
+    var resultStr = '';
+
+    resultStr += '<a href="javascript:void(0)" class="btn btn-primary btn-xs" onclick="editFile('+options.rowId+')" title="<@spring.message code="grid.operat.edit"/>">编辑</a>&nbsp;';
+    resultStr += '<a href="javascript:void(0)" class="btn btn-danger btn-xs" onclick="deleteFile('+options.rowId+')" title="<@spring.message code="grid.operat.delete"/>">删除</a>&nbsp;';
+
+    return resultStr;
+}
+
+function formatCreateTime(cellValue, options, rowObject){
+    var crtTime = new Date(rowObject.createTime);
+    return dateFtt("yyyy-MM-dd hh:mm:ss",crtTime);
+}
+
+
+</script>
+</body>
+</html> 
