@@ -8,7 +8,7 @@
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${LOG_FILE}</file>
 		<encoder>
-			<pattern>[%X{logSessionId}] [%date] [%-5p] [%thread] [%logger{10}] [%NFile:%line] %msg%n</pattern>
+			<pattern>[%X{logSessionId}] [%date] [%-5p] [%thread] [%logger{10}] [%file:%line] %msg%n</pattern>
 			<charset>UTF-8</charset>
 		</encoder>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -21,7 +21,7 @@
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<!-- encoder defaults to ch.qos.logback.classic.encoder.PatternLayoutEncoder -->
 		<encoder>
-			<pattern>[%date] [%-5p] [%thread] [%logger{10}] [%NFile:%line] %msg%n</pattern>
+			<pattern>[%date] [%-5p] [%thread] [%logger{10}] [%file:%line] %msg%n</pattern>
 			<charset>UTF-8</charset>
 		</encoder>
 		<!-- Only log level INFO and above -->

@@ -324,6 +324,7 @@
 				<jdbc.initialPoolSize>10</jdbc.initialPoolSize>
 
 				<news.oss.endpoint>http://oss-cn-beijing.aliyuncs.com</news.oss.endpoint>
+				<environment>dev</environment>
 			</properties>
 		</profile>
 
@@ -348,6 +349,7 @@
 				<jdbc.initialPoolSize>10</jdbc.initialPoolSize>
 
 				<news.oss.endpoint>http://oss-cn-beijing-internal.aliyuncs.com</news.oss.endpoint>
+				<environment>prod</environment>
 			</properties>
 		</profile>
 		

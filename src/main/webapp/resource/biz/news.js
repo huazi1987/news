@@ -24,6 +24,13 @@ var newsRules =  {
 }
 
 submitForm($('#newsfrm'),newsRules,function (form) {
+    // 取得HTML内容
+    var html = editor.html();
+    editor.sync();
+    html = $('#editor_id').val(); // jQuery
+
+// 设置HTML内容
+    editor.html('HTML内容');
 	var formData = new FormData($("#newsfrm")[0]);
 	var uri = '';
     if($("#news_id").val() == ''){

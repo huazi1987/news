@@ -24,7 +24,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +37,9 @@ public class NewsCMSController extends BaseController{
 
 	@Autowired
 	private FileUploadService fileUploadService;
+
+
+	private final static String TMP_PATH = "/tmp/";
 
 
 	@RequestMapping(value = "/toList", method = RequestMethod.GET)
@@ -98,6 +101,9 @@ public class NewsCMSController extends BaseController{
 			news.setThumbnailUrl(thumbnailUrl);
 			newsService.update(news);
 			result.put("status", "true");
+
+			uploadNewsHtml(id, content);
+
 			return result.toJSONString();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -124,6 +130,9 @@ public class NewsCMSController extends BaseController{
 			news.setContent(content);
 			newsService.insert(news);
 			result.put("status", "true");
+
+			uploadNewsHtml(String.valueOf(news.getId()), content);
+
 			return result.toJSONString();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -149,5 +158,102 @@ public class NewsCMSController extends BaseController{
 		return json.toJSONString();
 	}
 
+
+	@RequestMapping(value = "/uploadKindEditorImage", method = RequestMethod.POST)
+	public @ResponseBody String uploadKindEditorImage(HttpServletRequest request, String userId, String key) {
+		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+		MultipartFile file = multipartRequest.getFile("imgFile");
+		JSONObject json = new JSONObject();
+		try {
+			json.put("url", fileUploadService.uploadFile(file));
+			json.put("error", 0);
+		} catch (Exception e) {
+			json.put("status", "false");
+			e.printStackTrace();
+		}
+
+		return json.toJSONString();
+	}
+
+	@RequestMapping(value = "/imageUploadJson", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	public @ResponseBody String uploadFileManage(HttpServletRequest request) {
+
+		JSONObject json = new JSONObject();
+
+		return json.toJSONString();
+	}
+
+
+	private void uploadNewsHtml(String id, String content){
+		String html = buildHtml(content);
+		String filename = "news-"+id+".html";
+		File file = new File(TMP_PATH+filename);
+
+		BufferedReader bufferedReader = null;
+		BufferedWriter bufferedWriter = null;
+		try {
+			bufferedReader = new BufferedReader(new StringReader(html));
+			bufferedWriter = new BufferedWriter(new FileWriter(file));
+			char buf[] = new char[1024];         //字符缓冲区
+			int len;
+			while ((len = bufferedReader.read(buf)) != -1) {
+				bufferedWriter.write(buf, 0, len);
+			}
+			bufferedWriter.flush();
+			bufferedReader.close();
+			bufferedWriter.close();
+
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (bufferedReader != null) {
+				try {
+					bufferedReader.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		try {
+			fileUploadService.uploadHtml(file, filename);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+
+	}
+
+	private String buildHtml(String content){
+
+
+//		System.out.println(content.replaceAll("\r\n",""));
+		StringBuilder sb = new StringBuilder();
+		sb.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+		sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\" class=\"loading\">");
+		sb.append("<head>");
+		sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
+		sb.append("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=EmulateIE7\" />");
+		sb.append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=0.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0\" />");
+		sb.append("<meta name=\"description\" content=\"通讯帝\"\">");
+		sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://communication-emperor.oss-cn-beijing.aliyuncs.com/html/css/style.css\" />");
+		sb.append("<meta content=\"yes\" name=\"apple-mobile-web-app-capable\">");
+		sb.append("<meta content=\"black\" name=\"apple-mobile-web-app-status-bar-style\">");
+		sb.append("<meta content=\"telephone=no\" name=\"format-detection\">");
+		sb.append("<title>通讯帝</title>");
+		sb.append("<style type=\"text/css\">");
+		sb.append("img{width:100%;}");
+		sb.append("video{width:100%; height:auto;}");
+		sb.append("</style>");
+//		sb.append("");
+//		sb.append("");
+		sb.append("</head>");
+		sb.append("<body>");
+		sb.append("<div id=\"container\">");
+		sb.append(content.replaceAll("\r\n",""));
+		sb.append("</div>");
+		sb.append("</body>");
+		sb.append("</html>");
+		return sb.toString();
+	}
 
 }

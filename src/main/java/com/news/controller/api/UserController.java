@@ -5,7 +5,9 @@ import com.news.common.sms.SDKTestSendTemplateSMS;
 import com.news.common.util.EncryptUtil;
 import com.news.common.util.StringUtil;
 import com.news.model.User;
+import com.news.model.VerifyCode;
 import com.news.service.UserService;
+import com.news.service.VerifyCodeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private VerifyCodeService verifyCodeService;
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	@ResponseBody
@@ -167,12 +172,14 @@ public class UserController {
 			int code = getRandomCode();
 			boolean isSuccess = sdkTestSendTemplateSMS.sendSMS(phone, code);
 			if (isSuccess){
-				result.put("status", true);
-				result.put("msg","发送成功");
-				HttpSession session = request.getSession();
-				session.setAttribute("code_"+phone, String.valueOf(code));
-				session.setMaxInactiveInterval(300);
-				System.out.println("send code session id:"+session.getId());
+				VerifyCode verifyCode = new VerifyCode();
+				verifyCode.setCode(String.valueOf(code));
+				verifyCode.setPhone(phone);
+
+				if(verifyCodeService.insert(verifyCode) > 0){
+					result.put("status", true);
+					result.put("msg","发送成功");
+				}
 
 			}else {
 				result.put("status", false);
@@ -211,13 +218,17 @@ public class UserController {
                 result.put("msg","地址不能为空");
                 return  result.toJSONString();
             }
-			HttpSession session = request.getSession();
-			String key = "code_"+phone;
-			String codeCache = (String) session.getAttribute(key);
-			System.out.println("codeCache:"+codeCache);
-			if (!code.equals(codeCache)){
+
+            VerifyCode verifyCode = verifyCodeService.findByPhoneAndCode(phone, code);
+			if (null == verifyCode){
 				result.put("status", false);
 				result.put("msg","验证码错误");
+				return  result.toJSONString();
+			}
+
+			if(System.currentTimeMillis() - verifyCode.getCreateTime().getTime() > 5*60*1000){
+				result.put("status", false);
+				result.put("msg","验证码已过期");
 				return  result.toJSONString();
 			}
 
@@ -230,7 +241,6 @@ public class UserController {
 				userService.insert(user);
 			}
 
-			session.removeAttribute(key);
 			result.put("status", true);
 			result.put("msg","登陆成功");
 			result.put("data", user);

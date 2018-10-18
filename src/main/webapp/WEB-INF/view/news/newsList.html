@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<#include 'common/common_css.html'/>
+
+	<script src="${rootPath}/resource/plugin/kindeditor/kindeditor-all-min.js"></script>
+	<script src="${rootPath}/resource/plugin/kindeditor/lang/zh-CN.js"></script>
+	<#include 'common/common_css.html'/>
 </head>
 <body class="no-skin">
 <div class="main-content">
@@ -30,8 +33,24 @@
 <#include 'news/newsDiv.html'/>
 <script type="text/javascript" src="${rootPath}/resource/biz/common.js"></script>
 <script type="text/javascript" src="${rootPath}/resource/biz/news.js"></script>
+
+<script type="text/javascript">
+    KindEditor.ready(function(K) {
+        window.editor = K.create('#editor_id');
+        K.create('#textarea_id', {
+            uploadJson : '/cms/news/uploadKindEditorImage',
+            fileManagerJson : '/cms/news/imageUploadJson',
+            allowFileManager : true
+        });
+
+    });
+</script>
+
+
 <script type="text/javascript">
 $(document).ready(function() {
+
+
 	$("#newsGrid").jqGrid({
 		url : contextPath + '/cms/news/query',
 		datatype: "json",
@@ -61,7 +80,7 @@ $(document).ready(function() {
 			}, 0);
 		},
 	});
-	
+
 	styleGridResize("#newsGrid");
 })
 
@@ -89,6 +108,7 @@ function formatCreateTime(cellValue, options, rowObject){
 
 
 function showModal(type, rowid) {
+
 	var thumbnailUrl = '';
 	$('#newsfrm')[0].reset();
 	$('#newsfrm').validate().resetForm();
@@ -97,7 +117,7 @@ function showModal(type, rowid) {
 		$('#newsTitle').html('<@spring.message code="button.add"/>');
 		$("#news_id").val('');
         $("#news_title").val('');
-        $("#news_content").text('');
+        editor.html('');
 
 	} else if (type == 'edit') {
 		$('#newsTitle').html('<@spring.message code="button.edit"/>');
@@ -106,9 +126,9 @@ function showModal(type, rowid) {
 
 		$("#news_id").val(rowData.id);
 		$("#news_title").val(rowData.title);
-		$("#news_content").text(rowData.content);
+        editor.html(rowData.content);
 	}
-	
+
 	$("#news_thumbnailUrl").val(thumbnailUrl);
 	$('#newsThumbnail').html('<input id="newsThumbnailUrl" name="newsImage" type="file" class="file newThumbnailUrl"/>');
 
@@ -117,6 +137,7 @@ function showModal(type, rowid) {
 	$('#newsThumbnail').find(".file-caption").text(thumbnailUrl);
 
 	$("#newsModal").modal('show');
+
 }
 
 function initNewsImage(imgUrl) {
@@ -161,4 +182,4 @@ function initNewsImage(imgUrl) {
 }
 </script>
 </body>
-</html> 
+</html>

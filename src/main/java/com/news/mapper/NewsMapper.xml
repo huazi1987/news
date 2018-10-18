@@ -46,11 +46,11 @@
 	</select>
 
 	<select id="findNewsCount" resultType="int" parameterType="Map">
-		SELECT count(id) FROM video WHERE 1=1
+		SELECT count(id) FROM news WHERE 1=1
 	</select>
 
 	<delete id="delete" parameterType="String">
-		DELETE from video where id=#{id}
+		DELETE from news where id=#{id}
 	</delete>
 
 	<resultMap type="news" id="NewsMap">

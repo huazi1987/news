@@ -107,7 +107,6 @@ function initFile(imgUrl) {
         initialPreviewAsData : true,
         initialPreview : [ imgUrl ],
         uploadUrl : contextPath + '/cms/file/uploadFile',
-        allowedFileExtensions : [ 'jpg', 'png', 'jpeg', 'doc', 'xls', 'mp4', 'mov','json','xml','mp3'],
         maxFileSize : 50000,
         maxFileCount : 1
     });

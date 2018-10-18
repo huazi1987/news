@@ -18,7 +18,7 @@ public class SDKTestSendTemplateSMS {
 
     private static final String APP_ID="8aaf07086537124901665ca1c577056c";
 
-    private static final String TEMPLATE_ID = "1";
+    private static final String TEMPLATE_ID = "355837";
 
     public SDKTestSendTemplateSMS(){
         restAPI = new CCPRestSmsSDK();
@@ -37,6 +37,11 @@ public class SDKTestSendTemplateSMS {
             System.out.println("错误码=" + result.get("statusCode") +" 错误信息= "+result.get("statusMsg"));
             return false;
         }
+    }
+
+    public static void main(String[] args){
+        SDKTestSendTemplateSMS sdkTestSendTemplateSMS = new SDKTestSendTemplateSMS();
+        sdkTestSendTemplateSMS.sendSMS("13264586161", 612345);
     }
 
 }
