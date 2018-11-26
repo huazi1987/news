@@ -10,6 +10,9 @@
         <if test="phone!=null and phone!=''">
             ,phone
         </if>
+		<if test="address!=null and address!=''">
+			,address
+		</if>
 		)
 		VALUES(#{loginName}
 		 <if test="nickname!=null and nickname!=''">
@@ -18,6 +21,9 @@
         <if test="phone!=null and phone!=''">
             ,#{phone}
         </if>
+		<if test="address!=null and address!=''">
+			,#{address}
+		</if>
 		)
 	</insert>
 	

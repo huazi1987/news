@@ -31,6 +31,17 @@ public class VersionController {
 				return result.toJSONString();
 			}
 			Version version = versionService.findVersionByOSType(osType);
+			String config = version.getConfig();
+			if(!StringUtil.isEmpty(config)){
+				try {
+					JSONObject configJson = JSONObject.parseObject(config);
+					if (null != configJson.get("isPass")){
+						version.setPass(configJson.getBoolean("isPass"));
+					}
+				}catch (Exception e){
+					e.printStackTrace();
+				}
+			}
 			result.put("status", true);
 			result.put("msg","ok");
 			result.put("data", version);

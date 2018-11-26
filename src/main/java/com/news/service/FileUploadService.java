@@ -20,7 +20,7 @@ public class FileUploadService {
 	@Value("#{appProperties['environment']}")
 	private String environment;
 	
-	private static final String DOMAIN = "https://communication-emperor.oss-cn-beijing.aliyuncs.com/";
+	private static final String DOMAIN = "http://file.tongxundi.com/";
 
 	private static final String BUCKET_NAME = "communication-emperor";
 

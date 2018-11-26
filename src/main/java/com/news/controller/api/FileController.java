@@ -7,6 +7,7 @@ import com.news.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 
+@CrossOrigin
 @Controller
 @RequestMapping(value = "/api/file")
 public class FileController {
@@ -24,7 +26,8 @@ public class FileController {
 
 	@Autowired
 	private FileService fileService;
-	
+
+
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ResponseBody
 	public String list(HttpServletRequest request, int pageNo) {

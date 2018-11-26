@@ -37,6 +37,7 @@
 		<result column="id" property="id"/>
 		<result column="version" property="version"/>
 		<result column="os_type" property="osType"/>
+		<result column="config" property="config"/>
 		<result column="create_time" property="createTime"/>
 	</resultMap>
 	

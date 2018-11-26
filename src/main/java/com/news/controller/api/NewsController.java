@@ -10,10 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,13 +33,13 @@ public class NewsController {
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ResponseBody
-	public String list(HttpServletRequest request, int pageNo) {
+	public String list(HttpServletRequest request, int pageNo, @RequestParam(defaultValue = "true") boolean isPass) {
 		JSONObject result = new JSONObject();
 		result.put("status", false);
 		
 		try {
 			Pagination pagination = new Pagination(pageNo, PAGE_SIZE);
-			Page<News> data = newsService.queryNewsList(pagination);
+			Page<News> data = newsService.queryNewsList(pagination, isPass);
 			result.put("status", true);
 			result.put("data", data);
 			return result.toJSONString();

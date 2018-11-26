@@ -241,7 +241,7 @@ public class NewsCMSController extends BaseController{
 		sb.append("<meta content=\"telephone=no\" name=\"format-detection\">");
 		sb.append("<title>通讯帝</title>");
 		sb.append("<style type=\"text/css\">");
-		sb.append("img{width:100%;}");
+		sb.append("#container img{background-size:contain|cover;width:90%;height: auto;vertical-align: middle}");
 		sb.append("video{width:100%; height:auto;}");
 		sb.append("</style>");
 //		sb.append("");

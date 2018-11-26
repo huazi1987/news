@@ -21,7 +21,7 @@ public class NewsService extends BaseService {
     private NewsMapper newsMapper;
 
 
-    public Page<News> queryNewsList(Pagination pagination){
+    public Page<News> queryNewsList(Pagination pagination, boolean isPass){
 
         Map<String, Object> page = new HashMap<>(2);
         page.put("start", pagination.getStart());
@@ -32,7 +32,12 @@ public class NewsService extends BaseService {
 
         int count = newsMapper.findNewsCount(params);
 
-        List<News> list = newsMapper.findNewsList(params);
+        List<News> list = null;
+        if (isPass){
+            list = newsMapper.findNewsList(params);
+        }else {
+            list = newsMapper.findNewsList2(params);
+        }
         PageRecord<News> result = new PageRecord<>(list,pagination,count);
 
         return result;

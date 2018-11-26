@@ -13,6 +13,8 @@ public class Version extends BaseModel<Version> {
 	private long version;
 	private String osType;
 	private Date createTime;
+	private String config;
+	private boolean isPass;
 
 	public int getId() {
 		return id;
@@ -44,5 +46,21 @@ public class Version extends BaseModel<Version> {
 
 	public void setOsType(String osType) {
 		this.osType = osType;
+	}
+
+	public String getConfig() {
+		return config;
+	}
+
+	public void setConfig(String config) {
+		this.config = config;
+	}
+
+	public boolean isPass() {
+		return isPass;
+	}
+
+	public void setPass(boolean pass) {
+		isPass = pass;
 	}
 }
