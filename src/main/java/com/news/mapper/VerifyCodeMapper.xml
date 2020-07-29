@@ -3,7 +3,7 @@
 <mapper namespace="com.news.mapper.VerifyCodeMapper">
 
 	<insert id="insert" parameterType="VerifyCode">
-		INSERT INTO verify_code(phone,code)
+		replace INTO verify_code(phone,code)
 		VALUES(#{phone},#{code})
 	</insert>
 

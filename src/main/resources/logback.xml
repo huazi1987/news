@@ -1,43 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
-	<jmxConfigurator/>
-	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
-	​
-	<property name="LOG_FILE" value="/tmp/logs/"/>​
+    <jmxConfigurator/>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    ​
 
-	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${LOG_FILE}</file>
-		<encoder>
-			<pattern>[%X{logSessionId}] [%date] [%-5p] [%thread] [%logger{10}] [%file:%line] %msg%n</pattern>
-			<charset>UTF-8</charset>
-		</encoder>
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>logs-%d{yyyy-MM-dd}.log</fileNamePattern>
-			<maxHistory>30</maxHistory>
-		</rollingPolicy>
-	</appender>
+    <property name="LOG_FILE" value="/tmp/tmp.log"/>​
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE}</file>
+        <append>true</append>
+        <encoder>
+            <pattern>[%date] [%-5p] [%thread] [%logger{10}] [%file:%line] %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/tmp/tmp-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>14</maxHistory>
+            <totalSizeCap>10GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
 
 
-	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-		<!-- encoder defaults to ch.qos.logback.classic.encoder.PatternLayoutEncoder -->
-		<encoder>
-			<pattern>[%date] [%-5p] [%thread] [%logger{10}] [%file:%line] %msg%n</pattern>
-			<charset>UTF-8</charset>
-		</encoder>
-		<!-- Only log level INFO and above -->
-		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>INFO</level>
-		</filter>
-	</appender>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%date] [%-5p] [%thread] [%logger{10}] [%file:%line] %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+    </appender>
 
-	<!-- Strictly speaking, the level attribute is not necessary since -->
-	<!-- the level of the root level is set to DEBUG by default.       -->
-	<root level="INFO">
-		<appender-ref ref="FILE"/>
-	</root>
+    <root level="INFO">
+        <appender-ref ref="FILE"/>
+    </root>
 
-	<root level="INFO">
-		<appender-ref ref="STDOUT" />
-	</root>
 
 </configuration>

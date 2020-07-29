@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include 'common/common_css.html'/>
+</head>
+<body class="no-skin">
+<div class="main-content">
+	<div class="main-content-inner">
+		<div class="page-content">
+			<div class="row">
+         		<div class="col-sm-6">
+         			<div class="input-group">
+               			<div class="form_top" style="line-height: 20px;">
+                      		<label for="">&nbsp;</label>
+               			</div>
+	               		<div class="form_bottom">
+							<button class="btn btn-sm btn-success" id="addTheme"><i class="ace-icon glyphicon glyphicon-plus"></i><@spring.message code="button.add"/></button>
+	                 	</div>
+                	</div>
+         		</div>
+				<div class="col-xs-12">
+					<table id="themeGrid"></table>
+					<div id="themeGridPager"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<#include 'common/common_js.html'/>
+<#include 'theme/themeDiv.html'/>
+<script type="text/javascript" src="${rootPath}/resource/biz/common.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/biz/theme.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#themeGrid").jqGrid({
+		url : contextPath + '/cms/theme/query',
+		datatype: "json",
+		colModel:[
+		    {name:'themeName',label:'主题',width:100,sortable:false},
+		    {name:'id',hidden:true},
+            {name:'operat',label:'<@spring.message code="grid.operat"/>',width:150,sortable:false,formatter:formatOperat},
+        ],
+		viewrecords : true,
+		pager : "#themeGridPager",
+		altRows: true,
+		rownumbers : true,
+		rowNum: 15,
+		autoScroll: true,
+		toolbar:[true,"top"],
+		loadComplete : function() {
+			var table = this;
+			setTimeout(function(){
+				styleGridPager(table);
+			}, 0);
+		},
+	});
+	
+	styleGridResize("#themeGrid");
+})
+
+function formatOperat(cellValue, options, rowObject) {
+    var resultStr = '';
+
+    resultStr += '<a href="javascript:void(0)" class="btn btn-danger btn-xs" onclick="deleteTheme(\''+options.rowId+'\')" title="<@spring.message code="grid.operat.delete"/>">删除</a>&nbsp;';
+
+    return resultStr;
+}
+
+
+
+</script>
+</body>
+</html> 

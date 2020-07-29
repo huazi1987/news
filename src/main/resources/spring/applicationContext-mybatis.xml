@@ -31,7 +31,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		</property>
 	</bean>
 	
-	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" autowire="byName">
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" autowire="byName"  scope="prototype">
 		<constructor-arg index="0" ref="sqlSessionFactory"></constructor-arg>
 		<!--<constructor-arg index="1" value="BATCH"></constructor-arg>-->
 	</bean>

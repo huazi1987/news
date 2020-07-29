@@ -2,7 +2,6 @@ package com.news.controller.api;
 
 import com.alibaba.fastjson.JSONObject;
 import com.news.common.sms.SDKTestSendTemplateSMS;
-import com.news.common.util.EncryptUtil;
 import com.news.common.util.StringUtil;
 import com.news.model.User;
 import com.news.model.VerifyCode;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.Random;
 
@@ -33,79 +31,28 @@ public class UserController {
 
 	@Autowired
 	private VerifyCodeService verifyCodeService;
-	
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	@ResponseBody
-	public String register(@RequestBody Map<String, String> params) {
-		JSONObject result = new JSONObject();
-		result.put("status", false);
-		String loginName = params.get("loginName");
-		String password = params.get("password");
-		String nickname = params.get("nickname");
-		try {
-			if (StringUtil.isEmpty(loginName)){
-				result.put("status", false);
-				result.put("msg","登陆名不能为空");
-				return  result.toJSONString();
-			}
-			if (StringUtil.isEmpty(password)){
-				result.put("status", false);
-				result.put("msg","密码不能为空");
-				return  result.toJSONString();
-			}
-			User user = userService.findUserByLoginName(loginName);
-			if (null != user){
-				result.put("msg","该登陆名已存在");
-				return result.toJSONString();
-			}
-			user = new User();
-			user.setLoginName(loginName);
-			if(!StringUtil.isEmpty(nickname)){
-				user.setNickname(nickname);
-			}
 
-			int ret = userService.insert(user);
-			if (ret <= 0){
-				result.put("msg","注册失败");
-				return result.toJSONString();
-			}
-			result.put("status", true);
-			result.put("msg","注册成功");
-			return result.toJSONString();
-		} catch (Exception e) {
-			e.printStackTrace();
-			result.put("msg","系统错误");
-		}
-		return result.toJSONString();
-	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@ResponseBody
-	public String login( @RequestBody Map<String, String> params) {
+	public String login(@RequestBody Map<String, String> params) {
 		JSONObject result = new JSONObject();
 		result.put("status", false);
-		String loginName = params.get("loginName");
-		String password = params.get("password");
+		String loginType = params.get("lt");//1:qq 2:weixin 0:visitor
+		String openId = params.get("openId");
+		String deviceId = params.get("deviceId");
+
 		try {
-			if (StringUtil.isEmpty(loginName)){
-				result.put("status", false);
-				result.put("msg","登陆名不能为空");
-				return  result.toJSONString();
-			}
-			if (StringUtil.isEmpty(password)){
-				result.put("status", false);
-				result.put("msg","密码不能为空");
-				return  result.toJSONString();
-			}
-			User user = userService.findUserByLoginNameAndPWD(loginName, EncryptUtil.encodeMD5(password));
-			if (null == user){
-				result.put("msg","账号或密码错误");
+
+			User user = new User();
+
+			int ret = userService.insert(user);
+			if (ret <= 0){
+				result.put("msg","登录失败");
 				return result.toJSONString();
 			}
-
 			result.put("status", true);
-			result.put("msg","登陆成功");
-			result.put("data", user);
+			result.put("msg","登录成功");
 			return result.toJSONString();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -113,6 +60,8 @@ public class UserController {
 		}
 		return result.toJSONString();
 	}
+
+
 
 	@RequestMapping(value = "/profile-set", method = RequestMethod.POST)
 	@ResponseBody
@@ -124,7 +73,11 @@ public class UserController {
 			String nickname = params.get("nickname");
 			String address = params.get("address");
 			String phone = params.get("phone");
+			String avatarUrl = params.get("avatarUrl");
 			String id = params.get("id");
+			String birth = params.get("birth");
+			String weigh = params.get("weight");
+			String high = params.get("high");
 			User user = new User();
 			if (StringUtil.isEmpty(id)){
 				result.put("msg", "修改失败");
@@ -140,6 +93,19 @@ public class UserController {
 			if (!StringUtil.isEmpty(phone)){
 				user.setPhone(phone);
 			}
+			if (!StringUtil.isEmpty(avatarUrl)){
+				user.setAvatarUrl(avatarUrl);
+			}
+			if (!StringUtil.isEmpty(birth)){
+				user.setBirth(avatarUrl);
+			}
+			if (!StringUtil.isEmpty(weigh)){
+				user.setWeight(avatarUrl);
+			}
+			if (!StringUtil.isEmpty(high)){
+				user.setHigh(avatarUrl);
+			}
+			user.setIsFinished(1);
 			int ret = userService.update(user);
 			if (ret <= 0){
 				result.put("msg", "修改失败");
@@ -217,7 +183,7 @@ public class UserController {
             if ("18614058084".equals(phone) && "222222".equals(code)){
 				User user = new User();
 				user.setLoginName(phone);
-				user.setId(0);
+				user.setId(7);
 				user.setNickname("liwenbin");
 
 				result.put("msg","登陆成功");

@@ -3,6 +3,7 @@ CREATE TABLE `user` (
   `login_name` varchar(64) NOT NULL COMMENT '登录名',
   `nickname` varchar(64) DEFAULT NULL COMMENT '昵称',
   `address` varchar(256) DEFAULT NULL COMMENT '地址',
+  `avatar_url` varchar(256) DEFAULT NULL COMMENT '头像',
   `phone` varchar(12) DEFAULT NULL COMMENT '电话',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',

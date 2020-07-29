@@ -1,6 +1,7 @@
 package com.news.model;
 
 import com.news.common.base.BaseModel;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 
@@ -11,10 +12,15 @@ public class User extends BaseModel<User> {
 	
 	private int id;
 	private String loginName;
-	private String nickname;
-	private String address;
-	private String phone;
+	private String nickname="";
+	private String address="";
+	private String phone="";
 	private Date createTime;
+	private String avatarUrl="";
+	private String weight;
+	private String high;
+	private String birth;
+	private int isFinished;
 
 	public int getId() {
 		return id;
@@ -33,6 +39,9 @@ public class User extends BaseModel<User> {
 	}
 
 	public String getNickname() {
+		if (StringUtils.isEmpty(nickname)){
+			return "用户"+(id << 8);
+		}
 		return nickname;
 	}
 
@@ -62,5 +71,45 @@ public class User extends BaseModel<User> {
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	public String getAvatarUrl() {
+		return avatarUrl;
+	}
+
+	public void setAvatarUrl(String avatarUrl) {
+		this.avatarUrl = avatarUrl;
+	}
+
+	public String getWeight() {
+		return weight;
+	}
+
+	public void setWeight(String weight) {
+		this.weight = weight;
+	}
+
+	public String getHigh() {
+		return high;
+	}
+
+	public void setHigh(String high) {
+		this.high = high;
+	}
+
+	public String getBirth() {
+		return birth;
+	}
+
+	public void setBirth(String birth) {
+		this.birth = birth;
+	}
+
+	public int getIsFinished() {
+		return isFinished;
+	}
+
+	public void setIsFinished(int isFinished) {
+		this.isFinished = isFinished;
 	}
 }

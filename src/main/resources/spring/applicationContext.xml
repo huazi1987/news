@@ -44,5 +44,6 @@
 	<import resource="classpath:spring/applicationContext-mybatis.xml"/>
 	<import resource="classpath:spring/applicationContext-freemarker.xml"/>
 	<import resource="classpath:spring/applicationContext-other.xml"/>
+	<import resource="classpath:spring/mongoDB.xml"/>
 	<!-- <import resource="classpath:spring/applicationContext-quartz.xml"/> -->
 </beans>

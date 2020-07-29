@@ -17,6 +17,7 @@ public class Video extends BaseModel<Video> {
 	private int duration;
 	private int size;
 	private int playCount;
+	private int commentCount;
 	private String thumbnailUrl;
 	private String contentUrl;
 	private Date createTime;
@@ -107,5 +108,13 @@ public class Video extends BaseModel<Video> {
 
 	public void setContentUrl(String contentUrl) {
 		this.contentUrl = contentUrl;
+	}
+
+	public int getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(int commentCount) {
+		this.commentCount = commentCount;
 	}
 }

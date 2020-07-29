@@ -19,4 +19,6 @@ public interface UserMapper extends BaseMapper<User> {
 	List<User> findUserList(Map<String, Object> params);
 
 	int findUserCount(Map<String, Object> params);
+
+	List<User> findUserByIds(List<Integer> userIds);
 }

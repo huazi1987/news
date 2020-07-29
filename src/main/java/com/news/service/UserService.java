@@ -98,4 +98,10 @@ public class UserService extends BaseService {
 		}
 
 	}
+
+	public List<User> findUserByIds(List<Integer> userIds){
+		return userMapper.findUserByIds(userIds);
+	}
+
+
 }

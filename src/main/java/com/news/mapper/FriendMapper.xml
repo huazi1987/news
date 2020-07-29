@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.news.mapper.FriendMapper">
+
+	<insert id="insert" parameterType="Friend" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO friend(user_id,apply_user_id)
+		VALUES(#{userId},#{applyUserId})
+	</insert>
+
+
+    <select id="findApplyingList" resultMap="FriendMap" parameterType="Map">
+        SELECT f.user_id, f.apply_user_id, f.create_time, u.nickname, u.avatar_url FROM friend f
+		LEFT JOIN user u on u.id=f.user_id
+		WHERE f.is_aggree=0 and f.apply_user_id = #{applyUserId}
+
+        order by f.create_time desc
+        <if test="page!=null and page!=''">
+            limit #{page.start}, #{page.pageSize}
+        </if>
+    </select>
+
+
+    <select id="findApplyingCount" resultType="int" parameterType="Map">
+        SELECT count(*) FROM friend WHERE is_aggree=0 and apply_user_id = #{applyUserId}
+    </select>
+
+
+	<select id="findPendingList" resultMap="FriendMap" parameterType="Map">
+		SELECT f.user_id, f.apply_user_id, f.create_time, u.nickname, u.avatar_url FROM friend f
+		LEFT JOIN user u on u.id=f.apply_user_id
+		WHERE f.is_aggree=0 and f.user_id = #{userId}
+		order by f.create_time desc
+		<if test="page!=null and page!=''">
+			limit #{page.start}, #{page.pageSize}
+		</if>
+	</select>
+
+
+	<select id="findPendingCount" resultType="int" parameterType="Map">
+		SELECT count(*) FROM friend WHERE is_aggree=0 and user_id = #{userId}
+	</select>
+
+	<select id="findFriendList" resultMap="FriendMap" parameterType="Map">
+		SELECT f.user_id, f.apply_user_id, f.create_time, u.nickname, u.avatar_url FROM friend f
+		LEFT JOIN user u on u.id=f.apply_user_id
+		WHERE f.is_aggree=1 and f.user_id = #{userId}
+
+		order by f.create_time desc
+		<if test="page!=null and page!=''">
+			limit #{page.start}, #{page.pageSize}
+		</if>
+	</select>
+
+
+	<select id="findFriendCount" resultType="int" parameterType="Map">
+		SELECT count(id) FROM friend WHERE is_aggree=1 and user_id = #{userId}
+	</select>
+
+	<update id="updateFriend" parameterType="Map" >
+		UPDATE friend SET is_agree = #{isAgree}
+	</update>
+	
+	<resultMap type="Friend" id="FriendMap">
+		<result column="user_id" property="userId"/>
+		<result column="nickname" property="nickname"/>
+		<result column="avatar_url" property="avatarUrl"/>
+		<result column="apply_user_id" property="applyUserId"/>
+		<result column="is_agree" property="isAgree"/>
+		<result column="create_time" property="createTime"/>
+	</resultMap>
+	
+</mapper>

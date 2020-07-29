@@ -174,12 +174,12 @@ var rules =  {
 }
 	
 submitForm($('#sysMenuAddfrm'),rules,function (form) {
-	var select = $("#menuAdd_menuPid").select2("data")[0];
-	if(select && select.selected){
-		$('#menuPid').val(select.id);
-	}else{
-		$('#menuPid').val('');
-	}
+	// var select = $("#menuAdd_menuPid").val();
+	// if(select && select.selected){
+	// 	$('#menuPid').val(select.id);
+	// }else{
+	// 	$('#menuPid').val('');
+	// }
 	
 	$.post(contextPath + '/sysMenu/add',$("#sysMenuAddfrm").serialize(),function(result){
 		var result = eval('(' + result + ')');

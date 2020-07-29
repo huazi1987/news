@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<#include 'common/common_css.html'/>
+</head>
+<body class="no-skin">
+<div class="main-content">
+	<div class="main-content-inner">
+		<div class="page-content">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="input-group">
+						<div class="form_top" style="line-height: 20px;">
+							<!--<label for="">&nbsp;</label>-->
+						</div>
+						<div class="form_bottom">
+							<!--<button class="btn btn-sm btn-success" id="addpost"><i class="ace-icon glyphicon glyphicon-plus"></i><@spring.message code="button.add"/></button>-->
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12">
+					<table id="postGrid"></table>
+					<div id="postGridPager"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<#include 'common/common_js.html'/>
+<#include 'post/postDiv.html'/>
+<script type="text/javascript" src="${rootPath}/resource/biz/common.js"></script>
+<script type="text/javascript" src="${rootPath}/resource/biz/post.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $("#postGrid").jqGrid({
+            url : contextPath + '/cms/post/query',
+            datatype: "json",
+            colModel:[
+                {name:'title',label:'标题',width:50,sortable:false},
+                {name:'content',label:'内容',width:100,sortable:false},
+                {name:'thumbFormat',label:'封面',width:120,sortable:false,formatter:formatThumbnailUrls},
+                {name:'theme',label:'主题',width:100,sortable:false},
+                {name:'nickname',label:'发布者',width:100,sortable:false},
+                {name:'createTime',label:'发布时间',width:100,sorttype:"date", formatter:formatCreateTime},
+                {name:'id',hidden:true},
+                {name:'thumbnailUrl',hidden:true},
+                {name:'operat',label:'<@spring.message code="grid.operat"/>',width:80,sortable:false,formatter:formatOperat},
+
+            ],
+            viewrecords : true,
+            sortname : 'createTime',
+            sortorder : "desc",
+            pager : "#postGridPager",
+            altRows: true,
+            rownumbers : true,
+            rowNum: 15,
+            autoScroll: true,
+            toolbar:[true,"top"],
+            loadComplete : function() {
+                var table = this;
+                setTimeout(function(){
+                    styleGridPager(table);
+                }, 0);
+            },
+        });
+
+        styleGridResize("#postGrid");
+    })
+
+    function formatOperat(cellValue, options, rowObject) {
+        var resultStr = '';
+
+        // resultStr += '<a href="javascript:void(0)" class="btn btn-primary btn-xs" onclick="editPost('+options.rowId+')" title="<@spring.message code="grid.operat.edit"/>">编辑</a>&nbsp;';
+        resultStr += '<a href="javascript:void(0)" class="btn btn-danger btn-xs" onclick="deletePost(\''+options.rowId+'\')" title="<@spring.message code="grid.operat.delete"/>">删除</a>&nbsp;';
+
+        return resultStr;
+    }
+
+
+    function formatThumbnailUrls(cellValue, options, rowObject) {
+        if(rowObject.thumbnailUrls!=undefined && rowObject.thumbnailUrls!=''){
+            var thumnailUrlHtml = '<div class="ace-thumbnails">'
+            for(var i=0; i<rowObject.thumbnailUrls.length; i++){
+                thumnailUrlHtml = thumnailUrlHtml + '&nbsp;&nbsp; <a href="'+rowObject.thumbnailUrls[i]+'" data-rel="colorbox"><img width="50" height="50" src="'+rowObject.thumbnailUrls[i]+'"/></a>'
+            }
+            return thumnailUrlHtml+'</div>'
+        }
+        return '';
+    }
+
+    function formatCreateTime(cellValue, options, rowObject){
+        var crtTime = new Date(rowObject.createTime);
+        return dateFtt("yyyy-MM-dd hh:mm:ss",crtTime);
+    }
+
+
+    function showModal(type, rowid) {
+
+        var thumbnailUrl = '';
+        $('#postfrm')[0].reset();
+        $('#postfrm').validate().resetForm();
+        $('.form-group').removeClass('has-error');
+        if (type == 'add') {
+            $('#postTitle').html('<@spring.message code="button.add"/>');
+            $("#post_id").val('');
+            $("#post_title").val('');
+            editor.html('');
+
+        } else if (type == 'edit') {
+            $('#postTitle').html('<@spring.message code="button.edit"/>');
+            var rowData = $("#postGrid").getRowData(rowid);
+            thumbnailUrl = rowData.thumbnailUrl;
+
+            $("#post_id").val(rowData.id);
+            $("#post_title").val(rowData.title);
+            editor.html(rowData.content);
+        }
+
+        $("#post_thumbnailUrl").val(thumbnailUrl);
+        $('#postThumbnail').html('<input id="postThumbnailUrl" name="postImage" type="file" class="file newThumbnailUrl"/>');
+
+        initpostImage(thumbnailUrl);
+
+        $('#postThumbnail').find(".file-caption").text(thumbnailUrl);
+
+        $("#postModal").modal('show');
+
+    }
+
+    function initpostImage(imgUrl) {
+        $("#postThumbnailUrl").fileinput({
+            theme: 'explorer-fa',
+            language: $.cookie('W_LANG') == 'zh_CN' ? 'zh' : '',
+            overwriteInitial: false,
+            showRemove: false,
+            initialPreviewAsData: true,
+            initialPreview: [imgUrl],
+            uploadUrl: contextPath + '/cms/post/uploadImage',
+            allowedFileExtensions: ['jpg', 'png', 'jpeg'],
+            maxFileSize: 1000,
+            maxFileCount: 1
+        });
+
+        $(this).on('filepreupload', function (event, data, previewId, index, jqXHR) {
+            // data.form.append("key", $('#itemEdit_key').val());
+        });
+
+        $("#postThumbnailUrl").on('fileuploaded', function (event, data, previewId, index) {
+            if (data.response.status == "true") {
+                $('#post_thumbnailUrl').val(data.response.url)
+                var parent = $(this).parent().parent().parent().parent();
+                $(parent).find(".file-thumb-progress").remove();
+                $(parent).find(".file-caption-name").text(data.response.url);
+                $(parent).find(".file-caption").text(data.response.url);
+            }
+            if (data.response.status == "false") {
+                error(data.response.msg);
+                var parent = $(this).parent().parent().parent().parent();
+                $(parent).find(".file-thumb-progress").remove();
+            }
+        });
+
+        $("#postThumbnailUrl").on('change', function () {
+            var parent = $(this).parents(".file-input");
+            $(parent).find(".file-error-message").css("display", "block").html('请点击“上传“按钮，上传图片！\n' +
+                '由于上传到国外服务器，时间过长请耐心等待！\n' +
+                '进度条消失后在继续操作，谢谢合作！');
+        });
+    }
+    function deletePost(rowid) {
+        // var rowData = $("#postGrid").getRowData(rowid);
+        confirm('删除版本','确定要删除该条记录？',function(result) {
+            if(result){
+                // alert(rowData)
+                $.post(contextPath+"/cms/post/delete",{id:String(rowid)}, function (data) {
+                    result = eval('(' + data + ')')
+                    if (result.status == 'true') {
+                        $("#postGrid").trigger("reloadGrid");
+                    } else if (result.status == 'false') {
+                        error(result.msg);
+                    }
+                });
+            }
+        })
+    }
+
+</script>
+</body>
+</html>

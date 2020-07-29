@@ -113,6 +113,21 @@
     </delete>
 
 
+	<update id="updateCount" parameterType="Video">
+		UPDATE video
+		<set>
+			update_time = now()
+			<if test="play_count!=null and play_count!=''">
+				,play_count=play_count+1
+			</if>
+			<if test="comment_count!=null and comment_count!=''">
+				,comment_count=comment_count+1
+			</if>
+
+		</set>
+		WHERE id=#{id}
+	</update>
+
 	<resultMap type="Video" id="VideoMap">
 		<result column="id" property="id"/>
 		<result column="title" property="title"/>
@@ -124,6 +139,7 @@
 		<result column="thumbnail_url" property="thumbnailUrl"/>
 		<result column="width" property="width"/>
 		<result column="play_count" property="playCount"/>
+		<result column="comment_count" property="commentCount"/>
 		<result column="duration" property="duration"/>
 	</resultMap>
 	

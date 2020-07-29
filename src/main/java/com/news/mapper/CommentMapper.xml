@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.news.mapper.CommentMapper">
+
+	<insert id="insert" parameterType="Comment" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO comment(user_id,content,group_type, group_id
+		<if test="replyId!=null and replyId!=''">
+			,reply_id
+		</if>
+        <if test="replyUserId!=null and replyUserId!=''">
+            ,reply_user_id
+        </if>
+		<if test="replyUserNickname!=null and replyUserNickname!=''">
+			,reply_user_nickname
+		</if>
+		)
+		VALUES(#{userId},#{content},#{groupType},#{groupId}
+		 <if test="replyId!=null and replyId!=''">
+		    ,#{replyId}
+	     </if>
+        <if test="replyUserId!=null and replyUserId!=''">
+            ,#{replyUserId}
+        </if>
+		<if test="replyUserNickname!=null and replyUserNickname!=''">
+			,#{replyUserNickname}
+		</if>
+		)
+	</insert>
+
+	<select id="findById" resultMap="CommentMap">
+		SELECT * FROM comment WHERE id=#{id}
+	</select>
+
+
+    <select id="findCommentList" resultMap="CommentMap" parameterType="Map">
+        SELECT ct.id, ct.user_id, ct.content, ct.reply_id, ct.reply_user_id, ct.reply_user_nickname,
+		ct.group_type, ct.group_id, ct.create_time, u.nickname, u.avatar_url FROM comment ct
+		LEFT JOIN user u on u.id=ct.user_id
+		WHERE 1=1
+		<if test="groupType!=null and groupType!=''">
+			and ct.group_type=#{groupType}
+		</if>
+		<if test="groupId!=null and groupId!=''">
+			and ct.group_id=#{groupId}
+		</if>
+
+        order by ct.create_time desc
+        <if test="page!=null and page!=''">
+            limit #{page.start}, #{page.pageSize}
+        </if>
+    </select>
+
+
+    <select id="findCommentCount" resultType="int" parameterType="Map">
+        SELECT count(id) FROM comment where 1=1
+		<if test="groupType!=null and groupType!=''">
+			and group_type=#{groupType}
+		</if>
+		<if test="groupId!=null and groupId!=''">
+			and group_id=#{groupId}
+		</if>
+    </select>
+
+	<resultMap type="Comment" id="CommentMap">
+		<result column="id" property="id"/>
+		<result column="group_type" property="groupType"/>
+		<result column="group_id" property="groupId"/>
+		<result column="content" property="content"/>
+		<result column="user_id" property="userId"/>
+		<result column="nickname" property="nickname"/>
+		<result column="avatar_url" property="avatarUrl"/>
+		<result column="reply_user_id" property="replyUserId"/>
+		<result column="reply_user_nickname" property="replyUserNickname"/>
+		<result column="reply_id" property="replyId"/>
+		<result column="create_time" property="createTime"/>
+	</resultMap>
+	
+</mapper>

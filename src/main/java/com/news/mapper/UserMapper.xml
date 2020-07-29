@@ -13,6 +13,9 @@
 		<if test="address!=null and address!=''">
 			,address
 		</if>
+		<if test="avatarUrl!=null and avatarUrl!=''">
+			,avatar_url
+		</if>
 		)
 		VALUES(#{loginName}
 		 <if test="nickname!=null and nickname!=''">
@@ -23,6 +26,9 @@
         </if>
 		<if test="address!=null and address!=''">
 			,#{address}
+		</if>
+		<if test="avatarUrl!=null and avatarUrl!=''">
+			,#{avatarUrl}
 		</if>
 		)
 	</insert>
@@ -40,7 +46,9 @@
 			<if test="phone!=null">
 				,phone=#{phone}
 			</if>
-
+			<if test="avatarUrl!=null">
+				,avatar_url=#{avatarUrl}
+			</if>
 		</set>
 		WHERE id=#{id}
 	</update>
@@ -64,6 +72,12 @@
     </select>
 
 
+	<select id="findUserByIds" resultMap="UserMap" parameterType="list">
+		SELECT * FROM user WHERE id in
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
 
     <select id="findUserList" resultMap="UserMap" parameterType="Map">
         SELECT * FROM user WHERE 1=1
@@ -85,6 +99,7 @@
 		<result column="phone" property="phone"/>
 		<result column="create_time" property="createTime"/>
 		<result column="login_name" property="loginName"/>
+		<result column="avatar_url" property="avatarUrl"/>
 	</resultMap>
 	
 </mapper>

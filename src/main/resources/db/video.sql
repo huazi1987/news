@@ -7,6 +7,7 @@ CREATE TABLE `video` (
   `duration` int(11) DEFAULT NULL COMMENT '视频时长',
   `size` int(11) DEFAULT NULL COMMENT '视频大小',
   `play_count` int(11) DEFAULT NULL COMMENT '播放数',
+  `comment_count` int(11) DEFAULT NULL COMMENT '评论数',
   `thumbnail_url` varchar(128) DEFAULT NULL COMMENT '视频封面',
   `content_url` varchar(128) DEFAULT NULL COMMENT '视频地址',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '视频创建时间',
